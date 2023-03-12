@@ -6,6 +6,10 @@ plugins {
 group = "com.crowdproj.ad"
 version = "0.0.1"
 
+repositories {
+    mavenCentral()
+}
+
 subprojects {
     this.group = group
     this.version = version
@@ -22,6 +26,13 @@ subprojects {
 
             testImplementation(kotlin("test-junit"))
         }
+    }
+}
+
+tasks {
+    @Suppress("UNUSED_VARIABLE")
+    val deploy: Task by creating {
+        dependsOn("build")
     }
 }
 
