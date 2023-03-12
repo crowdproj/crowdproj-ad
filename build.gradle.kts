@@ -29,3 +29,10 @@ subprojects {
     }
 }
 
+tasks {
+    @Suppress("UNUSED_VARIABLE")
+    val deploy: Task by creating {
+        dependsOn("build")
+    }
+}
+
