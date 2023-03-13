@@ -1,8 +1,8 @@
-package com.crowdproj.ad.api.v0.responses
+package com.crowdproj.ad.api.v1.responses
 
 import kotlinx.serialization.KSerializer
-import com.crowdproj.ad.api.v0.models.AdSearchResponse
-import com.crowdproj.ad.api.v0.models.IResponseAd
+import com.crowdproj.ad.api.v1.models.AdSearchResponse
+import com.crowdproj.ad.api.v1.models.IResponseAd
 import kotlin.reflect.KClass
 
 object SearchResponseStrategy: IResponseStrategy {

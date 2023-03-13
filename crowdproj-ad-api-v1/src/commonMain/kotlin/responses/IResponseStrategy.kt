@@ -1,7 +1,7 @@
-package com.crowdproj.ad.api.v0.responses
+package com.crowdproj.ad.api.v1.responses
 
-import com.crowdproj.ad.api.v0.models.IResponseAd
-import com.crowdproj.ad.api.v0.IApiStrategy
+import com.crowdproj.ad.api.v1.models.IResponseAd
+import com.crowdproj.ad.api.v1.IApiStrategy
 
 sealed interface IResponseStrategy: IApiStrategy<IResponseAd> {
     companion object {

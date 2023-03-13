@@ -1,8 +1,8 @@
-package com.crowdproj.ad.api.v0.requests
+package com.crowdproj.ad.api.v1.requests
 
 import kotlinx.serialization.KSerializer
-import com.crowdproj.ad.api.v0.models.AdUpdateRequest
-import com.crowdproj.ad.api.v0.models.IRequestAd
+import com.crowdproj.ad.api.v1.models.AdUpdateRequest
+import com.crowdproj.ad.api.v1.models.IRequestAd
 import kotlin.reflect.KClass
 
 object UpdateRequestStrategy: IRequestStrategy {

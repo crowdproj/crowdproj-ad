@@ -1,8 +1,8 @@
-package com.crowdproj.ad.api.v0
+package com.crowdproj.ad.api.v1
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
-import com.crowdproj.ad.api.v0.models.*
+import com.crowdproj.ad.api.v1.models.*
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
