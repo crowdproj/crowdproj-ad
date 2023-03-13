@@ -1,8 +1,8 @@
-package com.crowdproj.ad.api.v0.requests
+package com.crowdproj.ad.api.v1.requests
 
 import kotlinx.serialization.KSerializer
-import com.crowdproj.ad.api.v0.models.AdDeleteRequest
-import com.crowdproj.ad.api.v0.models.IRequestAd
+import com.crowdproj.ad.api.v1.models.AdDeleteRequest
+import com.crowdproj.ad.api.v1.models.IRequestAd
 import kotlin.reflect.KClass
 
 object DeleteRequestStrategy: IRequestStrategy {

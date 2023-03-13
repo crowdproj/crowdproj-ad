@@ -1,6 +1,6 @@
-package com.crowdproj.ad.api.v0
+package com.crowdproj.ad.api.v1
 
-import com.crowdproj.ad.api.v0.models.IRequestAd
+import com.crowdproj.ad.api.v1.models.IRequestAd
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encoding.Encoder
@@ -8,7 +8,7 @@ import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import com.crowdproj.ad.api.v0.requests.IRequestStrategy
+import com.crowdproj.ad.api.v1.requests.IRequestStrategy
 
 
 val AdRequestSerializer = RequestSerializer(AdRequestSerializerBase)

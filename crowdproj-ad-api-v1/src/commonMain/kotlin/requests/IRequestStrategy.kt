@@ -1,7 +1,7 @@
-package com.crowdproj.ad.api.v0.requests
+package com.crowdproj.ad.api.v1.requests
 
-import com.crowdproj.ad.api.v0.models.IRequestAd
-import com.crowdproj.ad.api.v0.IApiStrategy
+import com.crowdproj.ad.api.v1.models.IRequestAd
+import com.crowdproj.ad.api.v1.IApiStrategy
 
 
 sealed interface IRequestStrategy: IApiStrategy<IRequestAd> {

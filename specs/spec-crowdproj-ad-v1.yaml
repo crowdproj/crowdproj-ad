@@ -137,29 +137,21 @@ paths:
 components:
   schemas:
     IRequestAd:
-#      $ref: './build/base.yaml#/components/schemas/IRequest'
-      type: object
-      description: Базовый интерфейс для всех запросов
-      properties:
-        requestType:
-          type: string
-          description: Поле-дескриминатор для вычисления типа запроса
-          example: create
-        requestId:
-          type: string
-          description: Идентификатор запроса для отладки
-      discriminator:
-        propertyName: requestType
-        mapping:
-          create: '#/components/schemas/AdCreateRequest'
-          read:   '#/components/schemas/AdReadRequest'
-          update: '#/components/schemas/AdUpdateRequest'
-          delete: '#/components/schemas/AdDeleteRequest'
-          search: '#/components/schemas/AdSearchRequest'
-          offers: '#/components/schemas/AdOffersRequest'
+      allOf:
+        - $ref: '../build/base.yaml#/components/schemas/IRequest'
+        - type: object
+          discriminator:
+            propertyName: requestType
+            mapping:
+              create: '#/components/schemas/AdCreateRequest'
+              read:   '#/components/schemas/AdReadRequest'
+              update: '#/components/schemas/AdUpdateRequest'
+              delete: '#/components/schemas/AdDeleteRequest'
+              search: '#/components/schemas/AdSearchRequest'
+              offers: '#/components/schemas/AdOffersRequest'
 
     Error:
-      $ref: '../crowdproj-ad-api-v1/build/base.yaml#/components/schemas/Error'
+      $ref: '../build/base.yaml#/components/schemas/Error'
 
     ResponseResult:
       type: string
@@ -168,38 +160,23 @@ components:
         - error
 
     IResponseAd:
-#      $ref: './build/base.yaml#/components/schemas/IResponse'
-      type: object
-      description: Базовый интерфейс для всех ответов
-      properties:
-        responseType:
-          type: string
-          description: Поле-дескриминатор для вычисления типа запроса
-          example: create
-        requestId:
-          type: string
-          description: Идентификатор запроса для отладки
-        result:
-          $ref: '#/components/schemas/ResponseResult'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-
-      discriminator:
-        propertyName: responseType
-        mapping:
-          create: '#/components/schemas/AdCreateResponse'
-          read:   '#/components/schemas/AdReadResponse'
-          update: '#/components/schemas/AdUpdateResponse'
-          delete: '#/components/schemas/AdDeleteResponse'
-          search: '#/components/schemas/AdSearchResponse'
-          offers: '#/components/schemas/AdOffersResponse'
-          init: '#/components/schemas/AdInitResponse'
+      allOf:
+        - $ref: '../build/base.yaml#/components/schemas/IResponse'
+        - type: object
+          discriminator:
+            propertyName: responseType
+            mapping:
+              create: '#/components/schemas/AdCreateResponse'
+              read:   '#/components/schemas/AdReadResponse'
+              update: '#/components/schemas/AdUpdateResponse'
+              delete: '#/components/schemas/AdDeleteResponse'
+              search: '#/components/schemas/AdSearchResponse'
+              offers: '#/components/schemas/AdOffersResponse'
+              init: '#/components/schemas/AdInitResponse'
 
 
     AdUserId:
-      $ref: '../crowdproj-ad-api-v1/build/base.yaml#/components/schemas/UserId'
+      $ref: '../build/base.yaml#/components/schemas/UserId'
     AdId:
       type: string
       description: Идентификатор объявления

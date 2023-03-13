@@ -1,4 +1,4 @@
-package com.crowdproj.ad.api.v0
+package com.crowdproj.ad.api.v1
 
 import kotlinx.serialization.KSerializer
 import kotlin.reflect.KClass

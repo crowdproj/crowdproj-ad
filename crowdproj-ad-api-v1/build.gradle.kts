@@ -4,13 +4,13 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-val apiVersion = "v0"
+val apiVersion = "v1"
 val apiSpec: Configuration by configurations.creating
 val apiSpecVersion: String by project
 dependencies {
     apiSpec(
         group = "com.crowdproj",
-        name = "specs-$apiVersion",
+        name = "specs-v0",
         version = apiSpecVersion,
         classifier = "openapi",
         ext = "yaml"
@@ -100,7 +100,7 @@ val getSpecs: Task by tasks.creating {
     doFirst {
         copy {
             from(apiSpec.asPath)
-            into("$buildDir")
+            into(rootProject.buildDir.toString())
             rename { "base.yaml" }
         }
     }
