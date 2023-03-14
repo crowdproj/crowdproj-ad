@@ -9,10 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 fun Routing.swagger(appConfig: CwpAdAppSettings) {
-    get("/crowdproj-ad-api-v1.yaml") {
+    get("/spec-crowdproj-ad-v1.yaml") {
         val origTxt: String = withContext(Dispatchers.IO) {
             this::class.java.classLoader
-                .getResource("specs/crowdproj-ad-api-v1.yaml")
+                .getResource("specs/spec-crowdproj-ad-v1.yaml")
                 ?.readText()
         } ?: ""
         val response = origTxt.replace(

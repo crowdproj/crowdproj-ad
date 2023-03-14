@@ -1,14 +1,10 @@
-import org.jetbrains.kotlin.util.suffixIfNot
-
 plugins {
-    id("application")
-    kotlin("plugin.serialization")
+//    kotlin("plugin.serialization")
     kotlin("multiplatform")
     id("io.ktor.plugin")
 }
 
 val ktorVersion: String by project
-val apiVersion = "v1"
 val serializationVersion: String by project
 val datetimeVersion: String by project
 val coroutinesVersion: String by project
@@ -26,10 +22,8 @@ application {
 }
 
 val webjars: Configuration by configurations.creating
-
 dependencies {
     val swaggerUiVersion: String by project
-
     webjars("org.webjars:swagger-ui:$swaggerUiVersion")
 }
 
@@ -137,32 +131,36 @@ ktor {
 }
 
 tasks {
-//    @Suppress("UnstableApiUsage")
-    getByName<ProcessResources>("jvmProcessResources") {
-//        from("$rootDir/specs") {
-//            into("specs")
-//            filter {
-//                // Устанавливаем версию в сваггере
-//                it.replace("\${VERSION_APP}", project.version.toString())
-//            }
-//        }
-//        webjars.forEach { jar ->
-//            val conf = webjars.resolvedConfiguration
-//            val artifact = conf.resolvedArtifacts.find { it.file.toString() == jar.absolutePath } ?: return@forEach
-//            val upStreamVersion = artifact.moduleVersion.id.version.replace("(-[\\d.-]+)", "")
-//            copy {
-//                from(zipTree(jar))
-//                into(file("${buildDir}/webjars-content/${artifact.name}"))
-//            }
-//            with(this@getByName) {
-//                from(
-//                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${upStreamVersion}"
-//                ) { into(artifact.name) }
-//                from(
-//                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${artifact.moduleVersion.id.version}"
-//                ) { into(artifact.name) }
-//            }
-//        }
+    @Suppress("UnstableApiUsage")
+    withType<ProcessResources>().configureEach {
+        println("RESOURCES: ${this.name} ${this::class}")
+        from("$rootDir/specs") {
+            into("specs")
+            filter {
+                // Устанавливаем версию в сваггере
+                it.replace("\${VERSION_APP}", project.version.toString())
+            }
+        }
+        webjars.forEach { jar ->
+            val conf = webjars.resolvedConfiguration
+            println("JarAbsPa: ${jar.absolutePath}")
+            val artifact = conf.resolvedArtifacts.find { it.file.toString() == jar.absolutePath } ?: return@forEach
+            val upStreamVersion = artifact.moduleVersion.id.version.replace("(-[\\d.-]+)", "")
+            copy {
+                from(zipTree(jar))
+                duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                into(file("${buildDir}/webjars-content/${artifact.name}"))
+            }
+            with(this@configureEach) {
+                this.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                from(
+                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${upStreamVersion}"
+                ) { into(artifact.name) }
+                from(
+                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${artifact.moduleVersion.id.version}"
+                ) { into(artifact.name) }
+            }
+        }
     }
 }
 
