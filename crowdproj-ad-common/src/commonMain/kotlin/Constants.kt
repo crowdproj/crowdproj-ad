@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.common
+package com.crowdproj.ad.common
 
 import kotlinx.datetime.Instant
 

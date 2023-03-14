@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.common.models
+package com.crowdproj.ad.common.models
 
 data class CwpAd(
     var id: CwpAdId = CwpAdId.NONE,
@@ -7,6 +7,6 @@ data class CwpAd(
     var ownerId: CwpAdUserId = CwpAdUserId.NONE,
     val adType: CwpAdDealSide = CwpAdDealSide.NONE,
     var visibility: CwpAdVisibility = CwpAdVisibility.NONE,
-    var productId: CwpProductId = CwpProductId.NONE,
+    var productId: CwpAdProductId = CwpAdProductId.NONE,
     val permissionsClient: MutableSet<CwpAdPermissionClient> = mutableSetOf()
 )

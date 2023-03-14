@@ -1,16 +1,14 @@
 package com.crowdproj.ad.api.v1
 
-import kotlinx.serialization.ExperimentalSerializationApi
+import com.crowdproj.ad.api.v1.models.*
+import com.crowdproj.ad.api.v1.requests.IRequestStrategy
+import com.crowdproj.ad.api.v1.responses.IResponseStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
-import com.crowdproj.ad.api.v1.models.*
-import com.crowdproj.ad.api.v1.requests.IRequestStrategy
-import com.crowdproj.ad.api.v1.responses.IResponseStrategy
 
-@OptIn(ExperimentalSerializationApi::class)
-val apiV2Mapper = Json {
+val apiV1Mapper = Json {
     classDiscriminator = "_"
     encodeDefaults = true
     ignoreUnknownKeys = true

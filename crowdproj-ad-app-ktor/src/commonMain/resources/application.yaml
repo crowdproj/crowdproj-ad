@@ -1,0 +1,48 @@
+#  application.yaml работает в jvm и native, но не работает в режиме сервлета с Tomcat
+# в этом случае необходимо сформировать application.conf
+
+ktor:
+  development: true
+  deployment:
+    port: 8080
+  watch:
+    - classes
+    - resources
+  application:
+    modules:
+      - com.crowdproj.ad.app.ApplicationKt.module
+  urls:
+    - "http://127.0.0.1:8080/v1"
+    - "http://0.0.0.0:8080/v1"
+    - "http://192.168.0.182:8080/v1"
+
+mdm:
+  url: "http://10.255.255.37:8090/app"
+  username: uploader
+  password: uploader
+#  username: ${MDM_USERNAME:uploader}
+#  password: ${MDM_PASSWORD:uploader}
+
+manager:
+#  repo: inmemory
+  repo: sql
+  ttl: "30m"
+  #repo: sql
+  #driver:
+  #url:
+  #login
+  #passwor
+  #table
+
+events:
+#  repo: inmemory
+  repo: sql
+  reload:
+    durations:
+      - "5m"
+      - "10m"
+#foreignProcessingTimeout: "10h"
+updateIntervalMs: 60000
+triggerIntervalMs: 10000
+triggerJobsLimit: 5
+maxCronHistoryS: 3600
