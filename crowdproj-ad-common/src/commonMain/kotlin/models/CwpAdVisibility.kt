@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.common.models
+package com.crowdproj.ad.common.models
 
 enum class CwpAdVisibility {
     NONE,

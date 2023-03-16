@@ -1,7 +1,7 @@
 package com.crowdproj.ad.common.models
 
-enum class CwpAdDealSide {
+enum class CwpAdState {
     NONE,
-    DEMAND,
-    SUPPLY,
+    RUNNING,
+    FAILING,
 }

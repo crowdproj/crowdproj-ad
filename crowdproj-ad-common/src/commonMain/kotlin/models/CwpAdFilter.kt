@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.common.models
+package com.crowdproj.ad.common.models
 
 data class CwpAdFilter(
     var searchString: String = "",

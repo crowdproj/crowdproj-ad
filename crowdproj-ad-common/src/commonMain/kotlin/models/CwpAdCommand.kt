@@ -1,6 +1,6 @@
-package ru.otus.otuskotlin.marketplace.common.models
+package com.crowdproj.ad.common.models
 
-enum class CwpCommand {
+enum class CwpAdCommand {
     NONE,
     CREATE,
     READ,

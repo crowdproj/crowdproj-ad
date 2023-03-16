@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.common.stubs
+package com.crowdproj.ad.common.stubs
 
 enum class CwpStubs {
     NONE,

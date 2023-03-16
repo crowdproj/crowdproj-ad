@@ -1,6 +1,6 @@
-package ru.otus.otuskotlin.marketplace.common.models
+package com.crowdproj.ad.common.models
 
-data class CwpError(
+data class CwpAdError(
     val code: String = "",
     val group: String = "",
     val field: String = "",
