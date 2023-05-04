@@ -139,6 +139,7 @@ components:
     IRequestAd:
       allOf:
         - $ref: '../build/base.yaml#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/AdRequestDebug'
         - type: object
           discriminator:
             propertyName: requestType
@@ -152,12 +153,6 @@ components:
 
     Error:
       $ref: '../build/base.yaml#/components/schemas/Error'
-
-    ResponseResult:
-      type: string
-      enum:
-        - success
-        - error
 
     IResponseAd:
       allOf:
@@ -230,7 +225,6 @@ components:
     AdCreateRequest:
       allOf:
         - $ref: '#/components/schemas/IRequestAd'
-        - $ref: '#/components/schemas/AdRequestDebug'
         - type: object
           properties:
             ad:
@@ -246,7 +240,6 @@ components:
     AdReadRequest:
       allOf:
         - $ref: '#/components/schemas/IRequestAd'
-        - $ref: '#/components/schemas/AdRequestDebug'
         - type: object
           properties:
             ad:
@@ -265,7 +258,6 @@ components:
     AdUpdateRequest:
       allOf:
         - $ref: '#/components/schemas/IRequestAd'
-        - $ref: '#/components/schemas/AdRequestDebug'
         - type: object
           properties:
             ad:
@@ -283,7 +275,6 @@ components:
     AdDeleteRequest:
       allOf:
         - $ref: '#/components/schemas/IRequestAd'
-        - $ref: '#/components/schemas/AdRequestDebug'
         - type: object
           properties:
             ad:
@@ -300,7 +291,6 @@ components:
     AdSearchRequest:
       allOf:
         - $ref: '#/components/schemas/IRequestAd'
-        - $ref: '#/components/schemas/AdRequestDebug'
         - type: object
           properties:
             adFilter:
@@ -312,7 +302,6 @@ components:
     AdOffersRequest:
       allOf:
         - $ref: '#/components/schemas/IRequestAd'
-        - $ref: '#/components/schemas/AdRequestDebug'
         - type: object
           properties:
             ad:

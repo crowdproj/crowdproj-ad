@@ -3,13 +3,13 @@ package com.crowdproj.ad.api.v1
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import com.crowdproj.ad.api.v1.models.*
+import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class ResponseSerializationTest {
     private val response: IResponseAd = AdCreateResponse(
-        responseType = "create",
         requestId = "123",
         ad = AdResponseObject(
             title = "ad title",
@@ -21,9 +21,7 @@ class ResponseSerializationTest {
 
     @Test
     fun serialize() {
-//        val json = apiV2Mapper.encodeToString(AdRequestSerializer1, request)
-//        val json = apiV2Mapper.encodeToString(RequestSerializers.create, request)
-        val json = apiV1Mapper.encodeToString(response)
+        val json = Json.encodeToString(IResponseAd.serializer(), response)
 
         println(json)
 
@@ -33,11 +31,8 @@ class ResponseSerializationTest {
 
     @Test
     fun deserialize() {
-        val json = apiV1Mapper.encodeToString(response)
-//        val json = apiV2Mapper.encodeToString(AdRequestSerializer1, request)
-//        val json = apiV2Mapper.encodeToString(RequestSerializers.create, request)
-//        val obj = apiV2Mapper.decodeFromString(AdRequestSerializer, json) as AdCreateRequest
-        val obj = apiV1Mapper.decodeFromString(json) as AdCreateResponse
+        val json = Json.encodeToString(IResponseAd.serializer(), response)
+        val obj = Json.decodeFromString(IResponseAd.serializer(), json) as AdCreateResponse
 
         assertEquals(response, obj)
     }

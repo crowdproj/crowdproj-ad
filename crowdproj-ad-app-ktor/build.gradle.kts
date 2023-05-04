@@ -1,5 +1,5 @@
 plugins {
-//    kotlin("plugin.serialization")
+    kotlin("plugin.serialization")
     kotlin("multiplatform")
     id("io.ktor.plugin")
 }
@@ -63,8 +63,6 @@ kotlin {
                 implementation(ktorServer("core"))
                 implementation(ktorServer("cio"))
                 implementation(ktorServer("auth"))
-//                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-//                implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
 
                 implementation("com.benasher44:uuid:$uuidVersion")
 
@@ -96,7 +94,6 @@ kotlin {
                 implementation("ch.qos.logback:logback-access:$logbackVersion")
 
                 implementation("org.slf4j:slf4j-api:$slf4jVersion")
-
             }
         }
 
@@ -104,9 +101,9 @@ kotlin {
 }
 
 ktor {
-    fatJar {
-        archiveFileName.set("fat.jar")
-    }
+//    fatJar {
+//        archiveFileName.set("fat.jar")
+//    }
 
     docker {
         jreVersion.set(io.ktor.plugin.features.JreVersion.JRE_17)
@@ -142,6 +139,7 @@ tasks {
             }
         }
         webjars.forEach { jar ->
+//        emptyList<File>().forEach { jar ->
             val conf = webjars.resolvedConfiguration
             println("JarAbsPa: ${jar.absolutePath}")
             val artifact = conf.resolvedArtifacts.find { it.file.toString() == jar.absolutePath } ?: return@forEach

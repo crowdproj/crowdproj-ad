@@ -17,16 +17,6 @@ subprojects {
     repositories {
         mavenCentral()
     }
-
-    plugins.withId("org.jetbrains.kotlin.jvm") {
-        val implementation by configurations
-        val testImplementation by configurations
-        dependencies {
-            implementation(kotlin("stdlib"))
-
-            testImplementation(kotlin("test-junit"))
-        }
-    }
 }
 
 tasks {
@@ -35,4 +25,3 @@ tasks {
         dependsOn("build")
     }
 }
-
