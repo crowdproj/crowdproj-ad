@@ -26,4 +26,5 @@ include("crowdproj-lib-log")
 
 include("crowdproj-ad-common")
 include("crowdproj-ad-api-v1")
+include("crowdproj-ad-api-v1-mappers")
 include("crowdproj-ad-app-ktor")

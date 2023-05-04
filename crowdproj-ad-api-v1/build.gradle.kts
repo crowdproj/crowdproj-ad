@@ -82,7 +82,7 @@ openApiGenerate {
      * Здесь указываем, что нам нужны только модели, все остальное не нужно
      */
     globalProperties.set(mapOf(
-        "debugModels" to "true",
+//        "debugModels" to "true",
         "models" to "",
         "modelDocs" to "false",
     ))
