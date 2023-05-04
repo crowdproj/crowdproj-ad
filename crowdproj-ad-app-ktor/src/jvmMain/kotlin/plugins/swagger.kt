@@ -8,7 +8,7 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-fun Routing.swagger(appConfig: CwpAdAppSettings) {
+actual fun Routing.swagger(appConfig: CwpAdAppSettings) {
     get("/spec-crowdproj-ad-v1.yaml") {
         val origTxt: String = withContext(Dispatchers.IO) {
             this::class.java.classLoader
@@ -25,20 +25,22 @@ fun Routing.swagger(appConfig: CwpAdAppSettings) {
         call.respondText { response }
     }
 
-    static("/") {
-        preCompressed {
-            defaultResource("index.html", "swagger-ui")
-            resource("/swagger-initializer.js", "/swagger-initializer.js", "")
-            static {
-                staticBasePackage = "specs"
-                resources(".")
-            }
-            static {
-                preCompressed(CompressedFileType.GZIP) {
-                    staticBasePackage = "swagger-ui"
-                    resources(".")
-                }
-            }
+    route("/") {
+        preCompressed(CompressedFileType.GZIP) {
+            staticResources("/swagger-initializer.js", "", "swagger-initializer.js")
+            staticResources("/", "specs")
+            staticResources("/", "swagger-ui", index = "index.html")
+//            defaultResource("index.html", "swagger-ui")
+//            static {
+//                staticBasePackage = "specs"
+//                resources(".")
+//            }
+//            static {
+//                preCompressed(CompressedFileType.GZIP) {
+//                    staticBasePackage = "swagger-ui"
+//                    resources(".")
+//                }
+//            }
         }
     }
 }

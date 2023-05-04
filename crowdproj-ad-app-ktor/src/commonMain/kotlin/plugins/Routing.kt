@@ -47,6 +47,6 @@ fun Application.configureRouting(appConfig: CwpAdAppSettings) {
 
         }
 
-//        swagger(appConfig)
+        swagger(appConfig)
     }
 }
