@@ -10,7 +10,7 @@ val apiSpecVersion: String by project
 dependencies {
     apiSpec(
         group = "com.crowdproj",
-        name = "specs-v0",
+        name = "specs-v1",
         version = apiSpecVersion,
         classifier = "openapi",
         ext = "yaml"
@@ -74,7 +74,7 @@ openApiGenerate {
     apiPackage.set("$openapiGroup.api")
     modelPackage.set("$openapiGroup.models")
     invokerPackage.set("$openapiGroup.invoker")
-    inputSpec.set("$rootDir/specs/spec-crowdproj-ad-$apiVersion.yaml")
+    inputSpec.set("${project.buildDir}/spec-crowdproj-ad-$apiVersion.yaml")
     library.set("multiplatform")
 //    templateDir.set("$projectDir/templates")
 
@@ -103,8 +103,12 @@ openApiGenerate {
 val getSpecs: Task by tasks.creating {
     doFirst {
         copy {
+            from("${rootProject.projectDir}/specs")
+            into(project.buildDir.toString())
+        }
+        copy {
             from(apiSpec.asPath)
-            into(rootProject.buildDir.toString())
+            into(project.buildDir.toString())
             rename { "base.yaml" }
         }
     }

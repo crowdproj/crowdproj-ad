@@ -11,8 +11,8 @@ repositories {
 }
 
 subprojects {
-    this.group = group
-    this.version = version
+    this.group = rootProject.group
+    this.version = rootProject.version
 
     repositories {
         mavenCentral()

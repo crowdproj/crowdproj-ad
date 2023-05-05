@@ -14,17 +14,12 @@ val uuidVersion: String by project
 
 fun ktorServer(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-server-$module:$version"
+
 fun ktorClient(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-client-$module:$version"
 
 application {
     mainClass.set("io.ktor.server.cio.EngineMain")
-}
-
-val webjars: Configuration by configurations.creating
-dependencies {
-    val swaggerUiVersion: String by project
-    webjars("org.webjars:swagger-ui:$swaggerUiVersion")
 }
 
 kotlin {
@@ -58,7 +53,8 @@ kotlin {
                 implementation(ktorServer("auto-head-response"))
                 implementation(ktorServer("caching-headers"))
                 implementation(ktorServer("cors"))
-                implementation(ktorServer("websockets"))
+                implementation(ktorServer("call-id"))
+                //implementation(ktorServer("websockets"))
                 implementation(ktorServer("config-yaml"))
                 implementation(ktorServer("core"))
                 implementation(ktorServer("cio"))
@@ -71,7 +67,7 @@ kotlin {
                 implementation(project(":crowdproj-ad-common"))
 
                 implementation(project(":crowdproj-ad-api-v1"))
-//                implementation(project(":crowdproj-ad-api-v1-mappers"))
+                implementation(project(":crowdproj-ad-api-v1-mappers"))
 
             }
         }
@@ -96,7 +92,25 @@ kotlin {
                 implementation("org.slf4j:slf4j-api:$slf4jVersion")
             }
         }
+        @Suppress("UNUSED_VARIABLE")
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
 
+        @Suppress("UNUSED_VARIABLE")
+        val linuxX64Main by getting {
+            dependencies {
+                implementation(kotlin("stdlib"))
+            }
+        }
+        @Suppress("UNUSED_VARIABLE")
+        val linuxX64Test by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
     }
 }
 
@@ -109,13 +123,15 @@ ktor {
         jreVersion.set(io.ktor.plugin.features.JreVersion.JRE_17)
         localImageName.set(project.name)
         imageTag.set("${project.version}")
-        portMappings.set(listOf(
-            io.ktor.plugin.features.DockerPortMapping(
-                80,
-                8080,
-                io.ktor.plugin.features.DockerPortMappingProtocol.TCP
+        portMappings.set(
+            listOf(
+                io.ktor.plugin.features.DockerPortMapping(
+                    80,
+                    8080,
+                    io.ktor.plugin.features.DockerPortMappingProtocol.TCP
+                )
             )
-        ))
+        )
 
 //        externalRegistry.set(
 //            io.ktor.plugin.features.DockerImageRegistry.dockerHub(
@@ -126,39 +142,3 @@ ktor {
 //        )
     }
 }
-
-tasks {
-    @Suppress("UnstableApiUsage")
-    withType<ProcessResources>().configureEach {
-        println("RESOURCES: ${this.name} ${this::class}")
-        from("$rootDir/specs") {
-            into("specs")
-            filter {
-                // Устанавливаем версию в сваггере
-                it.replace("\${VERSION_APP}", project.version.toString())
-            }
-        }
-        webjars.forEach { jar ->
-//        emptyList<File>().forEach { jar ->
-            val conf = webjars.resolvedConfiguration
-            println("JarAbsPa: ${jar.absolutePath}")
-            val artifact = conf.resolvedArtifacts.find { it.file.toString() == jar.absolutePath } ?: return@forEach
-            val upStreamVersion = artifact.moduleVersion.id.version.replace("(-[\\d.-]+)", "")
-            copy {
-                from(zipTree(jar))
-                duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-                into(file("${buildDir}/webjars-content/${artifact.name}"))
-            }
-            with(this@configureEach) {
-                this.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-                from(
-                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${upStreamVersion}"
-                ) { into(artifact.name) }
-                from(
-                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${artifact.moduleVersion.id.version}"
-                ) { into(artifact.name) }
-            }
-        }
-    }
-}
-

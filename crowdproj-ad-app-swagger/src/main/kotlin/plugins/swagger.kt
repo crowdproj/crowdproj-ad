@@ -1,6 +1,6 @@
-package com.crowdproj.ad.app.plugins
+package com.crowdproj.ad.app.swagger.plugins
 
-import configs.CwpAdAppSettings
+import com.crowdproj.ad.app.swagger.configs.CwpAdAppSettings
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.response.*
@@ -8,7 +8,7 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-actual fun Routing.swagger(appConfig: CwpAdAppSettings) {
+fun Routing.swagger(appConfig: CwpAdAppSettings) {
     get("/spec-crowdproj-ad-v1.yaml") {
         val origTxt: String = withContext(Dispatchers.IO) {
             this::class.java.classLoader

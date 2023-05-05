@@ -18,42 +18,36 @@ fun CwpAdContext.fromApi(request: AdCreateRequest) {
     resolveOperation(request)
     fromApiAdCreate(request.ad)
     fromApiDebug(request)
-    fromApiRequestId(request)
 }
 
 fun CwpAdContext.fromApi(request: AdReadRequest) {
     resolveOperation(request)
     fromApiAdRead(request.ad)
     fromApiDebug(request)
-    fromApiRequestId(request)
 }
 
 fun CwpAdContext.fromApi(request: AdUpdateRequest) {
     resolveOperation(request)
     fromApiAdUpdate(request.ad)
     fromApiDebug(request)
-    fromApiRequestId(request)
 }
 
 fun CwpAdContext.fromApi(request: AdDeleteRequest) {
     resolveOperation(request)
     fromApiAdDelete(request.ad)
     fromApiDebug(request)
-    fromApiRequestId(request)
 }
 
 fun CwpAdContext.fromApi(request: AdSearchRequest) {
     resolveOperation(request)
     fromApiAdSearch(request.adFilter)
     fromApiDebug(request)
-    fromApiRequestId(request)
 }
 
 fun CwpAdContext.fromApi(request: AdOffersRequest) {
     resolveOperation(request)
     fromApiAdOffers(request.ad)
     fromApiDebug(request)
-    fromApiRequestId(request)
 }
 
 private fun CwpAdContext.fromApiAdCreate(ad: AdCreateObject?) {
@@ -130,10 +124,6 @@ private fun AdRequestDebugStubs?.fromApiStubCase(): CwpStubs = when (this) {
     AdRequestDebugStubs.CANNOT_DELETE -> CwpStubs.CANNOT_DELETE
     AdRequestDebugStubs.BAD_SEARCH_STRING -> CwpStubs.BAD_SEARCH_STRING
     null -> CwpStubs.NONE
-}
-
-private fun CwpAdContext.fromApiRequestId(request: IRequestAd?) {
-    this.requestId = request?.requestId?.let { CwpAdRequestId(it) } ?: CwpAdRequestId.NONE
 }
 
 private fun CwpAdContext.fromApiDebug(request: IRequestAd?) {

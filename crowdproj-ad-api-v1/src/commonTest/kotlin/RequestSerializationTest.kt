@@ -8,7 +8,6 @@ import kotlin.test.assertEquals
 
 class RequestSerializationTest {
     private val request: IRequestAd = AdCreateRequest(
-        requestId = "123",
         debug = AdDebug(
             mode = AdRequestDebugMode.STUB,
             stub = AdRequestDebugStubs.BAD_TITLE

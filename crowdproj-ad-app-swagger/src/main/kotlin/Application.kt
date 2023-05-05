@@ -1,10 +1,8 @@
-package com.crowdproj.ad.app
+package com.crowdproj.ad.app.swagger
 
-import configs.CwpAdAppSettings
-import com.crowdproj.ad.app.plugins.configureRouting
-import com.crowdproj.ad.app.plugins.initAppSettings
-import io.ktor.client.engine.*
-import io.ktor.client.engine.cio.*
+import com.crowdproj.ad.app.swagger.configs.CwpAdAppSettings
+import com.crowdproj.ad.app.swagger.plugins.configureRouting
+import com.crowdproj.ad.app.swagger.plugins.initAppSettings
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) = io.ktor.server.cio.EngineMain.main(args)

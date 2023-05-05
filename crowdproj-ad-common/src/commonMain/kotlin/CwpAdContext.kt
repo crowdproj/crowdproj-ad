@@ -8,12 +8,12 @@ data class CwpAdContext(
     var command: CwpAdCommand = CwpAdCommand.NONE,
     var state: CwpAdState = CwpAdState.NONE,
     val errors: MutableList<CwpAdError> = mutableListOf(),
+    var timeStart: Instant = Instant.DISTANT_PAST,
 
     var workMode: CwpAdWorkMode = CwpAdWorkMode.PROD,
     var stubCase: CwpStubs = CwpStubs.NONE,
 
     var requestId: CwpAdRequestId = CwpAdRequestId.NONE,
-    var timeStart: Instant = Instant.NONE,
     var adRequest: CwpAd = CwpAd(),
     var adFilterRequest: CwpAdFilter = CwpAdFilter(),
     var adResponse: CwpAd = CwpAd(),
