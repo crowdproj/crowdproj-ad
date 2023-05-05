@@ -5,9 +5,9 @@ ktor:
     watch:
       - "classes"
       - "resources"
-    application:
-      modules:
-        - "com.crowdproj.ad.app.ApplicationKt.module"
+#    application:
+#      modules:
+#        - "com.crowdproj.ad.app.ApplicationKt.module"
   urls:
     - "http://127.0.0.1:8080/v1",
     - "http://0.0.0.0:8080/v1",

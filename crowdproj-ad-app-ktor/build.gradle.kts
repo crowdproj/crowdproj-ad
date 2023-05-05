@@ -92,7 +92,25 @@ kotlin {
                 implementation("org.slf4j:slf4j-api:$slf4jVersion")
             }
         }
+        @Suppress("UNUSED_VARIABLE")
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
 
+        @Suppress("UNUSED_VARIABLE")
+        val linuxX64Main by getting {
+            dependencies {
+                implementation(kotlin("stdlib"))
+            }
+        }
+        @Suppress("UNUSED_VARIABLE")
+        val linuxX64Test by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
     }
 }
 

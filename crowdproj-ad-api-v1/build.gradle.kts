@@ -10,7 +10,7 @@ val apiSpecVersion: String by project
 dependencies {
     apiSpec(
         group = "com.crowdproj",
-        name = "specs-v0",
+        name = "specs-v1",
         version = apiSpecVersion,
         classifier = "openapi",
         ext = "yaml"

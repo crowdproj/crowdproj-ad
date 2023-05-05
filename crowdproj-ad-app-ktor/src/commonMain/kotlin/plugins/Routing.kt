@@ -12,6 +12,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.callid.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlin.reflect.KClass
 
@@ -52,6 +53,13 @@ fun Application.configureRouting(appConfig: CwpAdAppSettings) {
     }
     routing {
         trace { application.log.trace(it.buildText()) }
+
+        get("/") {
+            call.respondText {
+                "Ads Service is working"
+            }
+        }
+
         post("v1/create") {
             call.controllerHelperV1<AdCreateRequest, AdCreateResponse>(appConfig)
         }

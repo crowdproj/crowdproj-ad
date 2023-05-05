@@ -82,7 +82,6 @@ tasks {
         println("VERSION: ${project.version} ${project.group} ${project.name}")
         // println("RESOURCES: ${this.name} ${this::class}")
         from("$rootDir/specs") {
-
             into("specs")
             filter {
                 // Устанавливаем версию в сваггере
@@ -96,7 +95,7 @@ tasks {
         webjars.forEach { jar ->
 //        emptyList<File>().forEach { jar ->
             val conf = webjars.resolvedConfiguration
-            println("JarAbsPa: ${jar.absolutePath}")
+//            println("JarAbsPa: ${jar.absolutePath}")
             val artifact = conf.resolvedArtifacts.find { it.file.toString() == jar.absolutePath } ?: return@forEach
             val upStreamVersion = artifact.moduleVersion.id.version.replace("(-[\\d.-]+)", "")
             copy {

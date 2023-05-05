@@ -13,7 +13,6 @@ class CwpAdCreateTest {
     @Test
     fun request() {
         val api = AdCreateRequest(
-            requestId = "1234",
             debug = AdDebug(
                 mode = AdRequestDebugMode.STUB,
                 stub = AdRequestDebugStubs.BAD_DESCRIPTION,
@@ -28,7 +27,6 @@ class CwpAdCreateTest {
         )
         val ctx = CwpAdContext()
         ctx.fromApi(api as IRequestAd)
-        assertEquals("1234", ctx.requestId.asString())
         assertEquals(CwpAdWorkMode.STUB, ctx.workMode)
         assertEquals(CwpStubs.BAD_DESCRIPTION, ctx.stubCase)
         assertEquals("ti", ctx.adRequest.title)
