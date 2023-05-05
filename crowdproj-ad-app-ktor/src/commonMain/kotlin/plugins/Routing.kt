@@ -21,7 +21,7 @@ fun Application.configureRouting(appConfig: CwpAdAppSettings) {
     install(IgnoreTrailingSlash)
     install(CallId) {
         generate {
-            "rq-${uuid4().toString()}"
+            "rq-${uuid4()}"
         }
     }
     install(CORS) {
