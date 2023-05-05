@@ -1,19 +1,20 @@
 openapi: 3.0.3
 info:
-  title: 'Marketplace ${VERSION_APP}'
-  description: This is a place where sellers and buyers meat each other
+  title: 'Marketplace Ads service ${VERSION_APP}'
+  description: 'Marketplace a place where sellers and buyers meat each other. Ads service provides ads handling from 
+  both sellers and buyers'
   license:
-#    identifier: Apache-2.0
+    #    identifier: Apache-2.0
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/v1
+  - url: http://localhost:8080/ads
 tags:
   - name: ad
     description: Объявление (о покупке или продаже)
 paths:
-  /ad/create:
+  /v1/create:
     post:
       tags:
         - ad
@@ -33,7 +34,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdCreateResponse'
-  /ad/read:
+  /v1/read:
     post:
       tags:
         - ad
@@ -53,7 +54,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdReadResponse'
-  /ad/update:
+  /v1/update:
     post:
       tags:
         - ad
@@ -73,7 +74,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdUpdateResponse'
-  /ad/delete:
+  /v1/delete:
     post:
       tags:
         - ad
@@ -93,7 +94,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdDeleteResponse'
-  /ad/search:
+  /v1/search:
     post:
       tags:
         - ad
@@ -113,7 +114,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdSearchResponse'
-  /ad/offers:
+  /v1/offers:
     post:
       tags:
         - ad
@@ -138,31 +139,31 @@ components:
   schemas:
     IRequestAd:
       allOf:
-        - $ref: '../build/base.yaml#/components/schemas/IRequest'
+        - $ref: './base.yaml#/components/schemas/IRequest'
         - $ref: '#/components/schemas/AdRequestDebug'
         - type: object
           discriminator:
             propertyName: requestType
             mapping:
               create: '#/components/schemas/AdCreateRequest'
-              read:   '#/components/schemas/AdReadRequest'
+              read: '#/components/schemas/AdReadRequest'
               update: '#/components/schemas/AdUpdateRequest'
               delete: '#/components/schemas/AdDeleteRequest'
               search: '#/components/schemas/AdSearchRequest'
               offers: '#/components/schemas/AdOffersRequest'
 
     Error:
-      $ref: '../build/base.yaml#/components/schemas/Error'
+      $ref: './base.yaml#/components/schemas/Error'
 
     IResponseAd:
       allOf:
-        - $ref: '../build/base.yaml#/components/schemas/IResponse'
+        - $ref: './base.yaml#/components/schemas/IResponse'
         - type: object
           discriminator:
             propertyName: responseType
             mapping:
               create: '#/components/schemas/AdCreateResponse'
-              read:   '#/components/schemas/AdReadResponse'
+              read: '#/components/schemas/AdReadResponse'
               update: '#/components/schemas/AdUpdateResponse'
               delete: '#/components/schemas/AdDeleteResponse'
               search: '#/components/schemas/AdSearchResponse'
@@ -171,7 +172,7 @@ components:
 
 
     AdUserId:
-      $ref: '../build/base.yaml#/components/schemas/UserId'
+      $ref: './base.yaml#/components/schemas/UserId'
     AdId:
       type: string
       description: Идентификатор объявления
