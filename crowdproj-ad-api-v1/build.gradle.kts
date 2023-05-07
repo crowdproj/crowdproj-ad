@@ -1,7 +1,6 @@
 plugins {
     kotlin("multiplatform")
     id("com.crowdproj.generator")
-    kotlin("plugin.serialization")
 }
 
 val apiVersion = "v1"
@@ -62,42 +61,9 @@ kotlin {
     }
 }
 
-/**
- * Настраиваем генерацию здесь
- */
-openApiGenerate {
-    val openapiGroup = "${rootProject.group}.api.$apiVersion"
-    generatorName.set("kotlin-crowdproj") // Это и есть активный генератор
-    packageName.set(openapiGroup)
-    globalProperties.set(mapOf(
-    ))
-    apiPackage.set("$openapiGroup.api")
-    modelPackage.set("$openapiGroup.models")
-    invokerPackage.set("$openapiGroup.invoker")
+crowdprojGenerate {
+    packageName.set("${project.group}.api.v1")
     inputSpec.set("${project.buildDir}/spec-crowdproj-ad-$apiVersion.yaml")
-    library.set("multiplatform")
-//    templateDir.set("$projectDir/templates")
-
-    /**
-     * Здесь указываем, что нам нужны только модели, все остальное не нужно
-     */
-    globalProperties.set(mapOf(
-//        "debugModels" to "true",
-        "models" to "",
-        "modelDocs" to "false",
-    ))
-
-    /**
-     * Настройка дополнительных параметров из документации по генератору
-     * https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/kotlin.md
-     */
-    configOptions.set(
-        mapOf(
-            "dateLibrary" to "string",
-            "enumPropertyNaming" to "UPPERCASE",
-            "collectionType" to "list",
-        )
-    )
 }
 
 val getSpecs: Task by tasks.creating {

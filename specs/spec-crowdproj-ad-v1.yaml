@@ -20,6 +20,11 @@ paths:
         - ad
       summary: Create ad
       operationId: adCreate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: './base.yaml#/components/schemas/RequestId'
       requestBody:
         description: Request body
         content:
@@ -40,6 +45,11 @@ paths:
         - ad
       summary: Read ad
       operationId: adRead
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: './base.yaml#/components/schemas/RequestId'
       requestBody:
         description: Request body
         content:
@@ -60,6 +70,11 @@ paths:
         - ad
       summary: Update ad
       operationId: adUpdate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: './base.yaml#/components/schemas/RequestId'
       requestBody:
         description: Request body
         content:
@@ -80,6 +95,11 @@ paths:
         - ad
       summary: Delete ad
       operationId: adDelete
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: './base.yaml#/components/schemas/RequestId'
       requestBody:
         description: Request body
         content:
@@ -100,6 +120,11 @@ paths:
         - ad
       summary: Search ad
       operationId: adSearch
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: './base.yaml#/components/schemas/RequestId'
       requestBody:
         description: Request body
         content:
@@ -120,6 +145,11 @@ paths:
         - ad
       summary: Search offers
       operationId: adOffers
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: './base.yaml#/components/schemas/RequestId'
       requestBody:
         description: Request body
         content:
