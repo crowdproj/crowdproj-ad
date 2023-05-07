@@ -68,6 +68,9 @@ kotlin {
 
                 implementation(project(":crowdproj-ad-api-v1"))
                 implementation(project(":crowdproj-ad-api-v1-mappers"))
+                implementation(project(":crowdproj-ad-biz"))
+                implementation(project(":crowdproj-ad-repo-inmemory"))
+                implementation(project(":crowdproj-ad-repo-stubs"))
 
             }
         }
@@ -115,10 +118,6 @@ kotlin {
 }
 
 ktor {
-//    fatJar {
-//        archiveFileName.set("fat.jar")
-//    }
-
     docker {
         jreVersion.set(io.ktor.plugin.features.JreVersion.JRE_17)
         localImageName.set(project.name)

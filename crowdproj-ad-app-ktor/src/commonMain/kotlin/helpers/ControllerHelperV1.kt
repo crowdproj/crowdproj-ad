@@ -1,4 +1,4 @@
-package com.crowdproj.ad.app.controllers
+package com.crowdproj.ad.app.helpers
 
 import com.crowdproj.ad.api.v1.mappers.fromApi
 import com.crowdproj.ad.api.v1.mappers.toApi
@@ -30,8 +30,8 @@ suspend inline fun <reified Rq: IRequestAd, reified Rs: IResponseAd> Application
         logger.info("Started $endpoint request $requestId")
         val reqData = this.receive<Rq>()
         ctx.fromApi(reqData)
-        ctx.adResponse = ctx.adRequest
-//        appConfig.processor.exec(ctx)
+//        ctx.adResponse = ctx.adRequest
+        appConfig.processor.exec(ctx)
         respond<Rs>(ctx.toApi() as Rs)
         logger.info("Finished $endpoint request $requestId")
     } catch (e: Throwable) {

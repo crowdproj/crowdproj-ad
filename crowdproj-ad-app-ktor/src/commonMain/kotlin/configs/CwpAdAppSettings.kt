@@ -1,5 +1,6 @@
 package configs
 
+import com.crowdproj.ad.biz.CwpAdProcessor
 import com.crowdproj.ad.common.config.CwpAdCorSettings
 import io.ktor.client.engine.*
 import io.ktor.client.engine.cio.*
@@ -10,4 +11,5 @@ data class CwpAdAppSettings(
     val json: Json = Json,
     val corSettings: CwpAdCorSettings = CwpAdCorSettings(),
     val appUrls: List<String> = listOf(),
+    val processor: CwpAdProcessor = CwpAdProcessor(corSettings)
 )

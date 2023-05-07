@@ -2,7 +2,7 @@ package com.crowdproj.ad.app.plugins
 
 import com.benasher44.uuid.uuid4
 import com.crowdproj.ad.api.v1.models.*
-import com.crowdproj.ad.app.controllers.controllerHelperV1
+import com.crowdproj.ad.app.helpers.controllerHelperV1
 import configs.CwpAdAppSettings
 import com.crowdproj.ad.logs.LogLevel
 import com.crowdproj.ad.logs.log

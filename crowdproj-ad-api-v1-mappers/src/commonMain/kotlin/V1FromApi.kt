@@ -3,7 +3,7 @@ package com.crowdproj.ad.api.v1.mappers
 import com.crowdproj.ad.api.v1.models.*
 import com.crowdproj.ad.common.CwpAdContext
 import com.crowdproj.ad.common.models.*
-import com.crowdproj.ad.common.stubs.CwpStubs
+import com.crowdproj.ad.common.stubs.CwpAdStubs
 
 fun CwpAdContext.fromApi(request: IRequestAd) = when (request) {
     is AdCreateRequest -> fromApi(request)
@@ -114,21 +114,21 @@ private fun AdRequestDebugMode?.fromApiWorkMode(): CwpAdWorkMode = when (this) {
     null -> CwpAdWorkMode.NONE
 }
 
-private fun AdRequestDebugStubs?.fromApiStubCase(): CwpStubs = when (this) {
-    AdRequestDebugStubs.SUCCESS -> CwpStubs.SUCCESS
-    AdRequestDebugStubs.NOT_FOUND -> CwpStubs.NOT_FOUND
-    AdRequestDebugStubs.BAD_ID -> CwpStubs.BAD_ID
-    AdRequestDebugStubs.BAD_TITLE -> CwpStubs.BAD_TITLE
-    AdRequestDebugStubs.BAD_DESCRIPTION -> CwpStubs.BAD_DESCRIPTION
-    AdRequestDebugStubs.BAD_VISIBILITY -> CwpStubs.BAD_VISIBILITY
-    AdRequestDebugStubs.CANNOT_DELETE -> CwpStubs.CANNOT_DELETE
-    AdRequestDebugStubs.BAD_SEARCH_STRING -> CwpStubs.BAD_SEARCH_STRING
-    null -> CwpStubs.NONE
+private fun AdRequestDebugStubs?.fromApiStubCase(): CwpAdStubs = when (this) {
+    AdRequestDebugStubs.SUCCESS -> CwpAdStubs.SUCCESS
+    AdRequestDebugStubs.NOT_FOUND -> CwpAdStubs.NOT_FOUND
+    AdRequestDebugStubs.BAD_ID -> CwpAdStubs.BAD_ID
+    AdRequestDebugStubs.BAD_TITLE -> CwpAdStubs.BAD_TITLE
+    AdRequestDebugStubs.BAD_DESCRIPTION -> CwpAdStubs.BAD_DESCRIPTION
+    AdRequestDebugStubs.BAD_VISIBILITY -> CwpAdStubs.BAD_VISIBILITY
+    AdRequestDebugStubs.CANNOT_DELETE -> CwpAdStubs.CANNOT_DELETE
+    AdRequestDebugStubs.BAD_SEARCH_STRING -> CwpAdStubs.BAD_SEARCH_STRING
+    null -> CwpAdStubs.NONE
 }
 
 private fun CwpAdContext.fromApiDebug(request: IRequestAd?) {
     this.workMode = request?.debug?.mode?.fromApiWorkMode() ?: CwpAdWorkMode.NONE
-    this.stubCase = request?.debug?.stub?.fromApiStubCase() ?: CwpStubs.NONE
+    this.stubCase = request?.debug?.stub?.fromApiStubCase() ?: CwpAdStubs.NONE
 }
 
 private fun AdVisibility?.fromApiVisibility(): CwpAdVisibility = when (this) {

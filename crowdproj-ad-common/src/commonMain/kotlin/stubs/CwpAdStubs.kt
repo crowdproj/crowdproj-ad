@@ -1,6 +1,6 @@
 package com.crowdproj.ad.common.stubs
 
-enum class CwpStubs {
+enum class CwpAdStubs {
     NONE,
     SUCCESS,
     NOT_FOUND,
@@ -10,4 +10,5 @@ enum class CwpStubs {
     BAD_VISIBILITY,
     CANNOT_DELETE,
     BAD_SEARCH_STRING,
+    DB_ERROR,
 }
