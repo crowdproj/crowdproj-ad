@@ -1,7 +1,12 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
+
 plugins {
     kotlin("plugin.serialization")
     kotlin("multiplatform")
     id("io.ktor.plugin")
+    id("com.bmuschko.docker-remote-api")
 }
 
 val ktorVersion: String by project
@@ -139,5 +144,38 @@ ktor {
 //                password = providers.environmentVariable("DOCKER_HUB_PASSWORD")
 //            )
 //        )
+    }
+
+}
+
+tasks {
+    val linkReleaseExecutableLinuxX64 by getting(KotlinNativeLink::class)
+    val nativeFile = linkReleaseExecutableLinuxX64.binary.outputFile
+//    val linkDebugExecutableLinuxX64 by getting(KotlinNativeLink::class)
+//    val nativeFile = linkDebugExecutableLinuxX64.binary.outputFile
+    val linuxX64ProcessResources by getting(ProcessResources::class)
+
+    val dockerDockerfile by creating(Dockerfile::class) {
+        dependsOn(linkReleaseExecutableLinuxX64)
+        dependsOn(linuxX64ProcessResources)
+        group = "docker"
+        from("ubuntu:22.04")
+        doFirst {
+            copy {
+                from(nativeFile)
+                from(linuxX64ProcessResources.destinationDir)
+                into("${this@creating.destDir.get()}")
+            }
+        }
+        copyFile(nativeFile.name, "/app/")
+        copyFile("application.yaml", "/app/")
+        exposePort(8081)
+        workingDir("/app")
+        entryPoint("/app/${nativeFile.name}")
+    }
+    create("dockerBuildNativeImage", DockerBuildImage::class) {
+        group = "docker"
+        dependsOn(dockerDockerfile)
+        images.add("${project.name}:${project.version}")
     }
 }

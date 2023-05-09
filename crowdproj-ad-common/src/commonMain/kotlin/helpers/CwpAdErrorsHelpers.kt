@@ -2,6 +2,7 @@ package com.crowdproj.ad.common.helpers
 
 import com.crowdproj.ad.common.CwpAdContext
 import com.crowdproj.ad.common.models.CwpAdError
+import com.crowdproj.ad.common.models.CwpAdRequestId
 import com.crowdproj.ad.common.models.CwpAdState
 
 fun Throwable.asCwpAdError(

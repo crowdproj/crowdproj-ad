@@ -14,7 +14,7 @@ pluginManagement {
 
         id("com.crowdproj.generator") version codeGeneratorVersion apply false
 
-        id("com.bmuschko.docker-java-application") version bmuschkoVersion apply false
+//        id("com.bmuschko.docker-java-application") version bmuschkoVersion apply false
         id("com.bmuschko.docker-remote-api") version bmuschkoVersion apply false
     }
 }
