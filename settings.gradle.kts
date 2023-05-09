@@ -6,7 +6,6 @@ pluginManagement {
         val ktorPluginVersion: String by settings
         val codeGeneratorVersion: String by settings
         val bmuschkoVersion: String by settings
-        val terraformPluginVersion: String by settings
 
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion apply false
