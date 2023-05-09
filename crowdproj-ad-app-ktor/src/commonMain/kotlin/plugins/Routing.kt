@@ -9,7 +9,9 @@ import com.crowdproj.ad.logs.log
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.autohead.*
 import io.ktor.server.plugins.callid.*
+import io.ktor.server.plugins.callid.CallId
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.response.*
@@ -20,6 +22,7 @@ private val clazz: KClass<*> = Application::configureRouting::class
 fun Application.configureRouting(appConfig: CwpAdAppSettings) {
     install(Routing)
     install(IgnoreTrailingSlash)
+    install(AutoHeadResponse)
     install(CallId) {
         generate {
             "rq-${uuid4()}"
@@ -42,6 +45,7 @@ fun Application.configureRouting(appConfig: CwpAdAppSettings) {
 
                 1 -> split[0].split("/")[0].apply { log(mes = "COR: $this", clazz = clazz, level = LogLevel.INFO) } to
                         listOf("http", "https")
+
                 else -> null
             }
             println("ALLOW_HOST: $host")
@@ -54,11 +58,7 @@ fun Application.configureRouting(appConfig: CwpAdAppSettings) {
     routing {
         trace { application.log.trace(it.buildText()) }
 
-        get("/") {
-            call.respondText {
-                "Ads Service is working"
-            }
-        }
+        get("/") { call.respondText("Ads Service is working") }
 
         post("v1/create") {
             call.controllerHelperV1<AdCreateRequest, AdCreateResponse>(appConfig)

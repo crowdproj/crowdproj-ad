@@ -1,7 +1,13 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
+
 plugins {
     kotlin("plugin.serialization")
     kotlin("multiplatform")
     id("io.ktor.plugin")
+    id("com.bmuschko.docker-remote-api")
 }
 
 val ktorVersion: String by project
@@ -27,7 +33,7 @@ kotlin {
     linuxX64 {
         binaries {
             executable {
-                baseName = rootProject.name
+                baseName = project.name
                 entryPoint = "com.crowdproj.ad.app.main"
             }
         }
@@ -95,6 +101,7 @@ kotlin {
                 implementation("org.slf4j:slf4j-api:$slf4jVersion")
             }
         }
+
         @Suppress("UNUSED_VARIABLE")
         val jvmTest by getting {
             dependencies {
@@ -108,6 +115,7 @@ kotlin {
                 implementation(kotlin("stdlib"))
             }
         }
+
         @Suppress("UNUSED_VARIABLE")
         val linuxX64Test by getting {
             dependencies {
@@ -139,5 +147,61 @@ ktor {
 //                password = providers.environmentVariable("DOCKER_HUB_PASSWORD")
 //            )
 //        )
+    }
+
+}
+
+tasks {
+    val linkReleaseExecutableLinuxX64 by getting(KotlinNativeLink::class)
+    val nativeFile = linkReleaseExecutableLinuxX64.binary.outputFile
+//    val linkDebugExecutableLinuxX64 by getting(KotlinNativeLink::class)
+//    val nativeFile = linkDebugExecutableLinuxX64.binary.outputFile
+    val linuxX64ProcessResources by getting(ProcessResources::class)
+
+    val dockerDockerfile by creating(Dockerfile::class) {
+        dependsOn(linkReleaseExecutableLinuxX64)
+        dependsOn(linuxX64ProcessResources)
+        group = "docker"
+//        from("ubuntu:22.04")
+        from("alpine:3.17.3")
+        doFirst {
+            copy {
+                from(nativeFile)
+                from(linuxX64ProcessResources.destinationDir)
+                into("${this@creating.destDir.get()}")
+            }
+        }
+        copyFile(nativeFile.name, "/app/")
+        copyFile("application.yaml", "/app/")
+        exposePort(8081)
+        workingDir("/app")
+        entryPoint("/app/${nativeFile.name}", "-config=./application.yaml")
+    }
+    val registryUser: String? = System.getenv("CONTAINER_REGISTRY_USER")
+    val registryPass: String? = System.getenv("CONTAINER_REGISTRY_PASS")
+    val registryHost: String? = System.getenv("CONTAINER_REGISTRY_HOST")
+    val registryPref: String? = System.getenv("CONTAINER_REGISTRY_PREF")
+    val imageName = registryPref?.let { "$it/${project.name}" } ?: project.name.toString()
+
+    val dockerBuildNativeImage by creating(DockerBuildImage::class) {
+        group = "docker"
+        dependsOn(dockerDockerfile)
+        images.add("$imageName:${project.version}")
+        images.add("$imageName:latest")
+    }
+    val dockerPushNativeImage by creating(DockerPushImage::class) {
+        group = "docker"
+        dependsOn(dockerBuildNativeImage)
+        images.set(dockerBuildNativeImage.images)
+        registryCredentials {
+            username.set(registryUser)
+            password.set(registryPass)
+            url.set("https://$registryHost/v1/")
+        }
+    }
+
+    create("deploy") {
+        group = "build"
+        dependsOn(dockerPushNativeImage)
     }
 }

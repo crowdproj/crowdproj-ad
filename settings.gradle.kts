@@ -6,6 +6,7 @@ pluginManagement {
         val ktorPluginVersion: String by settings
         val codeGeneratorVersion: String by settings
         val bmuschkoVersion: String by settings
+        val terraformPluginVersion: String by settings
 
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion apply false
@@ -14,7 +15,7 @@ pluginManagement {
 
         id("com.crowdproj.generator") version codeGeneratorVersion apply false
 
-        id("com.bmuschko.docker-java-application") version bmuschkoVersion apply false
+//        id("com.bmuschko.docker-java-application") version bmuschkoVersion apply false
         id("com.bmuschko.docker-remote-api") version bmuschkoVersion apply false
     }
 }

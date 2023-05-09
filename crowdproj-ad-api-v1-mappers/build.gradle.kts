@@ -7,8 +7,6 @@ kotlin {
     linuxX64 { }
 
     sourceSets {
-        val serializationVersion: String by project
-
         @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
 

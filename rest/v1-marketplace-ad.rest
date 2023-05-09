@@ -1,3 +1,7 @@
+
+
+GET http://127.0.0.1:8081/
+
 ### Create
 POST http://127.0.0.1:8081/v1/create
 Content-Type: application/json
@@ -6,7 +10,6 @@ X-Request-Id: 123-456-789
 
 
 {
-  "requestId": "12345",
   "ad": {
     "title": "Болт",
     "description": "КРУТЕЙШИЙ",
@@ -14,7 +17,8 @@ X-Request-Id: 123-456-789
     "adType": "demand"
   },
   "debug": {
-    "mode": "test"
+    "mode": "stub",
+    "stub": "success"
   }
 }
 
@@ -43,12 +47,11 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2Vyc
 
 
 {
-  "requestType": "read",
-  "requestId": "12345",
   "ad": {
     "id": "existed"
   },
   "debug": {
+    "mode": "stub",
     "stub": "success"
   }
 }
@@ -79,12 +82,11 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2Vyc
 
 
 {
-  "requestType": "update",
-  "requestId": "666",
   "ad": {
     "id": "668"
   },
   "debug": {
+    "mode": "stub",
     "stub": "badId"
   }
 }
@@ -96,12 +98,11 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2Vyc
 
 
 {
-  "requestType": "delete",
-  "requestId": "deleteId",
   "ad": {
     "id": "existed_id"
   },
   "debug": {
+    "mode": "stub",
     "stub": "success"
   }
 }
@@ -130,12 +131,11 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2Vyc
 
 
 {
-  "requestType": "search",
-  "requestId": "search_1",
   "adFilter": {
     "searchString": "болт"
   },
   "debug": {
+    "mode": "stub",
     "stub": "success"
   }
 }
@@ -147,12 +147,11 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2Vyc
 
 
 {
-  "requestType": "search",
-  "requestId": "search_1",
   "adFilter": {
     "searchString": "кто тут"
   },
   "debug": {
+    "mode": "stub",
     "stub": "badSearchString"
   }
 }
@@ -164,25 +163,22 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2Vyc
 
 
 {
-  "requestType": "offers",
-  "requestId": "offer_search",
   "ad": {
     "id": "222_unknown_offer_id"
   },
   "debug": {
+    "mode": "stub",
     "stub": "badId"
   }
 }
 
 ### Find offer
-POST http://localhost:8080/v2/ad/offers
+POST http://localhost:8081/v1/offers
 Content-Type: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXSwiaWQiOiJ1c2VyMSJ9.fE8bj8ICmYpcAbD5uyqj4NxW41RLYFpezBhfbew1pZ4
 
 
 {
-  "requestType": "offers",
-  "requestId": "offer_search",
   "ad": {
     "id": "234_offer"
   },
@@ -193,18 +189,17 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2Vyc
 }
 
 ### Not find offer
-POST http://localhost:8080/ad/offers
+POST http://localhost:8081/v1/offers
 Content-Type: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXSwiaWQiOiJ1c2VyMSJ9.fE8bj8ICmYpcAbD5uyqj4NxW41RLYFpezBhfbew1pZ4
 
 
 {
-  "requestType": "offers",
-  "requestId": "offer_search_bad",
   "ad": {
     "id": "234_offer"
   },
   "debug": {
+    "mode": "stub",
     "stub": "badId"
   }
 }
