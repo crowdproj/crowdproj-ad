@@ -1,4 +1,5 @@
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 
@@ -7,6 +8,8 @@ plugins {
     kotlin("multiplatform")
     id("io.ktor.plugin")
     id("com.bmuschko.docker-remote-api")
+    id("org.ysb33r.terraform")
+    id("org.ysb33r.terraform.remotestate.s3")
 }
 
 val ktorVersion: String by project
@@ -32,7 +35,7 @@ kotlin {
     linuxX64 {
         binaries {
             executable {
-                baseName = rootProject.name
+                baseName = project.name
                 entryPoint = "com.crowdproj.ad.app.main"
             }
         }
@@ -100,6 +103,7 @@ kotlin {
                 implementation("org.slf4j:slf4j-api:$slf4jVersion")
             }
         }
+
         @Suppress("UNUSED_VARIABLE")
         val jvmTest by getting {
             dependencies {
@@ -113,6 +117,7 @@ kotlin {
                 implementation(kotlin("stdlib"))
             }
         }
+
         @Suppress("UNUSED_VARIABLE")
         val linuxX64Test by getting {
             dependencies {
@@ -148,6 +153,55 @@ ktor {
 
 }
 
+terraform {
+    executable(mapOf("version" to "1.4.6"))
+    variables {
+//        `var`("region", awsRegions)
+//        `var`("domainZone", apiDomain)
+//        `var`("domain", "$serviceAlias.$apiDomain")
+//        `var`("bucketJarName", "$awsBucket.$serviceAlias")
+//        `var`("bucketBackend", awsBucketPrivate)
+//        `var`("handlerJar", tasks.shadowJar.get().archiveFile.get().asFile.absoluteFile)
+//        `var`("parametersPrefix", paramsPrefix)
+//        `var`("parameterCorsOrigins", paramCorsOrigins)
+//        `var`("parameterCorsHeaders", paramCorsHeaders)
+//        `var`("parameterCorsMethods", paramCorsMethods)
+//        `var`("parameterNeptuneEndpoint", parameterNeptuneEndpoint)
+//        `var`("parameterNeptunePort", parameterNeptunePort)
+//        map(mapOf<String, String>(
+//            "teams-create" to "com.crowdproj.aws.handlers.TeamsCreateHandler::handleRequest",
+//            "teams-update" to "com.crowdproj.aws.handlers.TeamsUpdateHandler::handleRequest",
+//            "teams-index" to "com.crowdproj.aws.handlers.TeamsIndexHandler::handleRequest",
+//            "teams-get" to "com.crowdproj.aws.handlers.TeamsGetHandler::handleRequest"
+//        ), "handlers")
+//        `var`("handler", "com.crowdproj.aws.base.TeamsApiGatewayHandler::handleRequest")
+//        list("corsOrigins",
+//            "https://$domainPublic"
+//        )
+//        list("corsHeaders",
+//            "*",
+//            "Content-Type",
+//            "X-Amz-Date",
+//            "Authorization",
+//            "X-Api-Key",
+//            "X-Amz-Security-Token",
+//            "X-Requested-With"
+//        )
+//        list("corsMethods",
+//            "OPTIONS", "POST"
+//        )
+////        `var`("stateTable", "arn:aws:dynamodb:us-east-1:709565996550:table/com.crowdproj.states")
+////        `var`("health_check_alarm_sns_topics", "crowdproj-public-website-alarm")
+    }
+    remote {
+//        setPrefix("states-$apiVersion/state-teams")
+        s3 {
+//            setRegion(awsRegions)
+//            setBucket(awsBucketState)
+        }
+    }
+}
+
 tasks {
     val linkReleaseExecutableLinuxX64 by getting(KotlinNativeLink::class)
     val nativeFile = linkReleaseExecutableLinuxX64.binary.outputFile
@@ -173,9 +227,31 @@ tasks {
         workingDir("/app")
         entryPoint("/app/${nativeFile.name}")
     }
-    create("dockerBuildNativeImage", DockerBuildImage::class) {
+    val registryUser: String? = System.getenv("CONTAINER_REGISTRY_USER")
+    val registryPass: String? = System.getenv("CONTAINER_REGISTRY_PASS")
+    val registryHost: String? = System.getenv("CONTAINER_REGISTRY_HOST")
+    val registryPref: String? = System.getenv("CONTAINER_REGISTRY_PREF")
+    val imageName = registryPref?.let { "$it/${project.name}" } ?: project.name.toString()
+
+    val dockerBuildNativeImage by creating(DockerBuildImage::class) {
         group = "docker"
         dependsOn(dockerDockerfile)
-        images.add("${project.name}:${project.version}")
+        images.add("$imageName:${project.version}")
+        images.add("$imageName:latest")
+    }
+    val dockerPushNativeImage by creating(DockerPushImage::class) {
+        group = "docker"
+        dependsOn(dockerBuildNativeImage)
+        images.set(dockerBuildNativeImage.images)
+        registryCredentials {
+            username.set(registryUser)
+            password.set(registryPass)
+            url.set("https://$registryHost/v1/")
+        }
+    }
+
+    create("deploy") {
+        group = "build"
+        dependsOn(dockerPushNativeImage)
     }
 }
