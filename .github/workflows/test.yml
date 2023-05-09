@@ -5,10 +5,11 @@ name: 'CI-test'
 # Controls when the workflow will run
 on:
   push:
-    branches-ignore:
-      - 'v-*'
-      - 'main'
-      - 'master'
+    branches:
+      - '!v-*'
+  pull_request:
+    branches:
+      - '!v-*'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -34,12 +35,3 @@ jobs:
 
       - name: Test package
         run: gradle check
-
-#      - name: Report unit tests
-#        uses: dorny/test-reporter@v1
-#        if: always()
-#        with:
-#          name: Gradle Tests
-#          path: '**/build/test-results/*/TEST-*.xml'
-#          reporter: java-junit
-#          fail-on-error: true
