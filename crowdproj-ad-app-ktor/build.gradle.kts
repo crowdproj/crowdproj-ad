@@ -225,7 +225,7 @@ tasks {
         copyFile("application.yaml", "/app/")
         exposePort(8081)
         workingDir("/app")
-        entryPoint("/app/${nativeFile.name}")
+        entryPoint("/app/${nativeFile.name}", "-config=./application.yaml")
     }
     val registryUser: String? = System.getenv("CONTAINER_REGISTRY_USER")
     val registryPass: String? = System.getenv("CONTAINER_REGISTRY_PASS")
