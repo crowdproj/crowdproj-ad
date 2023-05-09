@@ -162,8 +162,7 @@ tasks {
         dependsOn(linkReleaseExecutableLinuxX64)
         dependsOn(linuxX64ProcessResources)
         group = "docker"
-//        from("ubuntu:22.04")
-        from("alpine:3.17.3")
+        from("ubuntu:23.04")
         doFirst {
             copy {
                 from(nativeFile)
