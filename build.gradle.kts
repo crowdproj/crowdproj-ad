@@ -1,7 +1,6 @@
 plugins {
     kotlin("jvm") apply false
     kotlin("multiplatform") apply false
-    id("org.ysb33r.terraform.wrapper")
 }
 
 group = "com.crowdproj.ad"

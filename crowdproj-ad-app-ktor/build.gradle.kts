@@ -8,8 +8,6 @@ plugins {
     kotlin("multiplatform")
     id("io.ktor.plugin")
     id("com.bmuschko.docker-remote-api")
-    id("org.ysb33r.terraform")
-    id("org.ysb33r.terraform.remotestate.s3")
 }
 
 val ktorVersion: String by project
@@ -151,55 +149,6 @@ ktor {
 //        )
     }
 
-}
-
-terraform {
-    executable(mapOf("version" to "1.4.6"))
-    variables {
-//        `var`("region", awsRegions)
-//        `var`("domainZone", apiDomain)
-//        `var`("domain", "$serviceAlias.$apiDomain")
-//        `var`("bucketJarName", "$awsBucket.$serviceAlias")
-//        `var`("bucketBackend", awsBucketPrivate)
-//        `var`("handlerJar", tasks.shadowJar.get().archiveFile.get().asFile.absoluteFile)
-//        `var`("parametersPrefix", paramsPrefix)
-//        `var`("parameterCorsOrigins", paramCorsOrigins)
-//        `var`("parameterCorsHeaders", paramCorsHeaders)
-//        `var`("parameterCorsMethods", paramCorsMethods)
-//        `var`("parameterNeptuneEndpoint", parameterNeptuneEndpoint)
-//        `var`("parameterNeptunePort", parameterNeptunePort)
-//        map(mapOf<String, String>(
-//            "teams-create" to "com.crowdproj.aws.handlers.TeamsCreateHandler::handleRequest",
-//            "teams-update" to "com.crowdproj.aws.handlers.TeamsUpdateHandler::handleRequest",
-//            "teams-index" to "com.crowdproj.aws.handlers.TeamsIndexHandler::handleRequest",
-//            "teams-get" to "com.crowdproj.aws.handlers.TeamsGetHandler::handleRequest"
-//        ), "handlers")
-//        `var`("handler", "com.crowdproj.aws.base.TeamsApiGatewayHandler::handleRequest")
-//        list("corsOrigins",
-//            "https://$domainPublic"
-//        )
-//        list("corsHeaders",
-//            "*",
-//            "Content-Type",
-//            "X-Amz-Date",
-//            "Authorization",
-//            "X-Api-Key",
-//            "X-Amz-Security-Token",
-//            "X-Requested-With"
-//        )
-//        list("corsMethods",
-//            "OPTIONS", "POST"
-//        )
-////        `var`("stateTable", "arn:aws:dynamodb:us-east-1:709565996550:table/com.crowdproj.states")
-////        `var`("health_check_alarm_sns_topics", "crowdproj-public-website-alarm")
-    }
-    remote {
-//        setPrefix("states-$apiVersion/state-teams")
-        s3 {
-//            setRegion(awsRegions)
-//            setBucket(awsBucketState)
-        }
-    }
 }
 
 tasks {
