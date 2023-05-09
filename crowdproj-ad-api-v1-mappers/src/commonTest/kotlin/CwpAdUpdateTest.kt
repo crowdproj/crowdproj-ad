@@ -3,7 +3,7 @@ package com.crowdproj.ad.api.v1.mappers
 import com.crowdproj.ad.api.v1.models.*
 import com.crowdproj.ad.common.CwpAdContext
 import com.crowdproj.ad.common.models.*
-import com.crowdproj.ad.common.stubs.CwpStubs
+import com.crowdproj.ad.common.stubs.CwpAdStubs
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -30,7 +30,7 @@ class CwpAdUpdateTest {
         val ctx = CwpAdContext()
         ctx.fromApi(api as IRequestAd)
         assertEquals(CwpAdWorkMode.STUB, ctx.workMode)
-        assertEquals(CwpStubs.BAD_DESCRIPTION, ctx.stubCase)
+        assertEquals(CwpAdStubs.BAD_DESCRIPTION, ctx.stubCase)
         assertEquals("123", ctx.adRequest.id.asString())
         assertEquals("12345", ctx.adRequest.lock.asString())
         assertEquals("ti", ctx.adRequest.title)

@@ -4,4 +4,5 @@ enum class CwpAdState {
     NONE,
     RUNNING,
     FAILING,
+    FINISHING,
 }

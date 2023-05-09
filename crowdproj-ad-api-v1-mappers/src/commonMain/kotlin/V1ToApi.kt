@@ -115,6 +115,7 @@ private fun CwpAdContext.toApiResult(): ResponseResult? = when (this.state) {
     CwpAdState.NONE -> null
     CwpAdState.RUNNING -> ResponseResult.SUCCESS
     CwpAdState.FAILING -> ResponseResult.ERROR
+    CwpAdState.FINISHING -> ResponseResult.SUCCESS
 }
 
 private fun CwpAdContext.toApiRequestId(): String? = this.requestId.takeIf { it != CwpAdRequestId.NONE }?.asString()
