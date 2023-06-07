@@ -77,6 +77,7 @@ kotlin {
                 implementation(project(":crowdproj-ad-biz"))
                 implementation(project(":crowdproj-ad-repo-inmemory"))
                 implementation(project(":crowdproj-ad-repo-stubs"))
+                implementation(project(":crowdproj-ad-app-swagger"))
 
             }
         }

@@ -1,6 +1,3 @@
-#  application.yaml работает в jvm и native, но не работает в режиме сервлета с Tomcat
-# в этом случае необходимо сформировать application.conf
-
 ktor:
   development: true
   deployment:

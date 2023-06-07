@@ -1,10 +1,12 @@
 plugins {
     kotlin("jvm") apply false
     kotlin("multiplatform") apply false
+//    id("org.ysb33r.terraform.wrapper") version "1.0.0"
+    id("org.ysb33r.terraform") version "1.0.0"
 }
 
 group = "com.crowdproj.ad"
-version = "0.0.5"
+version = "0.0.6"
 
 repositories {
     mavenCentral()

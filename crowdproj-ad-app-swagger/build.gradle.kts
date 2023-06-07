@@ -1,117 +1,114 @@
+import org.apache.xerces.impl.dv.util.Base64
+import org.jetbrains.kotlin.incremental.createDirectory
+
 plugins {
-    kotlin("plugin.serialization")
-    kotlin("jvm")
-    id("io.ktor.plugin")
+    kotlin("multiplatform")
 }
 
-val ktorVersion: String by project
-val serializationVersion: String by project
-val datetimeVersion: String by project
-val coroutinesVersion: String by project
-val logbackVersion: String by project
-val slf4jVersion: String by project
-val uuidVersion: String by project
-
-fun ktorServer(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
-    "io.ktor:ktor-server-$module:$version"
-fun ktorClient(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
-    "io.ktor:ktor-client-$module:$version"
-
-application {
-    mainClass.set("io.ktor.server.cio.EngineMain")
-}
-
+val apiVersion = "v1"
 val apiSpec: Configuration by configurations.creating
-val webjars: Configuration by configurations.creating
+val apiSpecVersion: String by project
 dependencies {
-    val swaggerUiVersion: String by project
-    val apiSpecVersion: String by project
-
-    webjars("org.webjars:swagger-ui:$swaggerUiVersion")
     apiSpec(
         group = "com.crowdproj",
-        name = "specs-v0",
+        name = "specs-v1",
         version = apiSpecVersion,
         classifier = "openapi",
         ext = "yaml"
     )
-
-    implementation(ktorServer("config-yaml"))
-    implementation(ktorServer("core"))
-    implementation(ktorServer("cio"))
-    implementation(ktorServer("auth"))
-    implementation(ktorServer("cors"))
-
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    implementation("ch.qos.logback:logback-access:$logbackVersion")
-
-    implementation("org.slf4j:slf4j-api:$slf4jVersion")
-    implementation(project(":crowdproj-lib-log"))
-
-    testImplementation(kotlin("test-junit"))
-    testImplementation(ktorServer("test-host"))
-    testImplementation(ktorClient("content-negotiation"))
 }
 
-ktor {
-    docker {
-        jreVersion.set(io.ktor.plugin.features.JreVersion.JRE_17)
-        localImageName.set(project.name)
-        imageTag.set("${project.version}")
-        portMappings.set(listOf(
-            io.ktor.plugin.features.DockerPortMapping(
-                80,
-                8080,
-                io.ktor.plugin.features.DockerPortMappingProtocol.TCP
-            )
-        ))
+val embeddings = "$buildDir/generate-resources/main/src/commonMain/kotlin"
 
-//        externalRegistry.set(
-//            io.ktor.plugin.features.DockerImageRegistry.dockerHub(
-//                appName = provider { "ktor-app" },
-//                username = providers.environmentVariable("DOCKER_HUB_USERNAME"),
-//                password = providers.environmentVariable("DOCKER_HUB_PASSWORD")
-//            )
-//        )
+kotlin {
+    jvm { withJava() }
+    linuxX64 { }
+
+    sourceSets {
+        val serializationVersion: String by project
+
+        @Suppress("UNUSED_VARIABLE")
+        val commonMain by getting {
+
+            kotlin.srcDirs(embeddings)
+            dependencies {
+                implementation(kotlin("stdlib-common"))
+
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+            }
+        }
+
+        @Suppress("UNUSED_VARIABLE")
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+            }
+        }
+
+        @Suppress("UNUSED_VARIABLE")
+        val jvmMain by getting {
+            dependencies {
+            }
+        }
     }
 }
 
-tasks {
-    @Suppress("UnstableApiUsage")
-    withType<ProcessResources>().configureEach {
-        println("VERSION: ${project.version} ${project.group} ${project.name}")
-        // println("RESOURCES: ${this.name} ${this::class}")
-        from("$rootDir/specs") {
-            into("specs")
-            filter {
-                // Устанавливаем версию в сваггере
-                it.replace("\${VERSION_APP}", project.version.toString())
+afterEvaluate {
+    tasks {
+        val prepareSwagger by creating(Copy::class) {
+            destinationDir = file("${buildDir}/swagger")
+            from("$rootDir/specs") {
+                into("specs")
+                filter {
+                    // Устанавливаем версию в сваггере
+                    it.replace("\${VERSION_APP}", project.version.toString())
+                }
+            }
+            from(apiSpec.asPath) {
+                into("specs")
+                rename { "base.yaml" }
+            }
+            outputs.dir(destinationDir)
+        }
+        val generateResourceKt by creating {
+            dependsOn(prepareSwagger)
+            file(embeddings).createDirectory()
+            val resPath = prepareSwagger.destinationDir
+            inputs.dir(resPath)
+            var cntr = 0
+            doLast {
+                val resources = fileTree(resPath).files
+                    .map { fileContent ->
+                        file("$embeddings/Resource_${cntr}.kt").apply(File::createNewFile).writeText(
+                            """
+                        package com.crowdproj.ad.app.resources
+                        
+                        val RES_${cntr} = "${Base64.encode(fileContent.readBytes())}"
+                    """.trimIndent()
+                        )
+                        fileContent.relativeTo(resPath).toString() to cntr++
+                    }
+                file("$embeddings/Resources.kt").apply(File::createNewFile).writeText(
+                    """
+                    package com.crowdproj.ad.app.resources
+                    
+                    val RESOURCES = mapOf(
+                        ${
+                        resources.joinToString(",\n                        ") {
+                            "\"${it.first}\" to RES_${it.second}"
+                        }
+                    }
+                    )
+                """.trimIndent()
+                )
             }
         }
-        from(apiSpec.asPath) {
-            into("specs")
-            rename { "base.yaml" }
-        }
-        webjars.forEach { jar ->
-//        emptyList<File>().forEach { jar ->
-            val conf = webjars.resolvedConfiguration
-//            println("JarAbsPa: ${jar.absolutePath}")
-            val artifact = conf.resolvedArtifacts.find { it.file.toString() == jar.absolutePath } ?: return@forEach
-            val upStreamVersion = artifact.moduleVersion.id.version.replace("(-[\\d.-]+)", "")
-            copy {
-                from(zipTree(jar))
-                duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-                into(file("${buildDir}/webjars-content/${artifact.name}"))
-            }
-            with(this@configureEach) {
-                this.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-                from(
-                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${upStreamVersion}"
-                ) { into(artifact.name) }
-                from(
-                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${artifact.moduleVersion.id.version}"
-                ) { into(artifact.name) }
-            }
+
+        filter { it.name.startsWith("compile") }.forEach {
+            println("COMPILE: $it")
+            it.dependsOn(generateResourceKt)
         }
     }
 }

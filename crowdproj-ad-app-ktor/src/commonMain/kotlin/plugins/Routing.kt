@@ -1,64 +1,22 @@
 package com.crowdproj.ad.app.plugins
 
-import com.benasher44.uuid.uuid4
 import com.crowdproj.ad.api.v1.models.*
 import com.crowdproj.ad.app.helpers.controllerHelperV1
 import configs.CwpAdAppSettings
-import com.crowdproj.ad.logs.LogLevel
-import com.crowdproj.ad.logs.log
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.plugins.autohead.*
-import io.ktor.server.plugins.callid.*
-import io.ktor.server.plugins.callid.CallId
-import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.cors.routing.CORS
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.reflect.KClass
 
 private val clazz: KClass<*> = Application::configureRouting::class
+@OptIn(ExperimentalEncodingApi::class)
 fun Application.configureRouting(appConfig: CwpAdAppSettings) {
-    install(Routing)
-    install(IgnoreTrailingSlash)
-    install(AutoHeadResponse)
-    install(CallId) {
-        generate {
-            "rq-${uuid4()}"
-        }
-    }
-    install(CORS) {
-        println("COORRRS: ${appConfig.appUrls}")
-        allowNonSimpleContentTypes = true
-        allowSameOrigin = true
-        allowMethod(HttpMethod.Options)
-        allowMethod(HttpMethod.Post)
-        allowMethod(HttpMethod.Get)
-        allowHeader("*")
-        appConfig.appUrls.forEach {
-            val split = it.split("://")
-            println("$split")
-            val host = when (split.size) {
-                2 -> split[1].split("/")[0].apply { log(mes = "COR: $this", clazz = clazz, level = LogLevel.INFO) } to
-                        listOf(split[0])
-
-                1 -> split[0].split("/")[0].apply { log(mes = "COR: $this", clazz = clazz, level = LogLevel.INFO) } to
-                        listOf("http", "https")
-
-                else -> null
-            }
-            println("ALLOW_HOST: $host")
-        }
-        allowHost("*")
-    }
-    install(ContentNegotiation) {
-        json(appConfig.json)
-    }
+    initRest(appConfig)
+    initCors(appConfig)
     routing {
-        trace { application.log.trace(it.buildText()) }
+//        trace { application.log.trace(it.buildText()) }
 
-        get("/") { call.respondText("Ads Service is working") }
+        swagger(appConfig)
 
         post("v1/create") {
             call.controllerHelperV1<AdCreateRequest, AdCreateResponse>(appConfig)
@@ -80,3 +38,4 @@ fun Application.configureRouting(appConfig: CwpAdAppSettings) {
         }
     }
 }
+
