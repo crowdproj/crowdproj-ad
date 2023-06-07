@@ -83,25 +83,25 @@ afterEvaluate {
                     .map { fileContent ->
                         file("$embeddings/Resource_${cntr}.kt").apply(File::createNewFile).writeText(
                             """
-                        package com.crowdproj.ad.app.resources
-                        
-                        val RES_${cntr} = "${Base64.encode(fileContent.readBytes())}"
-                    """.trimIndent()
+                                package com.crowdproj.ad.app.resources
+                                
+                                val RES_${cntr} = "${Base64.encode(fileContent.readBytes())}"
+                            """.trimIndent()
                         )
                         fileContent.relativeTo(resPath).toString() to cntr++
                     }
                 file("$embeddings/Resources.kt").apply(File::createNewFile).writeText(
                     """
-                    package com.crowdproj.ad.app.resources
-                    
-                    val RESOURCES = mapOf(
-                        ${
-                        resources.joinToString(",\n                        ") {
-                            "\"${it.first}\" to RES_${it.second}"
-                        }
-                    }
-                    )
-                """.trimIndent()
+                        package com.crowdproj.ad.app.resources
+                        
+                        val RESOURCES = mapOf(
+                            ${
+                                resources.joinToString(",\n                            ") {
+                                    "\"${it.first}\" to RES_${it.second}"
+                                }
+                            }
+                        )
+                    """.trimIndent()
                 )
             }
         }

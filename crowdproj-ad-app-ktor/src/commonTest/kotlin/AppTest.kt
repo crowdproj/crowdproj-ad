@@ -21,7 +21,7 @@ class AppTest {
         val res = client.get("/").call
         val body = res.body<String>()
 
-        assertContains(body, "working")
+        assertContains(body, "CrowdProj Ads")
     }
 
 }
