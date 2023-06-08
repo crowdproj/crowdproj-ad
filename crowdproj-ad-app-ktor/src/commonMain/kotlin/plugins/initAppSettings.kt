@@ -8,7 +8,11 @@ import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.CwpAdRepoStub
 
 fun Application.initAppSettings(): CwpAdAppSettings {
     return CwpAdAppSettings(
-        appUrls = environment.config.propertyOrNull("ktor.urls")?.getList() ?: emptyList(),
+        appUrls = environment.config
+            .propertyOrNull("ktor.urls")
+            ?.getList()
+            ?.filter { it.isNotBlank() }
+            ?: emptyList(),
         corSettings = CwpAdCorSettings(
             repoProd = CwpAdRepoInMemory(),
             repoTest = CwpAdRepoInMemory(),
