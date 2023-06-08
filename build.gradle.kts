@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.crowdproj.ad"
-version = "0.0.6"
+version = System.getenv("PROJECT_VERSION") ?: "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
