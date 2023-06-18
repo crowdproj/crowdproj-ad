@@ -1,9 +1,11 @@
-package com.crowdproj.ad.repo.tests
+package ru.otus.otuskotlin.marketplace.backend.repo.tests
 
 import com.crowdproj.ad.common.models.CwpAd
 import com.crowdproj.ad.common.models.CwpAdId
 import com.crowdproj.ad.common.repo.DbAdIdRequest
 import com.crowdproj.ad.common.repo.IAdRepository
+import com.crowdproj.ad.repo.tests.BaseInitAds
+import com.crowdproj.ad.repo.tests.runRepoTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals

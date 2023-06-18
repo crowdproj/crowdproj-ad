@@ -1,8 +1,10 @@
-package com.crowdproj.ad.repo.tests
+package ru.otus.otuskotlin.marketplace.backend.repo.tests
 
 import com.crowdproj.ad.common.models.*
 import com.crowdproj.ad.common.repo.DbAdRequest
 import com.crowdproj.ad.common.repo.IAdRepository
+import com.crowdproj.ad.repo.tests.BaseInitAds
+import com.crowdproj.ad.repo.tests.runRepoTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -12,6 +14,8 @@ import kotlin.test.assertNotEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoAdCreateTest {
     abstract val repo: IAdRepository
+
+    protected open val lockNew: CwpAdLock = CwpAdLock("20000000-0000-0000-0000-000000000002")
 
     private val createObj = CwpAd(
         title = "create object",
@@ -31,6 +35,7 @@ abstract class RepoAdCreateTest {
         assertEquals(expected.adType, result.data?.adType)
         assertNotEquals(CwpAdId.NONE, result.data?.id)
         assertEquals(emptyList(), result.errors)
+        assertEquals(lockNew, result.data?.lock)
     }
 
     companion object : BaseInitAds("create") {

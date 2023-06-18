@@ -1,6 +1,7 @@
-package com.crowdproj.ad.repo.inmemory.model
+package com.crowdproj.ad.repo.ydb.model
 
 import com.crowdproj.ad.common.models.*
+
 
 data class AdEntity(
     val id: String? = null,
@@ -9,7 +10,6 @@ data class AdEntity(
     val ownerId: String? = null,
     val adType: String? = null,
     val visibility: String? = null,
-    val lock: String? = null,
 ) {
     constructor(model: CwpAd): this(
         id = model.id.asString().takeIf { it.isNotBlank() },
@@ -18,7 +18,6 @@ data class AdEntity(
         ownerId = model.ownerId.asString().takeIf { it.isNotBlank() },
         adType = model.adType.takeIf { it != CwpAdDealSide.NONE }?.name,
         visibility = model.visibility.takeIf { it != CwpAdVisibility.NONE }?.name,
-        lock = model.lock.asString().takeIf { it.isNotBlank() }
     )
 
     fun toInternal() = CwpAd(
@@ -28,6 +27,5 @@ data class AdEntity(
         ownerId = ownerId?.let { CwpAdUserId(it) }?: CwpAdUserId.NONE,
         adType = adType?.let { CwpAdDealSide.valueOf(it) }?: CwpAdDealSide.NONE,
         visibility = visibility?.let { CwpAdVisibility.valueOf(it) }?: CwpAdVisibility.NONE,
-        lock = lock?.let { CwpAdLock(it) } ?: CwpAdLock.NONE,
     )
 }
