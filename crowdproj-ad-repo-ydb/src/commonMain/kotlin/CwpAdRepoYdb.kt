@@ -6,9 +6,11 @@ import com.crowdproj.ad.common.repo.*
 import com.crowdproj.ad.repo.ydb.model.AdEntity
 
 class CwpAdRepoYdb(
+    url: String = "",
     initObjects: Collection<CwpAd> = emptyList(),
     val randomUuid: () -> String = { uuid4().toString() },
 ) : IAdRepository {
+    private val conn = YdbConnection(url)
 
 //    private val cache = Cache.Builder<String, AdEntity>()
 //        .expireAfterWrite(ttl)
@@ -25,6 +27,7 @@ class CwpAdRepoYdb(
         if (entity.id == null) {
             return
         }
+        conn.save(entity)
 //        cache.put(entity.id, entity)
     }
 

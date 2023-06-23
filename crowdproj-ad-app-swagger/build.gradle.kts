@@ -107,7 +107,6 @@ afterEvaluate {
         }
 
         filter { it.name.startsWith("compile") }.forEach {
-            println("COMPILE: $it")
             it.dependsOn(generateResourceKt)
         }
     }
