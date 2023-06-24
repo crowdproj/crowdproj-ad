@@ -25,25 +25,22 @@ var db *ydb.Driver
 var err error
 var ctx = context.Background()
 
-//export Error
-type Error struct {
-	message *C.char
-}
-
 //export Init
-func Init(dsn *C.char, token *C.char) *C.char {
+func Init(dsn *C.char, token *C.char) (*C.char, *C.char) {
 	db, err = ydb.Open(
 		ctx,
 		C.GoString(dsn),
 		//ydb.WithAccessTokenCredentials(token)
 		ydb.WithAnonymousCredentials(),
 	)
-	return (C.CString(err.Error()))
+	errMsg := C.CString(err.Error())
+	errCmp := C.CString("test")
+	return errMsg, errCmp
 }
 
 //export Close
 func Close() {
-	db.Close(ctx)
+	_ = db.Close(ctx)
 }
 
 func main() {}
