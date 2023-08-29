@@ -1,8 +1,8 @@
 package com.crowdproj.ad.app
 
+import com.crowdproj.ad.app.configs.CwpAdAppSettings
 import com.crowdproj.ad.app.plugins.configureRouting
 import com.crowdproj.ad.app.plugins.initAppSettings
-import configs.CwpAdAppSettings
 import io.ktor.server.application.*
 
 //fun main(args: Array<String>) = io.ktor.server.cio.EngineMain.main(args)

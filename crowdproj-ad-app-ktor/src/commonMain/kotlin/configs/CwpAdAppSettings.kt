@@ -1,4 +1,4 @@
-package configs
+package com.crowdproj.ad.app.configs
 
 import com.crowdproj.ad.api.v1.cwpAdApiV1Json
 import com.crowdproj.ad.biz.CwpAdProcessor

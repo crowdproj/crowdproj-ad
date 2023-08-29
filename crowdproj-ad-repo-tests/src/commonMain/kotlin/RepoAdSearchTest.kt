@@ -5,6 +5,8 @@ import com.crowdproj.ad.common.models.CwpAdDealSide
 import com.crowdproj.ad.common.models.CwpAdUserId
 import com.crowdproj.ad.common.repo.DbAdFilterRequest
 import com.crowdproj.ad.common.repo.IAdRepository
+import com.crowdproj.ad.repo.tests.BaseInitAds
+import com.crowdproj.ad.repo.tests.runRepoTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals

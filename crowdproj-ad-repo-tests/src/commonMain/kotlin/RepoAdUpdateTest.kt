@@ -3,6 +3,8 @@ package com.crowdproj.ad.repo.tests
 import com.crowdproj.ad.common.models.*
 import com.crowdproj.ad.common.repo.DbAdRequest
 import com.crowdproj.ad.common.repo.IAdRepository
+import com.crowdproj.ad.repo.tests.BaseInitAds
+import com.crowdproj.ad.repo.tests.runRepoTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -12,7 +14,10 @@ import kotlin.test.assertEquals
 abstract class RepoAdUpdateTest {
     abstract val repo: IAdRepository
     protected open val updateSucc = initObjects[0]
-    private val updateIdNotFound = CwpAdId("ad-repo-update-not-found")
+    protected open val updateConc = initObjects[1]
+    protected val updateIdNotFound = CwpAdId("ad-repo-update-not-found")
+    protected val lockBad = CwpAdLock("20000000-0000-0000-0000-000000000009")
+    protected val lockNew = CwpAdLock("20000000-0000-0000-0000-000000000002")
 
     private val reqUpdateSucc by lazy {
         CwpAd(
@@ -22,6 +27,7 @@ abstract class RepoAdUpdateTest {
             ownerId = CwpAdUserId("owner-123"),
             visibility = CwpAdVisibility.VISIBLE_TO_GROUP,
             adType = CwpAdDealSide.SUPPLY,
+            lock = initObjects.first().lock,
         )
     }
     private val reqUpdateNotFound = CwpAd(
@@ -31,7 +37,19 @@ abstract class RepoAdUpdateTest {
         ownerId = CwpAdUserId("owner-123"),
         visibility = CwpAdVisibility.VISIBLE_TO_GROUP,
         adType = CwpAdDealSide.SUPPLY,
+        lock = initObjects.first().lock,
     )
+    private val reqUpdateConc by lazy {
+        CwpAd(
+            id = updateConc.id,
+            title = "update object not found",
+            description = "update object not found description",
+            ownerId = CwpAdUserId("owner-123"),
+            visibility = CwpAdVisibility.VISIBLE_TO_GROUP,
+            adType = CwpAdDealSide.SUPPLY,
+            lock = lockBad,
+        )
+    }
 
     @Test
     fun updateSuccess() = runRepoTest {
@@ -42,6 +60,7 @@ abstract class RepoAdUpdateTest {
         assertEquals(reqUpdateSucc.description, result.data?.description)
         assertEquals(reqUpdateSucc.adType, result.data?.adType)
         assertEquals(emptyList(), result.errors)
+        assertEquals(lockNew, result.data?.lock)
     }
 
     @Test
@@ -51,6 +70,15 @@ abstract class RepoAdUpdateTest {
         assertEquals(null, result.data)
         val error = result.errors.find { it.code == "not-found" }
         assertEquals("id", error?.field)
+    }
+
+    @Test
+    fun updateConcurrencyError() = runRepoTest {
+        val result = repo.updateAd(DbAdRequest(reqUpdateConc))
+        assertEquals(false, result.isSuccess)
+        val error = result.errors.find { it.code == "concurrency" }
+        assertEquals("lock", error?.field)
+        assertEquals(updateConc, result.data)
     }
 
     companion object : BaseInitAds("update") {

@@ -1,7 +1,7 @@
 package com.crowdproj.ad.app.plugins
 
 import com.benasher44.uuid.uuid4
-import configs.CwpAdAppSettings
+import com.crowdproj.ad.app.configs.CwpAdAppSettings
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.autohead.*

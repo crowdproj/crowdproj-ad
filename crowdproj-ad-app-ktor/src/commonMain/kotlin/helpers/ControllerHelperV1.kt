@@ -4,11 +4,11 @@ import com.crowdproj.ad.api.v1.mappers.fromApi
 import com.crowdproj.ad.api.v1.mappers.toApi
 import com.crowdproj.ad.api.v1.models.IRequestAd
 import com.crowdproj.ad.api.v1.models.IResponseAd
+import com.crowdproj.ad.app.configs.CwpAdAppSettings
 import com.crowdproj.ad.common.CwpAdContext
 import com.crowdproj.ad.common.helpers.asCwpAdError
 import com.crowdproj.ad.common.helpers.fail
 import com.crowdproj.ad.common.models.CwpAdRequestId
-import configs.CwpAdAppSettings
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
@@ -19,7 +19,9 @@ import io.ktor.server.response.*
 import io.ktor.utils.io.charsets.*
 import kotlinx.datetime.Clock
 
-suspend inline fun <reified Rq : IRequestAd, reified Rs : IResponseAd> ApplicationCall.controllerHelperV1(appConfig: CwpAdAppSettings) {
+suspend inline fun <reified Rq : IRequestAd, reified Rs : IResponseAd> ApplicationCall.controllerHelperV1(
+    appConfig: CwpAdAppSettings
+) {
     val endpoint: String = this.request.local.localAddress
     val requestId = this.callId
     val logger = application.log

@@ -2,7 +2,7 @@ package com.crowdproj.ad.app.plugins
 
 import com.crowdproj.ad.api.v1.models.*
 import com.crowdproj.ad.app.helpers.controllerHelperV1
-import configs.CwpAdAppSettings
+import com.crowdproj.ad.app.configs.CwpAdAppSettings
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import kotlin.io.encoding.ExperimentalEncodingApi
