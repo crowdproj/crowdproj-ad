@@ -1,6 +1,7 @@
 package com.crowdproj.ad.repo.inmemory
 
-import ru.otus.otuskotlin.marketplace.backend.repo.tests.RepoAdCreateTest
+import com.crowdproj.ad.repo.tests.RepoAdCreateTest
+
 
 
 class AdRepoInMemoryCreateTest : RepoAdCreateTest() {
