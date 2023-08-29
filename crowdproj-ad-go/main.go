@@ -33,6 +33,7 @@ func Init(dsn *C.char, token *C.char) (*C.char, *C.char) {
 		//ydb.WithAccessTokenCredentials(token)
 		ydb.WithAnonymousCredentials(),
 	)
+	x := err.Error()
 	errMsg := C.CString(err.Error())
 	errCmp := C.CString("test")
 	return errMsg, errCmp

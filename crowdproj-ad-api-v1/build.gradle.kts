@@ -1,8 +1,12 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("multiplatform")
     id("com.crowdproj.generator")
+    kotlin("plugin.serialization")
 }
 
+val specDir = "${layout.buildDirectory.get()}/specs"
 val apiVersion = "v1"
 val apiSpec: Configuration by configurations.creating
 val apiSpecVersion: String by project
@@ -18,18 +22,17 @@ dependencies {
 
 kotlin {
     jvm { withJava() }
-    js(IR) {
+    js {
         browser {}
     }
-    linuxX64 { }
+    linuxX64 {}
 
     sourceSets {
         val serializationVersion: String by project
 
-        @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
 
-            kotlin.srcDirs("$buildDir/generate-resources/main/src/commonMain/kotlin")
+            kotlin.srcDirs("${layout.buildDirectory.get()}/generate-resources/main/src/commonMain/kotlin")
             dependencies {
                 implementation(kotlin("stdlib-common"))
 
@@ -38,7 +41,6 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -46,13 +48,11 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
-        @Suppress("UNUSED_VARIABLE")
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
@@ -61,37 +61,36 @@ kotlin {
     }
 }
 
-crowdprojGenerate {
-    packageName.set("${project.group}.api.v1")
-    inputSpec.set("${project.buildDir}/spec-crowdproj-ad-$apiVersion.yaml")
-}
-
-val getSpecs: Task by tasks.creating {
-    doFirst {
-        copy {
-            from("${rootProject.projectDir}/specs")
-            into(project.buildDir.toString())
-        }
-        copy {
-            from(apiSpec.asPath)
-            into(project.buildDir.toString())
-            rename { "base.yaml" }
-        }
-    }
-}
 
 tasks {
+    val getSpecs: Task by creating(Copy::class) {
+        group = "openapi tools"
+        from("${rootProject.projectDir}/specs")
+        from(apiSpec) {
+            rename { "base.yaml" }
+        }
+        into(specDir)
+    }
     this.openApiGenerate {
         dependsOn(getSpecs)
+        mustRunAfter("compileCommonMainKotlinMetadata")
+    }
+    filter { it.name.startsWith("compile") }.forEach {
+        it.dependsOn(openApiGenerate)
     }
 }
 
-afterEvaluate {
-    val openApiGenerate = tasks.getByName("openApiGenerate")
-    tasks.filter { it.name.startsWith("compile") }.forEach {
-        it.dependsOn(openApiGenerate)
-    }
-    tasks.filter { it.name.endsWith("Elements") }.forEach {
-        it.dependsOn(openApiGenerate)
-    }
+crowdprojGenerate {
+    packageName.set("${project.group}.api.v1")
+    inputSpec.set("${specDir}/spec-crowdproj-ad-$apiVersion.yaml")
 }
+
+//afterEvaluate {
+//    val openApiGenerate = tasks.getByName("openApiGenerate")
+//    tasks.filter { it.name.startsWith("compile") }.forEach {
+//        it.dependsOn(openApiGenerate)
+//    }
+//    tasks.filter { it.name.endsWith("Elements") }.forEach {
+//        it.dependsOn(openApiGenerate)
+//    }
+//}

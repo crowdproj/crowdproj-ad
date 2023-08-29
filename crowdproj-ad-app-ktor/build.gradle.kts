@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
@@ -41,7 +43,6 @@ kotlin {
 
     sourceSets {
 
-        @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
@@ -82,7 +83,6 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -93,7 +93,6 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val jvmMain by getting {
             dependencies {
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
@@ -103,22 +102,19 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val linuxX64Main by getting {
             dependencies {
                 implementation(kotlin("stdlib"))
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
-        val linuxX64Test by getting {
+        @Suppress("UnstableApiUsage") val linuxX64Test by getting {
             dependencies {
                 implementation(kotlin("test"))
             }

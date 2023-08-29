@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.repo.tests
+package com.crowdproj.ad.repo.tests
 
 import com.crowdproj.ad.common.models.*
 import com.crowdproj.ad.common.repo.DbAdRequest

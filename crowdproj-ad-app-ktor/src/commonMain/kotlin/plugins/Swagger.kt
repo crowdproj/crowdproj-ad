@@ -1,7 +1,7 @@
 package com.crowdproj.ad.app.plugins
 
+import com.crowdproj.ad.app.configs.CwpAdAppSettings
 import com.crowdproj.ad.app.resources.RESOURCES
-import configs.CwpAdAppSettings
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*

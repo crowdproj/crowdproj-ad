@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.incremental.createDirectory
 
 plugins {
     kotlin("multiplatform")
+//    kotlin("jvm")
 }
 
 val apiVersion = "v1"
@@ -27,7 +28,6 @@ kotlin {
     sourceSets {
         val serializationVersion: String by project
 
-        @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
 
             kotlin.srcDirs(embeddings)
@@ -39,7 +39,6 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -47,7 +46,6 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val jvmMain by getting {
             dependencies {
             }
@@ -55,60 +53,62 @@ kotlin {
     }
 }
 
-afterEvaluate {
-    tasks {
-        val prepareSwagger by creating(Copy::class) {
-            destinationDir = file("${buildDir}/swagger")
-            from("$rootDir/specs") {
-                into("specs")
-                filter {
-                    // Устанавливаем версию в сваггере
-                    it.replace("\${VERSION_APP}", project.version.toString())
-                }
+tasks {
+
+    val prepareSwagger by creating(Copy::class) {
+        group = "swagger"
+        destinationDir = file("${buildDir}/swagger")
+//    dependsOn(apiSpec.asPath)
+        from("$rootDir/specs") {
+            into("specs")
+            filter {
+                // Устанавливаем версию в сваггере
+                it.replace("\${VERSION_APP}", project.version.toString())
             }
-            from(apiSpec.asPath) {
-                into("specs")
-                rename { "base.yaml" }
-            }
-            outputs.dir(destinationDir)
         }
-        val generateResourceKt by creating {
-            dependsOn(prepareSwagger)
-            file(embeddings).createDirectory()
-            val resPath = prepareSwagger.destinationDir
-            inputs.dir(resPath)
-            var cntr = 0
-            doLast {
-                val resources = fileTree(resPath).files
-                    .map { fileContent ->
-                        file("$embeddings/Resource_${cntr}.kt").apply(File::createNewFile).writeText(
-                            """
+        from(apiSpec) {
+            into("specs")
+            rename { "base.yaml" }
+        }
+        outputs.dir(destinationDir)
+    }
+
+    val generateResourceKt by creating {
+        group = "swagger"
+        dependsOn(prepareSwagger)
+        file(embeddings).createDirectory()
+        val resPath = prepareSwagger.destinationDir
+        inputs.dir(resPath)
+        var cntr = 0
+        doLast {
+            val resources = fileTree(resPath).files
+                .map { fileContent ->
+                    file("$embeddings/Resource_${cntr}.kt").apply(File::createNewFile).writeText(
+                        """
                                 package com.crowdproj.ad.app.resources
-                                
+
                                 val RES_${cntr} = "${Base64.encode(fileContent.readBytes())}"
                             """.trimIndent()
-                        )
-                        fileContent.relativeTo(resPath).toString() to cntr++
-                    }
-                file("$embeddings/Resources.kt").apply(File::createNewFile).writeText(
-                    """
+                    )
+                    fileContent.relativeTo(resPath).toString() to cntr++
+                }
+            file("$embeddings/Resources.kt").apply(File::createNewFile).writeText(
+                """
                         package com.crowdproj.ad.app.resources
-                        
+
                         val RESOURCES = mapOf(
                             ${
-                                resources.joinToString(",\n                            ") {
-                                    "\"${it.first}\" to RES_${it.second}"
-                                }
-                            }
+                    resources.joinToString(",\n                            ") {
+                        "\"${it.first}\" to RES_${it.second}"
+                    }
+                }
                         )
                     """.trimIndent()
-                )
-            }
-        }
-
-        filter { it.name.startsWith("compile") }.forEach {
-            it.dependsOn(generateResourceKt)
+            )
         }
     }
-}
 
+    filter { it.name.startsWith("compile") }.forEach {
+        it.dependsOn(generateResourceKt)
+    }
+}

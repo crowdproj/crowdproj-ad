@@ -2,39 +2,38 @@ plugins {
     kotlin("multiplatform")
 }
 
-val goBuilds: Configuration by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
+//val goBuilds: Configuration by configurations.creating {
+//    isCanBeConsumed = false
+//    isCanBeResolved = true
+//}
 
-dependencies {
-    goBuilds(project(":crowdproj-ad-go")) {
-        targetConfiguration = "goBuilds"
-    }
-}
+//dependencies {
+//    goBuilds(project(":crowdproj-ad-go")) {
+//        targetConfiguration = "goBuilds"
+//    }
+//}
 
 kotlin {
     jvm { withJava() }
     linuxX64 {
         val main by compilations.getting
 
-        @Suppress("UNUSED_VARIABLE")
-        val golang by main.cinterops.creating {
-            val goLibsPath = "$buildDir/goFiles/linux-amd64"
-//            packageName("${project.group}")
-            includeDirs {
-                allHeaders(files(goLibsPath))
-            }
-//            headers(
-//                "$goLibsPath/libcrowdproj-ad-go.h"
-//            )
-//            linkerOpts.addAll(
-//                listOf(
-//                    "-L$goLibsPath",
-//                    "-l:libcrowdproj-ad-go.a"
-//                )
-//            )
-        }
+//        val golang by main.cinterops.creating {
+//            val goLibsPath = "$buildDir/goFiles/linux-amd64"
+////            packageName("${project.group}")
+//            includeDirs {
+//                allHeaders(files(goLibsPath))
+//            }
+////            headers(
+////                "$goLibsPath/libcrowdproj-ad-go.h"
+////            )
+////            linkerOpts.addAll(
+////                listOf(
+////                    "-L$goLibsPath",
+////                    "-l:libcrowdproj-ad-go.a"
+////                )
+////            )
+//        }
     }
 
     sourceSets {
@@ -86,15 +85,15 @@ kotlin {
     }
 }
 
-tasks {
-    val getGoBuilds by creating(Copy::class) {
-        from(goBuilds)
-        into("$buildDir/goFiles")
-    }
-    filter { it.name.startsWith("compile") }.forEach {
-        it.dependsOn(getGoBuilds)
-    }
-    filter { it.name.startsWith("cinterop") }.forEach {
-        it.dependsOn(getGoBuilds)
-    }
-}
+//tasks {
+//    val getGoBuilds by creating(Copy::class) {
+//        from(goBuilds)
+//        into("$buildDir/goFiles")
+//    }
+//    filter { it.name.startsWith("compile") }.forEach {
+//        it.dependsOn(getGoBuilds)
+//    }
+//    filter { it.name.startsWith("cinterop") }.forEach {
+//        it.dependsOn(getGoBuilds)
+//    }
+//}

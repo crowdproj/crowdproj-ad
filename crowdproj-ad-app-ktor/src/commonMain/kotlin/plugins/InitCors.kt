@@ -1,8 +1,8 @@
 package com.crowdproj.ad.app.plugins
 
+import com.crowdproj.ad.app.configs.CwpAdAppSettings
 import com.crowdproj.ad.logs.LogLevel
 import com.crowdproj.ad.logs.log
-import configs.CwpAdAppSettings
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
