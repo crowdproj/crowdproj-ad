@@ -1,9 +1,8 @@
-import org.gradle.internal.impldep.org.apache.commons.codec.binary.Base64
 import org.jetbrains.kotlin.incremental.createDirectory
+import org.gradle.internal.impldep.org.apache.commons.codec.binary.Base64
 
 plugins {
     kotlin("multiplatform")
-//    kotlin("jvm")
 }
 
 val apiVersion = "v1"
@@ -112,3 +111,4 @@ tasks {
         it.dependsOn(generateResourceKt)
     }
 }
+
