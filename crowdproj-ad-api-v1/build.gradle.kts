@@ -1,10 +1,10 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("multiplatform")
     id("com.crowdproj.generator")
     kotlin("plugin.serialization")
 }
+
+version = rootProject.version
 
 val specDir = "${layout.buildDirectory.get()}/specs"
 val apiVersion = "v1"

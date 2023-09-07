@@ -2,6 +2,8 @@ plugins {
     kotlin("multiplatform")
 }
 
+version = rootProject.version
+
 //val goBuilds: Configuration by configurations.creating {
 //    isCanBeConsumed = false
 //    isCanBeResolved = true

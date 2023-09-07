@@ -2,6 +2,8 @@ plugins {
     kotlin("multiplatform")
 }
 
+version = rootProject.version
+
 kotlin {
     jvm { }
     linuxX64 { }

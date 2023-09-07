@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform")
 }
 
-
+version = rootProject.version
 
 kotlin {
     jvm {}
@@ -11,7 +11,6 @@ kotlin {
     sourceSets {
         val coroutinesVersion: String by project
 
-        @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
             dependencies {
                 implementation(project(":crowdproj-ad-common"))
@@ -21,7 +20,6 @@ kotlin {
 
             }
         }
-        @Suppress("UNUSED_VARIABLE")
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -29,13 +27,11 @@ kotlin {
                 implementation(project(":crowdproj-ad-repo-tests"))
             }
         }
-        @Suppress("UNUSED_VARIABLE")
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
             }
         }
-        @Suppress("UNUSED_VARIABLE")
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))

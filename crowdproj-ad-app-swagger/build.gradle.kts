@@ -6,6 +6,8 @@ plugins {
     kotlin("multiplatform")
 }
 
+version = rootProject.version
+
 val apiVersion = "v1"
 val apiSpec: Configuration by configurations.creating
 val apiSpecVersion: String by project

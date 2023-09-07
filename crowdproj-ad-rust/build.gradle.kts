@@ -1,6 +1,8 @@
 plugins {
 }
 
+version = rootProject.version
+
 val builtFiles = "${layout.buildDirectory.get()}/dist"
 
 @Suppress("UNUSED_VARIABLE")
