@@ -12,6 +12,8 @@ plugins {
     id("com.bmuschko.docker-remote-api")
 }
 
+version = rootProject.version
+
 val ktorVersion: String by project
 val serializationVersion: String by project
 val datetimeVersion: String by project

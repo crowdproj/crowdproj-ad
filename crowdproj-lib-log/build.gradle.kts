@@ -2,6 +2,8 @@ plugins {
     kotlin("multiplatform")
 }
 
+version = rootProject.version
+
 kotlin {
     jvm { withJava() }
     linuxX64 { }
@@ -10,7 +12,6 @@ kotlin {
         val logbackVersion: String by project
         val slf4jVersion: String by project
 
-        @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
 
             dependencies {
@@ -18,7 +19,6 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -26,7 +26,6 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val jvmMain by getting {
             dependencies {
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
@@ -35,7 +34,6 @@ kotlin {
                 implementation("org.slf4j:slf4j-api:$slf4jVersion")
             }
         }
-        @Suppress("UNUSED_VARIABLE")
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))

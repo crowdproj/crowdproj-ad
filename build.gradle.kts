@@ -30,3 +30,7 @@ tasks {
         dependsOn("build")
     }
 }
+
+afterEvaluate {
+    println("VERSION: ${project.version}")
+}

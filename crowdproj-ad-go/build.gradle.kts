@@ -1,6 +1,8 @@
 plugins {
 }
 
+version = rootProject.version
+
 val builtFiles = "${project.buildDir}/plugin"
 
 val goBuildTask: Task by tasks.creating {
