@@ -183,8 +183,10 @@ tasks {
 
     val dockerBuildNativeImage by creating(DockerBuildImage::class) {
         group = "docker"
+        println("VERSION ROOT: ${rootProject.version}")
+        println("VERSION LOCAL: ${project.version}")
         dependsOn(dockerDockerfile)
-        images.add("$imageName:${project.version}")
+        images.add("$imageName:${rootProject.version}")
         images.add("$imageName:latest")
     }
     val dockerPushNativeImage by creating(DockerPushImage::class) {
