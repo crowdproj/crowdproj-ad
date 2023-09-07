@@ -19,7 +19,7 @@ dependencies {
     )
 }
 
-val embeddings = "${layout.buildDirectory.get()}/generate-resources/main/src/commonMain/kotlin"
+val embeddings = layout.buildDirectory.dir("generate-resources/main/src/commonMain/kotlin").get()
 
 kotlin {
     jvm { withJava() }

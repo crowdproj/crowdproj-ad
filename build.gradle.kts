@@ -12,6 +12,10 @@ repositories {
     mavenCentral()
 }
 
+autoversion {
+    shoudIncrement = false
+}
+
 subprojects {
     this.group = rootProject.group
     this.version = rootProject.version
