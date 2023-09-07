@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.incremental.createDirectory
-import org.gradle.internal.impldep.org.apache.commons.codec.binary.Base64
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 plugins {
     kotlin("multiplatform")
@@ -80,13 +81,14 @@ tasks {
         inputs.dir(resPath)
         var cntr = 0
         doLast {
+            @OptIn(ExperimentalEncodingApi::class)
             val resources = fileTree(resPath).files
                 .map { fileContent ->
                     file("$embeddings/Resource_${cntr}.kt").apply(File::createNewFile).writeText(
                         """
                                 package com.crowdproj.ad.app.resources
 
-                                val RES_${cntr} = "${Base64.encodeBase64(fileContent.readBytes())}"
+                                val RES_${cntr} = "${Base64.encode(fileContent.readBytes())}"
                             """.trimIndent()
                     )
                     fileContent.relativeTo(resPath).toString() to cntr++
