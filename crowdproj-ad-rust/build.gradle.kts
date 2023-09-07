@@ -1,8 +1,9 @@
 plugins {
 }
 
-val builtFiles = "${project.buildDir}/dist"
+val builtFiles = "${layout.buildDirectory.get()}/dist"
 
+@Suppress("UNUSED_VARIABLE")
 val rustBuildTask: Task by tasks.creating {
     outputs.dir(builtFiles)
     val targetPlatform = listOf(
