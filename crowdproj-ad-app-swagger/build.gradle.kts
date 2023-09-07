@@ -1,4 +1,4 @@
-import org.apache.xerces.impl.dv.util.Base64
+import org.gradle.internal.impldep.org.apache.commons.codec.binary.Base64
 import org.jetbrains.kotlin.incremental.createDirectory
 
 plugins {
@@ -19,7 +19,7 @@ dependencies {
     )
 }
 
-val embeddings = "$buildDir/generate-resources/main/src/commonMain/kotlin"
+val embeddings = "${layout.buildDirectory.get()}/generate-resources/main/src/commonMain/kotlin"
 
 kotlin {
     jvm { withJava() }
@@ -57,7 +57,7 @@ tasks {
 
     val prepareSwagger by creating(Copy::class) {
         group = "swagger"
-        destinationDir = file("${buildDir}/swagger")
+        destinationDir = file("${layout.buildDirectory.get()}/swagger")
 //    dependsOn(apiSpec.asPath)
         from("$rootDir/specs") {
             into("specs")
@@ -87,7 +87,7 @@ tasks {
                         """
                                 package com.crowdproj.ad.app.resources
 
-                                val RES_${cntr} = "${Base64.encode(fileContent.readBytes())}"
+                                val RES_${cntr} = "${Base64.encodeBase64(fileContent.readBytes())}"
                             """.trimIndent()
                     )
                     fileContent.relativeTo(resPath).toString() to cntr++
