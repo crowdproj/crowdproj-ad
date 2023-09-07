@@ -25,9 +25,12 @@ subprojects {
     }
 }
 
-tasks {
-    val deploy: Task by creating {
+afterEvaluate {
+    val deploy: Task by tasks.creating {
+        println("VER: ${project.version}")
+        group = "build"
         dependsOn("build")
+        dependsOn(project(":crowdproj-ad-app-ktor").getTasksByName("deploy",false))
     }
 }
 
