@@ -23,7 +23,7 @@ pluginManagement {
     }
 }
 
-include("lib-testcontainers")
+include("lib-ktestcontainers")
 
 include("crowdproj-lib-log")
 

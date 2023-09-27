@@ -1,0 +1,13 @@
+package = com.crowdproj.ads.ydb
+
+headers = libktestcontainers.h
+headerFilter = **
+
+compilerOpts = -D_POSIX_SOURCE
+compilerOpts.linux = -pthread -I./src/rust/lib
+#linkerOpts.linux = -I./build/goFiles/linux-amd64/
+libraryPaths.linuxX64 = ./build/rust/x86_64-unknown-linux-gnu/
+libraryPaths.linuxArm64 = ./build/rust/aarch64-unknown-linux-gnu/
+staticLibraries.linux = libktestcontainers.a
+
+#---
