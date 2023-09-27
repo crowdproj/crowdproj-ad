@@ -7,6 +7,7 @@ version = rootProject.version
 kotlin {
     jvm {}
     linuxX64 {}
+    linuxArm64 {}
 
     sourceSets {
         val datetimeVersion: String by project

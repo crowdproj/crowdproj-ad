@@ -13,7 +13,7 @@ repositories {
 }
 
 autoversion {
-    shoudIncrement = false
+    shoudIncrement.set(false)
 }
 
 subprojects {
@@ -21,6 +21,7 @@ subprojects {
     this.version = rootProject.version
 
     repositories {
+        mavenLocal()
         mavenCentral()
     }
 }

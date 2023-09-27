@@ -37,6 +37,7 @@ kotlin {
 ////            )
 //        }
     }
+    linuxArm64 {}
 
     sourceSets {
         val coroutinesVersion: String by project
