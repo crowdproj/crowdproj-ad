@@ -1,6 +1,8 @@
 rootProject.name = "crowdproj-ad"
 
 pluginManagement {
+    includeBuild("build-plugin")
+
     plugins {
         val kotlinVersion: String by settings
         val ktorPluginVersion: String by settings
@@ -20,6 +22,9 @@ pluginManagement {
         id("com.crowdproj.plugin.autoversion") version autoversionVersion apply false
     }
 }
+
+include("lib-testcontainers")
+
 include("crowdproj-lib-log")
 
 include("crowdproj-ad-common")

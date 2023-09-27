@@ -5,8 +5,16 @@ plugins {
 version = rootProject.version
 
 kotlin {
+    @Suppress("OPT_IN_USAGE")
+    targetHierarchy.default {
+        group("nonJvm") {
+            withLinuxX64()
+            withLinuxArm64()
+        }
+    }
     jvm { withJava() }
     linuxX64 { }
+    linuxArm64 {}
 
     sourceSets {
         val logbackVersion: String by project
@@ -37,6 +45,11 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
+            }
+        }
+        val nonJvmMain by getting {
+            dependencies {
+                dependsOn(commonMain)
             }
         }
     }

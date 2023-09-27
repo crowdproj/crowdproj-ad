@@ -33,11 +33,27 @@ application {
 }
 
 kotlin {
+    @Suppress("OPT_IN_USAGE")
+    targetHierarchy.default {
+        group("nonJvm") {
+            withLinuxX64()
+            withLinuxArm64()
+        }
+    }
+
     jvm { withJava() }
     linuxX64 {
         binaries {
             executable {
-                baseName = project.name
+                baseName = "${project.name}-x64"
+                entryPoint = "com.crowdproj.ad.app.main"
+            }
+        }
+    }
+    linuxArm64 {
+        binaries {
+            executable {
+                baseName = "${project.name}-arm64"
                 entryPoint = "com.crowdproj.ad.app.main"
             }
         }
@@ -103,10 +119,15 @@ kotlin {
                 implementation("org.slf4j:slf4j-api:$slf4jVersion")
             }
         }
-
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
+            }
+        }
+
+        val nonJvmMain by getting {
+            dependencies {
+                dependsOn(commonMain)
             }
         }
 
@@ -116,11 +137,22 @@ kotlin {
             }
         }
 
-        @Suppress("UnstableApiUsage") val linuxX64Test by getting {
+        val linuxX64Test by getting {
             dependencies {
                 implementation(kotlin("test"))
             }
         }
+        val linuxArm64Main by getting {
+            dependencies {
+                implementation(kotlin("stdlib"))
+            }
+        }
+        val linuxArm64Test by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+
     }
 }
 
@@ -152,28 +184,49 @@ ktor {
 
 tasks {
     val linkReleaseExecutableLinuxX64 by getting(KotlinNativeLink::class)
-    val nativeFile = linkReleaseExecutableLinuxX64.binary.outputFile
+    val nativeFileX64 = linkReleaseExecutableLinuxX64.binary.outputFile
+    val linkReleaseExecutableLinuxArm64 by getting(KotlinNativeLink::class)
+    val nativeFileArm64 = linkReleaseExecutableLinuxArm64.binary.outputFile
 //    val linkDebugExecutableLinuxX64 by getting(KotlinNativeLink::class)
 //    val nativeFile = linkDebugExecutableLinuxX64.binary.outputFile
     val linuxX64ProcessResources by getting(ProcessResources::class)
+    val linuxArm64ProcessResources by getting(ProcessResources::class)
 
-    val dockerDockerfile by creating(Dockerfile::class) {
+    val dockerDockerfileX64 by creating(Dockerfile::class) {
         dependsOn(linkReleaseExecutableLinuxX64)
         dependsOn(linuxX64ProcessResources)
         group = "docker"
         from("ubuntu:23.04")
         doFirst {
             copy {
-                from(nativeFile)
+                from(nativeFileX64)
                 from(linuxX64ProcessResources.destinationDir)
                 into("${this@creating.destDir.get()}")
             }
         }
-        copyFile(nativeFile.name, "/app/")
+        copyFile(nativeFileX64.name, "/app/")
         copyFile("application.yaml", "/app/")
         exposePort(8081)
         workingDir("/app")
-        entryPoint("/app/${nativeFile.name}", "-config=./application.yaml")
+        entryPoint("/app/${nativeFileX64.name}", "-config=./application.yaml")
+    }
+    val dockerDockerfileArm64 by creating(Dockerfile::class) {
+        dependsOn(linkReleaseExecutableLinuxArm64)
+        dependsOn(linuxArm64ProcessResources)
+        group = "docker"
+        from("ubuntu:23.04")
+        doFirst {
+            copy {
+                from(nativeFileArm64)
+                from(linuxArm64ProcessResources.destinationDir)
+                into("${this@creating.destDir.get()}")
+            }
+        }
+        copyFile(nativeFileArm64.name, "/app/")
+        copyFile("application.yaml", "/app/")
+        exposePort(8081)
+        workingDir("/app")
+        entryPoint("/app/${nativeFileArm64.name}", "-config=./application.yaml")
     }
     val registryUser: String? = System.getenv("CONTAINER_REGISTRY_USER")
     val registryPass: String? = System.getenv("CONTAINER_REGISTRY_PASS")
@@ -181,18 +234,35 @@ tasks {
     val registryPref: String? = System.getenv("CONTAINER_REGISTRY_PREF")
     val imageName = registryPref?.let { "$it/${project.name}" } ?: project.name.toString()
 
-    val dockerBuildNativeImage by creating(DockerBuildImage::class) {
+    val dockerBuildX64Image by creating(DockerBuildImage::class) {
         group = "docker"
-        println("VERSION ROOT: ${rootProject.version}")
-        println("VERSION LOCAL: ${project.version}")
-        dependsOn(dockerDockerfile)
-        images.add("$imageName:${rootProject.version}")
-        images.add("$imageName:latest")
+        dependsOn(dockerDockerfileX64)
+        images.add("$imageName-x64:${rootProject.version}")
+        images.add("$imageName-x64:latest")
+        platform.set("linux/amd64")
     }
-    val dockerPushNativeImage by creating(DockerPushImage::class) {
+    val dockerPushX64Image by creating(DockerPushImage::class) {
         group = "docker"
-        dependsOn(dockerBuildNativeImage)
-        images.set(dockerBuildNativeImage.images)
+        dependsOn(dockerBuildX64Image)
+        images.set(dockerBuildX64Image.images)
+        registryCredentials {
+            username.set(registryUser)
+            password.set(registryPass)
+            url.set("https://$registryHost/v1/")
+        }
+    }
+
+    val dockerBuildArm64Image by creating(DockerBuildImage::class) {
+        group = "docker"
+        dependsOn(dockerDockerfileArm64)
+        images.add("$imageName-arm64:${rootProject.version}")
+        images.add("$imageName-arm64:latest")
+        platform.set("linux/arm64")
+    }
+    val dockerPushArm64Image by creating(DockerPushImage::class) {
+        group = "docker"
+        dependsOn(dockerBuildArm64Image)
+        images.set(dockerBuildArm64Image.images)
         registryCredentials {
             username.set(registryUser)
             password.set(registryPass)
@@ -202,6 +272,7 @@ tasks {
 
     create("deploy") {
         group = "build"
-        dependsOn(dockerPushNativeImage)
+        dependsOn(dockerPushX64Image)
+        dependsOn(dockerPushArm64Image)
     }
 }
