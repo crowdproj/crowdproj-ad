@@ -191,12 +191,15 @@ tasks {
 //    val nativeFile = linkDebugExecutableLinuxX64.binary.outputFile
     val linuxX64ProcessResources by getting(ProcessResources::class)
     val linuxArm64ProcessResources by getting(ProcessResources::class)
+    val dockerLinuxX64Dir = layout.buildDirectory.file("docker-x64/Dockerfile").get().asFile
+    val dockerLinuxArm64Dir = layout.buildDirectory.file("docker-arm64/Dockerfile").get().asFile
 
     val dockerDockerfileX64 by creating(Dockerfile::class) {
         dependsOn(linkReleaseExecutableLinuxX64)
         dependsOn(linuxX64ProcessResources)
         group = "docker"
-        from("ubuntu:23.04")
+        destFile.set(dockerLinuxX64Dir)
+        from(Dockerfile.From("ubuntu:23.04").withPlatform("linux/amd64"))
         doFirst {
             copy {
                 from(nativeFileX64)
@@ -214,7 +217,8 @@ tasks {
         dependsOn(linkReleaseExecutableLinuxArm64)
         dependsOn(linuxArm64ProcessResources)
         group = "docker"
-        from("ubuntu:23.04")
+        destFile.set(dockerLinuxArm64Dir)
+        from(Dockerfile.From("ubuntu:23.04").withPlatform("linux/arm64"))
         doFirst {
             copy {
                 from(nativeFileArm64)
@@ -237,6 +241,7 @@ tasks {
     val dockerBuildX64Image by creating(DockerBuildImage::class) {
         group = "docker"
         dependsOn(dockerDockerfileX64)
+        inputDir.set(dockerLinuxX64Dir.parentFile)
         images.add("$imageName-x64:${rootProject.version}")
         images.add("$imageName-x64:latest")
         platform.set("linux/amd64")
@@ -255,6 +260,7 @@ tasks {
     val dockerBuildArm64Image by creating(DockerBuildImage::class) {
         group = "docker"
         dependsOn(dockerDockerfileArm64)
+        inputDir.set(dockerLinuxArm64Dir.parentFile)
         images.add("$imageName-arm64:${rootProject.version}")
         images.add("$imageName-arm64:latest")
         platform.set("linux/arm64")
