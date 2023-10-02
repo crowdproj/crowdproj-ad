@@ -5,4 +5,4 @@
 
 uint32_t some_test(void);
 
-void start_container(void);
+uint16_t start_container(const uint8_t *img, uintptr_t size);
