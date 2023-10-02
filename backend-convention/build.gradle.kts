@@ -6,28 +6,28 @@ plugins {
 //    alias(libs.plugins.detekt)
 }
 
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.jvm.language.get()))
-//        vendor.set(JvmVendorSpec.AZUL)
-    }
-}
+//kotlin {
+//    jvmToolchain {
+//        languageVersion.set(JavaLanguageVersion.of(libs.versions.jvm.language.get()))
+////        vendor.set(JvmVendorSpec.AZUL)
+//    }
+//}
 
-tasks.withType<KotlinCompile>().configureEach {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.valueOf("JVM_${libs.versions.jvm.compiler}"))
-    }
-}
+//tasks.withType<KotlinCompile>().configureEach {
+//    compilerOptions {
+//        jvmTarget.set(JvmTarget.valueOf("JVM_${libs.versions.jvm.compiler}"))
+//    }
+//}
 
-tasks.withType<JavaCompile>().configureEach {
-    sourceCompatibility = libs.versions.jvm.language.get()
-    targetCompatibility = libs.versions.jvm.compiler.get()
-}
+//tasks.withType<JavaCompile>().configureEach {
+//    sourceCompatibility = libs.versions.jvm.language.get()
+//    targetCompatibility = libs.versions.jvm.compiler.get()
+//}
 
 gradlePlugin {
     plugins {
         register("convention") {
-            id = "backend-plugin"
+            id = "backend-convention"
             implementationClass = "com.crowdproj.ad.build.plugin.ConventionPlugin"
         }
     }

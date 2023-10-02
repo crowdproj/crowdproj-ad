@@ -1,21 +1,10 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
+    id("backend-convention")
 }
 
 version = rootProject.version
 
 kotlin {
-    @Suppress("OPT_IN_USAGE")
-    targetHierarchy.default {
-        group("nonJvm") {
-            withLinuxX64()
-            withLinuxArm64()
-        }
-    }
-    jvm { withJava() }
-    linuxX64 { }
-    linuxArm64 {}
-
     sourceSets {
         val logbackVersion: String by project
         val slf4jVersion: String by project
@@ -47,7 +36,7 @@ kotlin {
                 implementation(kotlin("test-junit"))
             }
         }
-        val nonJvmMain by getting {
+        val nativeMain by getting {
             dependencies {
                 dependsOn(commonMain)
             }

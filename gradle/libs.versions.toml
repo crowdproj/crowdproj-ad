@@ -16,7 +16,6 @@ compose = "1.5.2"
 
 # libs
 coroutines = "1.7.3"
-atomicfu = "0.22.0"
 #lincheck = "2.17"
 #statelyIso = "1.2.5"
 #statelyIso = "2.0.4"
@@ -35,8 +34,8 @@ plugin-mavenPublish = { module ="com.vanniktech:gradle-maven-publish-plugin", ve
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
-#lincheck = { module = "org.jetbrains.kotlinx:lincheck", version.ref = "lincheck" }
+atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.22.0" }
+datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.1" }
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

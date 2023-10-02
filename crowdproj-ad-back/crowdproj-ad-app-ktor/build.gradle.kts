@@ -6,7 +6,7 @@ import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
+    id("backend-convention")
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.muschko.remote.api)
     application
@@ -34,14 +34,14 @@ application {
 
 kotlin {
     @Suppress("OPT_IN_USAGE")
-    targetHierarchy.default {
-        group("nonJvm") {
-            withLinuxX64()
-            withLinuxArm64()
-        }
-    }
-
-    jvm { withJava() }
+//    targetHierarchy.default {
+//        group("nonJvm") {
+//            withLinuxX64()
+//            withLinuxArm64()
+//        }
+//    }
+//
+//    jvm { withJava() }
     linuxX64 {
         binaries {
             executable {
@@ -125,7 +125,7 @@ kotlin {
             }
         }
 
-        val nonJvmMain by getting {
+        val nativeMain by getting {
             dependencies {
                 dependsOn(commonMain)
             }

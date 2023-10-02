@@ -1,10 +1,14 @@
 plugins {
-    id("backend-convention")
+    alias(libs.plugins.kotlin.multiplatform)
 }
 
 version = rootProject.version
 
 kotlin {
+    jvm()
+    linuxX64()
+    linuxArm64()
+
     sourceSets {
         val commonMain by getting {
 
@@ -12,7 +16,7 @@ kotlin {
                 implementation(kotlin("stdlib-common"))
 
                 api("com.crowdproj.ad:crowdproj-ad-api-v1:${version}")
-                implementation(project(":crowdproj-ad-common"))
+                implementation(project(":crowdproj-ad-fe-common"))
             }
         }
 
@@ -23,10 +27,10 @@ kotlin {
             }
         }
 
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-            }
-        }
+//        val jvmTest by getting {
+//            dependencies {
+//                implementation(kotlin("test-junit"))
+//            }
+//        }
     }
 }

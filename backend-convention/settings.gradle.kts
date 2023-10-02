@@ -1,3 +1,5 @@
+rootProject.name = "backend-convention"
+
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {

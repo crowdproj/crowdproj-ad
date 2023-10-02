@@ -1,8 +1,8 @@
 package com.crowdproj.ad.build.plugin
 
-import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import com.vanniktech.maven.publish.MavenPublishPlugin
-import com.vanniktech.maven.publish.SonatypeHost
+//import com.vanniktech.maven.publish.MavenPublishBaseExtension
+//import com.vanniktech.maven.publish.MavenPublishPlugin
+//import com.vanniktech.maven.publish.SonatypeHost
 import kotlinx.validation.BinaryCompatibilityValidatorPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
+@Suppress("unused")
 internal class ConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) = with(project) {
         // apply dokka plugin
@@ -27,14 +28,6 @@ internal class ConventionPlugin : Plugin<Project> {
 }
 
 private fun Project.configureRootProject() {
-//    tasks.withType<DokkaMultiModuleTask>().configureEach {
-//        val apiDir = rootDir.resolve("docs/api")
-//        outputDirectory.set(apiDir)
-//        doLast {
-//            apiDir.resolve("-modules.html").renameTo(apiDir.resolve("index.html"))
-//        }
-//    }
-
     // configure compatibility validator
     pluginManager.apply(BinaryCompatibilityValidatorPlugin::class.java)
 }
@@ -42,12 +35,12 @@ private fun Project.configureRootProject() {
 private fun Project.configureSubproject() {
     // configure KMP library project
     pluginManager.apply("org.jetbrains.kotlin.multiplatform")
-    group = property("GROUP") as String
-    version = property("VERSION_NAME") as String
+    group = rootProject.group
+    version = rootProject.version
 
     plugins.withId("org.jetbrains.kotlin.multiplatform") {
         extensions.configure<KotlinMultiplatformExtension> {
-            explicitApi()
+//            explicitApi()
             configureTargets(this@configureSubproject)
             sourceSets.configureEach {
                 languageSettings.apply {
@@ -73,11 +66,11 @@ private fun Project.configureSubproject() {
 //    }
 
     // configure publishing
-    pluginManager.apply(MavenPublishPlugin::class.java)
-    extensions.configure<MavenPublishBaseExtension> {
-        publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
-//        signAllPublications()
-    }
+//    pluginManager.apply(MavenPublishPlugin::class.java)
+//    extensions.configure<MavenPublishBaseExtension> {
+//        publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
+////        signAllPublications()
+//    }
 }
 
 @Suppress("LongMethod", "MagicNumber")
@@ -90,10 +83,7 @@ private fun KotlinMultiplatformExtension.configureTargets(project: Project) {
 
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         targetHierarchy.default {
-//            group("jvmAndIos") {
-//                withJvm()
-//            }
-            group("nonJvm") {
+            group("native") {
                 withLinuxX64()
                 withLinuxArm64()
             }
@@ -109,30 +99,10 @@ private fun KotlinMultiplatformExtension.configureTargets(project: Project) {
                 }
             }
             val main = compilations.getByName("main")
-//            compilations.create("lincheck") {
-//                defaultSourceSet {
-//                    dependencies {
-//                        implementation(main.compileDependencyFiles + main.output.classesDirs)
-//                    }
-//                }
-//                project.tasks.register<Test>("jvmLincheck") {
-//                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
-//                    testClassesDirs = output.classesDirs
-//                    useJUnitPlatform()
-//                    testLogging {
-//                        events("passed", "skipped", "failed")
-//                    }
-//                    jvmArgs(
-//                        "--add-opens", "java.base/jdk.internal.misc=ALL-UNNAMED",
-//                        "--add-opens", "java.base/java.lang=ALL-UNNAMED",
-//                        "--add-exports", "java.base/jdk.internal.util=ALL-UNNAMED",
-//                        "--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED",
-//                        "--add-exports", "java.base/jdk.internal.access=ALL-UNNAMED",
-//                    )
-//                }
-//            }
         }
         linuxX64()
         linuxArm64()
+
+
     }
 }

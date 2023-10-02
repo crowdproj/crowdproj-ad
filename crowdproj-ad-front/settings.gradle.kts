@@ -35,6 +35,8 @@ pluginManagement {
 
 rootProject.name = "crowdproj-ad-front"
 
+include(":crowdproj-ad-fe-common")
+include(":crowdproj-ad-fe-api-v1-mappers")
 include(":androidApp")
 //include(":shared")
 //include(":desktopApp")
