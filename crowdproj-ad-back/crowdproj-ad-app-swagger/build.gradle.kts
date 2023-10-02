@@ -3,7 +3,7 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
+    id("backend-convention")
 }
 
 version = rootProject.version
@@ -24,10 +24,6 @@ dependencies {
 val embeddings = layout.buildDirectory.dir("generate-resources/main/src/commonMain/kotlin").get()
 
 kotlin {
-    jvm { withJava() }
-    linuxX64 {}
-    linuxArm64 {}
-
     sourceSets {
         val serializationVersion: String by project
 

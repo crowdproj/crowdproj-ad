@@ -1,14 +1,10 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
+    id("backend-convention")
 }
 
 version = rootProject.version
 
 kotlin {
-    jvm {}
-    linuxX64 {}
-    linuxArm64 {}
-
     sourceSets {
         val coroutinesVersion: String by project
 

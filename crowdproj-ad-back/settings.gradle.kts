@@ -8,6 +8,13 @@ dependencyResolutionManagement {
     }
 }
 
+pluginManagement {
+    includeBuild("../backend-convention")
+    plugins {
+        id("backend-convention") version "1.0.0" apply false
+    }
+}
+
 include("lib-testcontainers")
 
 include("crowdproj-lib-log")
