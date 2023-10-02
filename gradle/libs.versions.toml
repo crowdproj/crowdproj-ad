@@ -1,15 +1,29 @@
 [versions]
+# plugins
 kotlin = "1.9.10"
 dokka = "1.8.20"
+kotlinx-serialization = "1.6.0"
+muschko = "9.3.3"
+crowdproj-generator = "0.2.0"
+android-libs = "8.1.0"
 binaryCompabilityValidator = "0.13.2"
-toolchainsResolver = "0.5.0"
+#toolchainsResolver = "0.5.0"
 detekt = "1.23.1"
 mavenPublish = "0.25.3"
+
+# both
+compose = "1.5.2"
+
+# libs
 coroutines = "1.7.3"
 atomicfu = "0.22.0"
 #lincheck = "2.17"
 #statelyIso = "1.2.5"
 #statelyIso = "2.0.4"
+
+# BASE
+jvm-compiler = "11"
+jvm-language = "19"
 
 [libraries]
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -26,3 +40,12 @@ atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization" }
+crowdproj-generator = { id = "com.crowdproj.generator", version.ref = "crowdproj-generator" }
+muschko-remote-api = { id = "com.bmuschko.docker-remote-api", version.ref = "muschko" }
+android-application = { id = "com.android.application", version.ref = "android-libs" }
+android-library = { id = "com.android.library", version.ref = "android-libs" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }

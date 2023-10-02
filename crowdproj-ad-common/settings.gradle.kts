@@ -1,3 +1,5 @@
+rootProject.name = "crowdproj-ad-common"
+
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
@@ -5,3 +7,5 @@ dependencyResolutionManagement {
         }
     }
 }
+
+include("crowdproj-ad-api-v1")
