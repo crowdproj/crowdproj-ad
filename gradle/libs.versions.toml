@@ -5,7 +5,9 @@ dokka = "1.8.20"
 kotlinx-serialization = "1.6.0"
 muschko = "9.3.3"
 crowdproj-generator = "0.2.0"
-android-libs = "8.1.0"
+android-libs = "8.0.2"
+#android-libs = "8.1.0"
+#android-libs = "8.2.0-beta06"
 binaryCompabilityValidator = "0.13.2"
 #toolchainsResolver = "0.5.0"
 detekt = "1.23.1"
@@ -21,8 +23,23 @@ coroutines = "1.7.3"
 #statelyIso = "2.0.4"
 
 # BASE
-jvm-compiler = "11"
+jvm-compiler = "17"
 jvm-language = "19"
+junit = "4.13.2"
+runner = "1.0.2"
+espresso-core = "3.0.2"
+appcompat-v7 = "28.0.0"
+constraint-layout = "2.0.4"
+livedata = "1.1.1"
+viewmodel = "1.1.1"
+navigation-fragment-ktx = "1.0.0"
+navigation-ui-ktx = "1.0.0"
+design = "28.0.0"
+
+#Compose
+#androidx-compose-bom = "2023.09.02"
+androidx-compose-bom = "2023.06.01"
+
 
 [libraries]
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -36,6 +53,21 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.22.0" }
 datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.1" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+#compose
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
+
+# android
+runner = { group = "com.android.support.test", name = "runner", version.ref = "runner" }
+espresso-core = { group = "com.android.support.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+appcompat-v7 = { group = "com.android.support", name = "appcompat-v7", version.ref = "appcompat-v7" }
+constraint-layout = { group = "com.android.support.constraint", name = "constraint-layout", version.ref = "constraint-layout" }
+livedata = { group = "android.arch.lifecycle", name = "livedata", version.ref = "livedata" }
+viewmodel = { group = "android.arch.lifecycle", name = "viewmodel", version.ref = "viewmodel" }
+navigation-fragment-ktx = { group = "android.arch.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
+navigation-ui-ktx = { group = "android.arch.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
+design = { group = "com.android.support", name = "design", version.ref = "design" }
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

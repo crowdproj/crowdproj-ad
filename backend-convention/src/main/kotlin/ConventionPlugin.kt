@@ -98,7 +98,7 @@ private fun KotlinMultiplatformExtension.configureTargets(project: Project) {
                     )
                 }
             }
-            val main = compilations.getByName("main")
+//            val main = compilations.getByName("main")
         }
         linuxX64()
         linuxArm64()

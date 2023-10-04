@@ -1,7 +1,7 @@
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            from(files("../gradle/libs.versions.toml"))
+            from(files("../../gradle/libs.versions.toml"))
         }
     }
 }
@@ -9,8 +9,9 @@ dependencyResolutionManagement {
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         google()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://maven.google.com/")
     }
 //
 //    plugins {
@@ -34,12 +35,3 @@ pluginManagement {
 //}
 
 rootProject.name = "crowdproj-ad-front"
-
-include(":crowdproj-ad-fe-common")
-include(":crowdproj-ad-fe-api-v1-mappers")
-//include("crowdproj-ad-fe-app-android")
-include("crowdproj-ad-fe-app-andr")
-//include(":crowdproj-ad-fe-js")
-//include(":shared")
-//include(":desktopApp")
-//include(":mapview-desktop")

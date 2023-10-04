@@ -1,11 +1,11 @@
 package com.crowdproj.ad.api.v1.mappers
 
 import com.crowdproj.ad.api.v1.models.*
-import com.crowdproj.ad.common.CwpAdContext
+import com.crowdproj.ad.common.CwpAdFeContext
 import com.crowdproj.ad.common.models.*
 import com.crowdproj.ad.common.stubs.CwpAdStubs
 
-fun CwpAdContext.fromApi(request: IRequestAd) = when (request) {
+fun CwpAdFeContext.fromApi(request: IRequestAd) = when (request) {
     is AdCreateRequest -> fromApi(request)
     is AdReadRequest -> fromApi(request)
     is AdUpdateRequest -> fromApi(request)
@@ -14,85 +14,85 @@ fun CwpAdContext.fromApi(request: IRequestAd) = when (request) {
     is AdOffersRequest -> fromApi(request)
 }
 
-fun CwpAdContext.fromApi(request: AdCreateRequest) {
+fun CwpAdFeContext.fromApi(request: AdCreateRequest) {
     resolveOperation(request)
     fromApiAdCreate(request.ad)
     fromApiDebug(request)
 }
 
-fun CwpAdContext.fromApi(request: AdReadRequest) {
+fun CwpAdFeContext.fromApi(request: AdReadRequest) {
     resolveOperation(request)
     fromApiAdRead(request.ad)
     fromApiDebug(request)
 }
 
-fun CwpAdContext.fromApi(request: AdUpdateRequest) {
+fun CwpAdFeContext.fromApi(request: AdUpdateRequest) {
     resolveOperation(request)
     fromApiAdUpdate(request.ad)
     fromApiDebug(request)
 }
 
-fun CwpAdContext.fromApi(request: AdDeleteRequest) {
+fun CwpAdFeContext.fromApi(request: AdDeleteRequest) {
     resolveOperation(request)
     fromApiAdDelete(request.ad)
     fromApiDebug(request)
 }
 
-fun CwpAdContext.fromApi(request: AdSearchRequest) {
+fun CwpAdFeContext.fromApi(request: AdSearchRequest) {
     resolveOperation(request)
     fromApiAdSearch(request.adFilter)
     fromApiDebug(request)
 }
 
-fun CwpAdContext.fromApi(request: AdOffersRequest) {
+fun CwpAdFeContext.fromApi(request: AdOffersRequest) {
     resolveOperation(request)
     fromApiAdOffers(request.ad)
     fromApiDebug(request)
 }
 
-private fun CwpAdContext.fromApiAdCreate(ad: AdCreateObject?) {
-    this.adRequest = ad?.let {
-        CwpAd(
-            adType = it.adType.fromApi(),
-            title = it.title.fromApiTitle(),
-            description = it.description.fromApiDescription(),
-            visibility = it.visibility.fromApiVisibility(),
-            productId = it.productId.fromApiProductId(),
-        )
-    } ?: CwpAd()
+private fun CwpAdFeContext.fromApiAdCreate(ad: AdCreateObject?) {
+//    this.adRequest = ad?.let {
+//        CwpAd(
+//            adType = it.adType.fromApi(),
+//            title = it.title.fromApiTitle(),
+//            description = it.description.fromApiDescription(),
+//            visibility = it.visibility.fromApiVisibility(),
+//            productId = it.productId.fromApiProductId(),
+//        )
+//    } ?: CwpAd()
 }
 
-private fun CwpAdContext.fromApiAdRead(ad: AdReadObject?) {
-    this.adRequest.id = ad?.id?.toAdId() ?: CwpAdId.NONE
+private fun CwpAdFeContext.fromApiAdRead(ad: AdReadObject?) {
+//    this.adRequest.id = ad?.id?.toAdId() ?: CwpAdId.NONE
 }
 
-private fun CwpAdContext.fromApiAdUpdate(ad: AdUpdateObject?) {
-    this.adRequest = ad?.let {
-        CwpAd(
-            id = it.id.toAdId(),
-            lock = it.lock.toAdLock(),
-            adType = it.adType.fromApi(),
-            title = it.title.fromApiTitle(),
-            description = it.description.fromApiDescription(),
-            visibility = it.visibility.fromApiVisibility(),
-            productId = it.productId.fromApiProductId(),
-        )
-    } ?: CwpAd()
+private fun CwpAdFeContext.fromApiAdUpdate(ad: AdUpdateObject?) {
+//    this.adRequest = ad?.let {
+//        CwpAd(
+//            id = it.id.toAdId(),
+//            lock = it.lock.toAdLock(),
+//            adType = it.adType.fromApi(),
+//            title = it.title.fromApiTitle(),
+//            description = it.description.fromApiDescription(),
+//            visibility = it.visibility.fromApiVisibility(),
+//            productId = it.productId.fromApiProductId(),
+//        )
+//    } ?: CwpAd()
 }
 
-private fun CwpAdContext.fromApiAdDelete(ad: AdDeleteObject?) {
-    this.adRequest.id = ad?.id?.toAdId() ?: CwpAdId.NONE
-    this.adRequest.lock = ad?.lock?.toAdLock() ?: CwpAdLock.NONE
+private fun CwpAdFeContext.fromApiAdDelete(ad: AdDeleteObject?) {
+//    this.adRequest.id = ad?.id?.toAdId() ?: CwpAdId.NONE
+//    this.adRequest.lock = ad?.lock?.toAdLock() ?: CwpAdLock.NONE
 }
 
-private fun CwpAdContext.fromApiAdSearch(filter: AdSearchFilter?) {
-    this.adFilterRequest = CwpAdFilter(
-        searchString = filter?.searchString ?: "",
-    )
+private fun CwpAdFeContext.fromApiAdSearch(filter: AdSearchFilter?) {
+//    this.adFilterRequest = CwpAdFilter(
+//        searchString = filter?.searchString ?: "",
+//    )
 }
 
-private fun CwpAdContext.fromApiAdOffers(ad: AdReadObject?) {
-    this.adRequest.id = ad?.id?.toAdId() ?: CwpAdId.NONE
+private fun CwpAdFeContext.fromApiAdOffers(ad: AdReadObject?) {
+//    this.adRequest.id = ad?.id?.toAdId() ?: CwpAdId.NONE
 }
 
 private fun String?.toAdId() = this?.let { CwpAdId(it) } ?: CwpAdId.NONE
@@ -126,9 +126,9 @@ private fun AdRequestDebugStubs?.fromApiStubCase(): CwpAdStubs = when (this) {
     null -> CwpAdStubs.NONE
 }
 
-private fun CwpAdContext.fromApiDebug(request: IRequestAd?) {
-    this.workMode = request?.debug?.mode?.fromApiWorkMode() ?: CwpAdWorkMode.NONE
-    this.stubCase = request?.debug?.stub?.fromApiStubCase() ?: CwpAdStubs.NONE
+private fun CwpAdFeContext.fromApiDebug(request: IRequestAd?) {
+//    this.workMode = request?.debug?.mode?.fromApiWorkMode() ?: CwpAdWorkMode.NONE
+//    this.stubCase = request?.debug?.stub?.fromApiStubCase() ?: CwpAdStubs.NONE
 }
 
 private fun AdVisibility?.fromApiVisibility(): CwpAdVisibility = when (this) {
@@ -138,7 +138,7 @@ private fun AdVisibility?.fromApiVisibility(): CwpAdVisibility = when (this) {
     null -> CwpAdVisibility.NONE
 }
 
-private fun CwpAdContext.resolveOperation(request: IRequestAd) {
+private fun CwpAdFeContext.resolveOperation(request: IRequestAd) {
     this.command = when (request) {
         is AdCreateRequest -> CwpAdCommand.CREATE
         is AdReadRequest -> CwpAdCommand.READ
