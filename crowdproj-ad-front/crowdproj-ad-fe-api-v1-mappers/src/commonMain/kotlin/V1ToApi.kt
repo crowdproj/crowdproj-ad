@@ -1,10 +1,10 @@
 package com.crowdproj.ad.api.v1.mappers
 
-import com.crowdproj.ad.common.CwpAdContext
+import com.crowdproj.ad.common.CwpAdFeContext
 import com.crowdproj.ad.common.models.*
 import com.crowdproj.ad.api.v1.models.*
 
-fun CwpAdContext.toApi(): IResponseAd? = when (command) {
+fun CwpAdFeContext.toApi(): IResponseAd? = when (command) {
     CwpAdCommand.NONE -> null
     CwpAdCommand.CREATE -> toApiCreate()
     CwpAdCommand.READ -> toApiRead()
@@ -14,47 +14,47 @@ fun CwpAdContext.toApi(): IResponseAd? = when (command) {
     CwpAdCommand.OFFERS -> toApiOffers()
 }
 
-fun CwpAdContext.toApiCreate() = AdCreateResponse(
+fun CwpAdFeContext.toApiCreate() = AdCreateResponse(
     requestId = toApiRequestId(),
-    result = toApiResult(),
-    errors = toApiErrors(),
-    ad = toApiAd(this.adResponse),
+//    result = toApiResult(),
+//    errors = toApiErrors(),
+//    ad = toApiAd(this.adResponse),
 )
 
-fun CwpAdContext.toApiRead() = AdReadResponse(
+fun CwpAdFeContext.toApiRead() = AdReadResponse(
     requestId = toApiRequestId(),
-    result = toApiResult(),
-    errors = toApiErrors(),
-    ad = toApiAd(this.adResponse),
+//    result = toApiResult(),
+//    errors = toApiErrors(),
+//    ad = toApiAd(this.adResponse),
 )
 
-fun CwpAdContext.toApiUpdate() = AdUpdateResponse(
+fun CwpAdFeContext.toApiUpdate() = AdUpdateResponse(
     requestId = toApiRequestId(),
-    result = toApiResult(),
-    errors = toApiErrors(),
-    ad = toApiAd(this.adResponse),
+//    result = toApiResult(),
+//    errors = toApiErrors(),
+//    ad = toApiAd(this.adResponse),
 )
 
-fun CwpAdContext.toApiDelete() = AdDeleteResponse(
+fun CwpAdFeContext.toApiDelete() = AdDeleteResponse(
     requestId = toApiRequestId(),
-    result = toApiResult(),
-    errors = toApiErrors(),
-    ad = toApiAd(this.adResponse),
+//    result = toApiResult(),
+//    errors = toApiErrors(),
+//    ad = toApiAd(this.adResponse),
 )
 
-fun CwpAdContext.toApiSearch() = AdSearchResponse(
+fun CwpAdFeContext.toApiSearch() = AdSearchResponse(
     requestId = toApiRequestId(),
-    result = toApiResult(),
-    errors = toApiErrors(),
-    ads = adsResponse.mapNotNull { toApiAd(it) }.takeIf { it.isNotEmpty() },
+//    result = toApiResult(),
+//    errors = toApiErrors(),
+//    ads = adsResponse.mapNotNull { toApiAd(it) }.takeIf { it.isNotEmpty() },
 )
 
-fun CwpAdContext.toApiOffers() = AdOffersResponse(
+fun CwpAdFeContext.toApiOffers() = AdOffersResponse(
     requestId = toApiRequestId(),
-    result = toApiResult(),
-    errors = toApiErrors(),
-    ad = toApiAd(this.adResponse),
-    ads = adsResponse.mapNotNull { toApiAd(it) }.takeIf { it.isNotEmpty() },
+//    result = toApiResult(),
+//    errors = toApiErrors(),
+//    ad = toApiAd(this.adResponse),
+//    ads = adsResponse.mapNotNull { toApiAd(it) }.takeIf { it.isNotEmpty() },
 )
 
 private fun toApiAd(ad: CwpAd): AdResponseObject? = if (ad.isEmpty()) {
@@ -100,7 +100,7 @@ private fun CwpAdDealSide.toApiAdType(): DealSide? = when(this) {
     CwpAdDealSide.SUPPLY -> DealSide.SUPPLY
 }
 
-private fun CwpAdContext.toApiErrors(): List<Error>? = errors.map { it.toApiError() }.takeIf { it.isNotEmpty() }
+//private fun CwpAdFeContext.toApiErrors(): List<Error>? = errors.map { it.toApiError() }.takeIf { it.isNotEmpty() }
 private fun CwpAdError.toApiError() = Error(
     code = this.code.trString(),
     group = this.group.trString(),
@@ -111,11 +111,11 @@ private fun CwpAdError.toApiError() = Error(
 
 private fun String.trString(): String? = takeIf { it.isNotBlank() }
 
-private fun CwpAdContext.toApiResult(): ResponseResult? = when (this.state) {
-    CwpAdState.NONE -> null
-    CwpAdState.RUNNING -> ResponseResult.SUCCESS
-    CwpAdState.FAILING -> ResponseResult.ERROR
-    CwpAdState.FINISHING -> ResponseResult.SUCCESS
-}
+//private fun CwpAdFeContext.toApiResult(): ResponseResult? = when (this.state) {
+//    CwpAdState.NONE -> null
+//    CwpAdState.RUNNING -> ResponseResult.SUCCESS
+//    CwpAdState.FAILING -> ResponseResult.ERROR
+//    CwpAdState.FINISHING -> ResponseResult.SUCCESS
+//}
 
-private fun CwpAdContext.toApiRequestId(): String? = this.requestId.takeIf { it != CwpAdRequestId.NONE }?.asString()
+private fun CwpAdFeContext.toApiRequestId(): String? = this.requestId.takeIf { it != CwpAdRequestId.NONE }?.asString()

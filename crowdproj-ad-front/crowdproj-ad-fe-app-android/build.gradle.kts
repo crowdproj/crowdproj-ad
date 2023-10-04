@@ -1,10 +1,14 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.application")
-    id("org.jetbrains.compose")
+//    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.application)
+//    alias(libs.plugins.compose)
+//    id("com.android.application")
+//    id("org.jetbrains.compose")
 }
 
 kotlin {
+//    jvm {  }
     androidTarget()
     sourceSets {
         val androidMain by getting {
