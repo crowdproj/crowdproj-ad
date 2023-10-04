@@ -6,16 +6,13 @@ version = rootProject.version
 
 kotlin {
     sourceSets {
-        val coroutinesVersion: String by project
-        val corVersion: String by project
-
         all { languageSettings.optIn("kotlin.RequiresOptIn") }
 
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
 
-                implementation("com.crowdproj:kotlin-cor:$corVersion")
+                implementation(libs.cor)
 
                 implementation(project(":crowdproj-ad-common"))
                 implementation(project(":crowdproj-ad-stubs"))
@@ -30,7 +27,7 @@ kotlin {
                 implementation(project(":crowdproj-ad-repo-tests"))
                 implementation(project(":crowdproj-ad-repo-inmemory"))
 
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
+                api(libs.coroutines.test)
             }
         }
         val jvmMain by getting {

@@ -33,7 +33,7 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.jvm.compiler.get()}")
+        sourceCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.jvm.language.get()}")
         targetCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.jvm.compiler.get()}")
     }
     kotlin {
@@ -50,13 +50,13 @@ dependencies {
     @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
     implementation(compose.components.resources)
 
-    api("androidx.activity:activity-compose:1.7.2")
-    api("androidx.appcompat:appcompat:1.6.1")
-    api("androidx.core:core-ktx:1.10.1")
-    implementation("com.google.accompanist:accompanist-permissions:0.29.2-rc")
-    implementation("com.google.android.gms:play-services-maps:18.1.0")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation("com.google.maps.android:maps-compose:2.11.2")
+    api(libs.compose.activity)
+    api(libs.androidx.appcompat)
+    api(libs.androidx.core)
+//    implementation("com.google.accompanist:accompanist-permissions:0.29.2-rc")
+//    implementation("com.google.android.gms:play-services-maps:18.1.0")
+//    implementation("com.google.android.gms:play-services-location:21.0.1")
+//    implementation("com.google.maps.android:maps-compose:2.11.2")
 
     implementation("com.crowdproj.ad.front:crowdproj-ad-fe-views:${version}")
 }

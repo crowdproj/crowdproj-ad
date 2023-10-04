@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
@@ -14,9 +11,9 @@ repositories {
     mavenCentral()
 }
 
-val ktJvmPluginId: String = libs.plugins.kotlin.jvm.get().pluginId
-val ktKmpPluginId: String = libs.plugins.kotlin.multiplatform.get().pluginId
-val jvmTarget: String = libs.versions.jvm.compiler.get()
+//val ktJvmPluginId: String = libs.plugins.kotlin.jvm.get().pluginId
+//val ktKmpPluginId: String = libs.plugins.kotlin.multiplatform.get().pluginId
+//val jvmTarget: String = libs.versions.jvm.compiler.get()
 
 subprojects {
     this.group = rootProject.group
@@ -26,16 +23,12 @@ subprojects {
         mavenLocal()
         mavenCentral()
     }
-    pluginManager.withPlugin(ktJvmPluginId) {
-        tasks.withType<KotlinCompile> {
-            kotlinOptions.jvmTarget = jvmTarget
-        }
-    }
-    pluginManager.withPlugin(ktKmpPluginId) {
-        tasks.withType<KotlinJvmCompile> {
-            kotlinOptions.jvmTarget = jvmTarget
-        }
-    }
+//    tasks.withType<KotlinJvmCompile> {
+//        kotlinOptions.jvmTarget = jvmTarget
+//    }
+//    tasks.withType<KotlinCompile> {
+//        kotlinOptions.jvmTarget = jvmTarget
+//    }
 }
 
 afterEvaluate {
@@ -43,6 +36,6 @@ afterEvaluate {
         println("VER: ${project.version}")
         group = "build"
         dependsOn("build")
-        dependsOn(project(":crowdproj-ad-app-ktor").getTasksByName("deploy",false))
+        dependsOn(project(":crowdproj-ad-app-ktor").getTasksByName("deploy", false))
     }
 }

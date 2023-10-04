@@ -6,15 +6,19 @@ version = rootProject.version
 
 kotlin {
     sourceSets {
-        val coroutinesVersion: String by project
-
         val commonMain by getting {
             dependencies {
                 implementation(project(":crowdproj-ad-common"))
 
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
-                api(kotlin("test-junit"))
+                api(libs.coroutines.core)
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+
+                implementation(libs.coroutines.test)
             }
         }
     }
