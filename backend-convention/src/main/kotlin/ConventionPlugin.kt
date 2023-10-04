@@ -4,17 +4,20 @@ package com.crowdproj.ad.build.plugin
 //import com.vanniktech.maven.publish.MavenPublishPlugin
 //import com.vanniktech.maven.publish.SonatypeHost
 import kotlinx.validation.BinaryCompatibilityValidatorPlugin
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.the
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 @Suppress("unused")
 internal class ConventionPlugin : Plugin<Project> {
+
     override fun apply(project: Project) = with(project) {
         // apply dokka plugin
 //        pluginManager.apply(DokkaPlugin::class.java)
@@ -75,10 +78,11 @@ private fun Project.configureSubproject() {
 
 @Suppress("LongMethod", "MagicNumber")
 private fun KotlinMultiplatformExtension.configureTargets(project: Project) {
+    val libs = project.the<LibrariesForLibs>()
     targets {
         jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(20))
-            vendor.set(JvmVendorSpec.AZUL)
+            languageVersion.set(JavaLanguageVersion.of(libs.versions.jvm.language.get()))
+//            vendor.set(JvmVendorSpec.AZUL)
         }
 
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -92,17 +96,15 @@ private fun KotlinMultiplatformExtension.configureTargets(project: Project) {
         jvm {
             compilations.configureEach {
                 compilerOptions.configure {
-                    jvmTarget.set(JvmTarget.JVM_11)
-                    freeCompilerArgs.addAll(
-                        "-Xjvm-default=all"
-                    )
+                    jvmTarget.set(JvmTarget.valueOf("JVM_${libs.versions.jvm.compiler.get()}"))
                 }
             }
-//            val main = compilations.getByName("main")
         }
         linuxX64()
         linuxArm64()
-
-
+    }
+    project.tasks.withType(JavaCompile::class.java) {
+        sourceCompatibility = libs.versions.jvm.language.get()
+        targetCompatibility = libs.versions.jvm.compiler.get()
     }
 }

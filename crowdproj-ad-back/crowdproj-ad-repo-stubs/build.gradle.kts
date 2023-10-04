@@ -13,7 +13,7 @@ kotlin {
                 implementation(project(":crowdproj-ad-common"))
                 implementation(project(":crowdproj-ad-stubs"))
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation(libs.coroutines.core)
 
             }
         }

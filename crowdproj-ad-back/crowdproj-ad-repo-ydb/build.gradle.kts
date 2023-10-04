@@ -48,8 +48,8 @@ kotlin {
             dependencies {
                 implementation(project(":crowdproj-ad-common"))
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-                implementation("com.benasher44:uuid:$uuidVersion")
+                implementation(libs.kotlinx.serialization.core)
+                implementation(libs.uuid)
 
             }
         }

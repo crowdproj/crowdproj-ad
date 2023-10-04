@@ -23,9 +23,9 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.activity:activity-compose:1.7.2")
-                api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.10.1")
+                api(libs.compose.activity)
+                api(libs.androidx.appcompat)
+                api(libs.androidx.core)
             }
         }
         val desktopMain by getting {
@@ -47,7 +47,7 @@ android {
         minSdk = libs.versions.sdk.min.get().toInt()
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.jvm.compiler.get()}")
+        sourceCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.jvm.language.get()}")
         targetCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.jvm.compiler.get()}")
     }
     kotlin {

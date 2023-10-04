@@ -25,16 +25,14 @@ val embeddings = layout.buildDirectory.dir("generate-resources/main/src/commonMa
 
 kotlin {
     sourceSets {
-        val serializationVersion: String by project
-
         val commonMain by getting {
 
             kotlin.srcDirs(embeddings)
             dependencies {
                 implementation(kotlin("stdlib-common"))
 
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+                implementation(libs.kotlinx.serialization.core)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
 
@@ -58,7 +56,7 @@ tasks {
         group = "swagger"
         destinationDir = file("${layout.buildDirectory.get()}/swagger")
 //    dependsOn(apiSpec.asPath)
-        from("$rootDir/specs") {
+        from("${rootDir.parent}/specs") {
             into("specs")
             filter {
                 // Устанавливаем версию в сваггере

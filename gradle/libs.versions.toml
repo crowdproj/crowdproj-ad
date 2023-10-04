@@ -5,71 +5,82 @@ dokka = "1.8.20"
 kotlinx-serialization = "1.6.0"
 muschko = "9.3.3"
 crowdproj-generator = "0.2.0"
-android-libs = "8.0.2"
-#android-libs = "8.1.0"
-#android-libs = "8.2.0-beta06"
 binaryCompabilityValidator = "0.13.2"
 #toolchainsResolver = "0.5.0"
 detekt = "1.23.1"
 mavenPublish = "0.25.3"
 
-# both
-compose = "1.5.2"
-
 # libs
 coroutines = "1.7.3"
-#lincheck = "2.17"
-#statelyIso = "1.2.5"
-#statelyIso = "2.0.4"
+logback = "1.4.8"
+ktor = "2.3.4"
 
 # BASE
-jvm-compiler = "17"
-jvm-language = "19"
-junit = "4.13.2"
-runner = "1.0.2"
-espresso-core = "3.0.2"
-appcompat-v7 = "28.0.0"
-constraint-layout = "2.0.4"
-livedata = "1.1.1"
-viewmodel = "1.1.1"
-navigation-fragment-ktx = "1.0.0"
-navigation-ui-ktx = "1.0.0"
-design = "28.0.0"
+jvm-compiler = "11"
+jvm-language = "17"
 
 #Compose
+#android-libs = "8.0.2"
+android-libs = "8.1.0"
+#android-libs = "8.2.0-beta06"
 sdk-min = "26"
 sdk-compile = "34"
 androidx-compose-bom = "2023.09.02"
 #androidx-compose-bom = "2023.06.01"
-
+compose = "1.5.2"
 
 [libraries]
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 plugin-binaryCompatibilityValidator = { module = "org.jetbrains.kotlinx:binary-compatibility-validator", version.ref = "binaryCompabilityValidator" }
-plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
-plugin-detektFormatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt"}
-plugin-mavenPublish = { module ="com.vanniktech:gradle-maven-publish-plugin", version.ref = "mavenPublish" }
+#plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+#plugin-detektFormatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt"}
+plugin-mavenPublish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "mavenPublish" }
 
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.22.0" }
 datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.1" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
+cor = { module = "com.crowdproj:kotlin-cor", version = "0.5.7" }
+
+#general
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+logback-access = { module = "ch.qos.logback:logback-access", version.ref = "logback" }
+slf4j = "org.slf4j:slf4j-api:2.0.7"
+uuid = "com.benasher44:uuid:0.8.1"
+cache4k = "io.github.reactivecircus.cache4k:cache4k:0.13.0-local"
 
 #compose
-androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
+#androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
+compose-activity = "androidx.activity:activity-compose:1.7.2"
 
 # android
-runner = { group = "com.android.support.test", name = "runner", version.ref = "runner" }
-espresso-core = { group = "com.android.support.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
-appcompat-v7 = { group = "com.android.support", name = "appcompat-v7", version.ref = "appcompat-v7" }
-constraint-layout = { group = "com.android.support.constraint", name = "constraint-layout", version.ref = "constraint-layout" }
-livedata = { group = "android.arch.lifecycle", name = "livedata", version.ref = "livedata" }
-viewmodel = { group = "android.arch.lifecycle", name = "viewmodel", version.ref = "viewmodel" }
-navigation-fragment-ktx = { group = "android.arch.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
-navigation-ui-ktx = { group = "android.arch.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
-design = { group = "com.android.support", name = "design", version.ref = "design" }
+androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
+androidx-core = "androidx.core:core-ktx:1.12.0"
+
+#ktor
+ktor-serialization = { module = "io.ktor:ktor-serialization", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+#ktor-server
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
+ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
+ktor-server-caching-headers = { module = "io.ktor:ktor-server-caching-headers", version.ref = "ktor" }
+ktor-server-auto-head-response = { module = "io.ktor:ktor-server-auto-head-response", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
+ktor-server-call-id = { module = "io.ktor:ktor-server-call-id", version.ref = "ktor" }
+ktor-server-config-yaml = { module = "io.ktor:ktor-server-config-yaml", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
+
+#ktor-client
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

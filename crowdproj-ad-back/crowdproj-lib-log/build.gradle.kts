@@ -25,10 +25,10 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation("ch.qos.logback:logback-classic:$logbackVersion")
-                implementation("ch.qos.logback:logback-access:$logbackVersion")
+                implementation(libs.logback.classic)
+                implementation(libs.logback.access)
 
-                implementation("org.slf4j:slf4j-api:$slf4jVersion")
+                implementation(libs.slf4j)
             }
         }
         val jvmTest by getting {
