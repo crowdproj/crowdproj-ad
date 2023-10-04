@@ -1,5 +1,4 @@
 plugins {
-    id("com.crowdproj.plugin.autoversion") version "0.0.5"
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.kotlin.android) apply false
@@ -8,18 +7,10 @@ plugins {
     alias(libs.plugins.compose) apply false
 }
 
-group = "com.crowdproj.ad"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
-}
-
-autoversion {
-    shoudIncrement.set(false)
-}
-
 allprojects {
+    group = "com.crowdproj.ad.front"
+    version = "1.0-SNAPSHOT"
+
     repositories {
         google()
         mavenCentral()

@@ -37,8 +37,10 @@ navigation-ui-ktx = "1.0.0"
 design = "28.0.0"
 
 #Compose
-#androidx-compose-bom = "2023.09.02"
-androidx-compose-bom = "2023.06.01"
+sdk-min = "26"
+sdk-compile = "34"
+androidx-compose-bom = "2023.09.02"
+#androidx-compose-bom = "2023.06.01"
 
 
 [libraries]

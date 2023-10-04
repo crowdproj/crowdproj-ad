@@ -1,5 +1,3 @@
-rootProject.name = "crowdproj-ad-common"
-
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
