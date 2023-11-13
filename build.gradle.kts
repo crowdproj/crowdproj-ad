@@ -1,8 +1,11 @@
 plugins {
-    kotlin("jvm") apply false
-    kotlin("multiplatform") apply false
-//    id("org.ysb33r.terraform.wrapper") version "1.0.0"
-    id("com.crowdproj.plugin.autoversion")
+    id("com.crowdproj.plugin.autoversion") version "0.0.5"
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.compose) apply false
 }
 
 group = "com.crowdproj.ad"
@@ -13,27 +16,13 @@ repositories {
 }
 
 autoversion {
-    shoudIncrement = false
+    shoudIncrement.set(false)
 }
 
-subprojects {
-    this.group = rootProject.group
-    this.version = rootProject.version
-
+allprojects {
     repositories {
+        google()
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
-}
-
-afterEvaluate {
-    val deploy: Task by tasks.creating {
-        println("VER: ${project.version}")
-        group = "build"
-        dependsOn("build")
-        dependsOn(project(":crowdproj-ad-app-ktor").getTasksByName("deploy",false))
-    }
-}
-
-afterEvaluate {
-    println("VERSION: ${project.version}")
 }
