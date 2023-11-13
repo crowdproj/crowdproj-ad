@@ -30,10 +30,7 @@ kotlin {
     linuxArm64 {}
 
     sourceSets {
-        val serializationVersion: String by project
-
         val commonMain by getting {
-
             kotlin.srcDirs("${layout.buildDirectory.get()}/generate-resources/main/src/commonMain/kotlin")
             dependencies {
                 implementation(kotlin("stdlib-common"))

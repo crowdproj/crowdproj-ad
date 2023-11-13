@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.repository.gremlin.mappers
+package com.crowdproj.ad.backend.repository.gremlin.mappers
 
 import com.crowdproj.ad.common.models.CwpAd
 

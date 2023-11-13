@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.repository.gremlin
+package com.crowdproj.ad.backend.repository.gremlin
 
 object CwpAdGremlinConst {
     const val RESULT_SUCCESS = "success"

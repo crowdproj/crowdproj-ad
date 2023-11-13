@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.repository.gremlin
+package com.crowdproj.ad.backend.repository.gremlin
 
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait

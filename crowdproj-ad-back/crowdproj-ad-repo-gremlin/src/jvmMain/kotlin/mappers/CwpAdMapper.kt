@@ -1,21 +1,21 @@
-package ru.otus.otuskotlin.marketplace.backend.repository.gremlin.mappers
+package com.crowdproj.ad.backend.repository.gremlin.mappers
 
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_AD_TYPE
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_DESCRIPTION
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_ID
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_LOCK
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_OWNER_ID
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_PRODUCT_ID
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TITLE
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TMP_RESULT
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_VISIBILITY
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.RESULT_SUCCESS
 import com.crowdproj.ad.common.models.*
+import exceptions.WrongEnumException
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.`__` as gr
 import org.apache.tinkerpop.gremlin.structure.Vertex
 import org.apache.tinkerpop.gremlin.structure.VertexProperty
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_AD_TYPE
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_DESCRIPTION
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_ID
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_LOCK
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_OWNER_ID
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_PRODUCT_ID
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TITLE
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TMP_RESULT
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_VISIBILITY
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.RESULT_SUCCESS
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.exceptions.WrongEnumException
 
 fun GraphTraversal<Vertex, Vertex>.addCwpAd(ad: CwpAd): GraphTraversal<Vertex, Vertex> =
     this

@@ -1,8 +1,16 @@
-package ru.otus.otuskotlin.marketplace.backend.repository.gremlin
+package com.crowdproj.ad.backend.repository.gremlin
 
-import com.benasher44.uuid.uuid4
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_AD_TYPE
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_LOCK
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_OWNER_ID
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TITLE
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TMP_RESULT
+import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.RESULT_LOCK_FAILURE
+import com.crowdproj.ad.backend.repository.gremlin.mappers.addCwpAd
+import com.crowdproj.ad.backend.repository.gremlin.mappers.label
+import com.crowdproj.ad.backend.repository.gremlin.mappers.listCwpAd
+import com.crowdproj.ad.backend.repository.gremlin.mappers.toCwpAd
 import com.crowdproj.ad.common.helpers.asCwpAdError
-import com.crowdproj.ad.common.helpers.errorAdministration
 import com.crowdproj.ad.common.helpers.errorRepoConcurrency
 import com.crowdproj.ad.common.models.*
 import com.crowdproj.ad.common.repo.*
@@ -11,62 +19,41 @@ import org.apache.tinkerpop.gremlin.driver.exception.ResponseException
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection
 import org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal
 import org.apache.tinkerpop.gremlin.process.traversal.TextP
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource
 import org.apache.tinkerpop.gremlin.structure.Vertex
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_AD_TYPE
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_LOCK
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_OWNER_ID
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TITLE
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TMP_RESULT
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.CwpAdGremlinConst.RESULT_LOCK_FAILURE
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.exceptions.DbDuplicatedElementsException
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.mappers.addCwpAd
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.mappers.label
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.mappers.listCwpAd
-import ru.otus.otuskotlin.marketplace.backend.repository.gremlin.mappers.toCwpAd
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.`__` as gr
 
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+actual class CwpAdRepoGremlin actual constructor(private val conf: CwpAdRepoGremlinConf) : IAdRepository {
 
-class CwpAdRepoGremlin(
-    private val hosts: String,
-    private val port: Int = 8182,
-    private val enableSsl: Boolean = false,
-    private val user: String = "root",
-    private val pass: String = "",
-    initObjects: Collection<CwpAd> = emptyList(),
-    initRepo: ((GraphTraversalSource) -> Unit)? = null,
-    val randomUuid: () -> String = { uuid4().toString() },
-) : IAdRepository {
-
-    val initializedObjects: List<CwpAd>
+    actual val initializedObjects: List<CwpAd>
 
     private val cluster by lazy {
         Cluster.build().apply {
-            addContactPoints(*hosts.split(Regex("\\s*,\\s*")).toTypedArray())
-            port(port)
-            credentials(user, pass)
-            enableSsl(enableSsl)
+            addContactPoints(*conf.hosts.split(Regex("\\s*,\\s*")).toTypedArray())
+            port(conf.port)
+            credentials(conf.user, conf.pass)
+            enableSsl(conf.enableSsl)
         }.create()
     }
     private val g by lazy { traversal().withRemote(DriverRemoteConnection.using(cluster)) }
 
     init {
-        if (initRepo != null) {
-            initRepo(g)
+        if (conf.mustClean) {
+            g.V().drop().iterate()
         }
-        initializedObjects = initObjects.map { save(it) }
+        initializedObjects = conf.initObjects.map { save(it) }
     }
 
-    private fun save(ad: CwpAd): CwpAd = g.addV(ad.label())
+    actual fun save(ad: CwpAd): CwpAd = g.addV(ad.label())
         .addCwpAd(ad)
         .listCwpAd()
         .next()
         ?.toCwpAd()
         ?: throw RuntimeException("Cannot initialize object $ad")
 
-    override suspend fun createAd(rq: DbAdRequest): DbAdResponse {
-        val key = randomUuid()
-        val ad = rq.ad.copy(id = CwpAdId(key), lock = CwpAdLock(randomUuid()))
+    actual override suspend fun createAd(rq: DbAdRequest): DbAdResponse {
+        val key = conf.randomUuid()
+        val ad = rq.ad.copy(id = CwpAdId(key), lock = CwpAdLock(conf.randomUuid()))
         val dbRes = try {
             g.addV(ad.label())
                 .addCwpAd(ad)
@@ -93,7 +80,7 @@ class CwpAdRepoGremlin(
         }
     }
 
-    override suspend fun readAd(rq: DbAdIdRequest): DbAdResponse {
+    actual override suspend fun readAd(rq: DbAdIdRequest): DbAdResponse {
         val key = rq.id.takeIf { it != CwpAdId.NONE }?.asString() ?: return resultErrorEmptyId
         val dbRes = try {
             g.V(key).listCwpAd().toList()
@@ -118,10 +105,10 @@ class CwpAdRepoGremlin(
         }
     }
 
-    override suspend fun updateAd(rq: DbAdRequest): DbAdResponse {
+    actual override suspend fun updateAd(rq: DbAdRequest): DbAdResponse {
         val key = rq.ad.id.takeIf { it != CwpAdId.NONE }?.asString() ?: return resultErrorEmptyId
         val oldLock = rq.ad.lock.takeIf { it != CwpAdLock.NONE } ?: return resultErrorEmptyLock
-        val newLock = CwpAdLock(randomUuid())
+        val newLock = CwpAdLock(conf.randomUuid())
         val newAd = rq.ad.copy(lock = newLock)
         val dbRes = try {
             g
@@ -167,7 +154,7 @@ class CwpAdRepoGremlin(
         }
     }
 
-    override suspend fun deleteAd(rq: DbAdIdRequest): DbAdResponse {
+    actual override suspend fun deleteAd(rq: DbAdIdRequest): DbAdResponse {
         val key = rq.id.takeIf { it != CwpAdId.NONE }?.asString() ?: return resultErrorEmptyId
         val oldLock = rq.lock.takeIf { it != CwpAdLock.NONE } ?: return resultErrorEmptyLock
         val dbRes = try {
@@ -222,7 +209,7 @@ class CwpAdRepoGremlin(
      * Поиск объявлений по фильтру
      * Если в фильтре не установлен какой-либо из параметров - по нему фильтрация не идет
      */
-    override suspend fun searchAd(rq: DbAdFilterRequest): DbAdsResponse {
+    actual override suspend fun searchAd(rq: DbAdFilterRequest): DbAdsResponse {
         val result = try {
             g.V()
                 .apply { rq.ownerId.takeIf { it != CwpAdUserId.NONE }?.also { has(FIELD_OWNER_ID, it.asString()) } }
@@ -245,51 +232,5 @@ class CwpAdRepoGremlin(
         )
     }
 
-    companion object {
-        val resultErrorEmptyId = DbAdResponse(
-            data = null,
-            isSuccess = false,
-            errors = listOf(
-                CwpAdError(
-                    field = "id",
-                    message = "Id must not be null or blank"
-                )
-            )
-        )
-        val resultErrorEmptyLock = DbAdResponse(
-            data = null,
-            isSuccess = false,
-            errors = listOf(
-                CwpAdError(
-                    field = "lock",
-                    message = "Lock must be provided"
-                )
-            )
-        )
-
-        fun resultErrorNotFound(key: String, e: Throwable? = null) = DbAdResponse(
-            isSuccess = false,
-            data = null,
-            errors = listOf(
-                CwpAdError(
-                    code = "not-found",
-                    field = "id",
-                    message = "Not Found object with key $key",
-                    exception = e
-                )
-            )
-        )
-
-        fun errorDuplication(key: String) = DbAdResponse(
-            data = null,
-            isSuccess = false,
-            errors = listOf(
-                errorAdministration(
-                    violationCode = "duplicateObjects",
-                    description = "Database consistency failure",
-                    exception = DbDuplicatedElementsException("Db contains multiple elements for id = '$key'")
-                )
-            )
-        )
-    }
+    companion object: CwpAdRepoGremlinCompanion()
 }
