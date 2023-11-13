@@ -9,7 +9,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoAdReadTest {
     abstract val repo: IAdRepository
     protected open val readSucc = initObjects[0]

@@ -4,12 +4,9 @@ import com.crowdproj.ad.common.models.CwpAd
 import com.crowdproj.ad.common.models.CwpAdId
 import com.crowdproj.ad.common.repo.DbAdIdRequest
 import com.crowdproj.ad.common.repo.IAdRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-
-@OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoAdDeleteTest {
     abstract val repo: IAdRepository
     protected open val deleteSucc = initObjects[0]

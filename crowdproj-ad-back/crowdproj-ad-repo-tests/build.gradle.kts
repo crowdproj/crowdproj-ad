@@ -10,15 +10,16 @@ kotlin {
             dependencies {
                 implementation(project(":crowdproj-ad-common"))
 
+                api(kotlin("test-common"))
+                api(kotlin("test-annotations-common"))
+
+                api(libs.coroutines.test)
                 api(libs.coroutines.core)
             }
         }
-        val commonTest by getting {
+        val jvmMain by getting {
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
-
-                implementation(libs.coroutines.test)
+                implementation(kotlin("test-junit"))
             }
         }
     }

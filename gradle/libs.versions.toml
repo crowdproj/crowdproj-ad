@@ -29,6 +29,10 @@ androidx-compose-bom = "2023.09.02"
 #androidx-compose-bom = "2023.06.01"
 compose = "1.5.2"
 
+#DB
+arcadedb = "23.10.1"
+testcontainers = "1.17.6"
+
 [libraries]
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
@@ -54,7 +58,8 @@ cache4k = "io.github.reactivecircus.cache4k:cache4k:0.12.0"
 
 #compose
 #androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
-compose-activity = "androidx.activity:activity-compose:1.7.2"
+#compose-activity = "androidx.activity:activity-compose:1.7.2"
+compose-activity = "androidx.activity:activity-compose:1.8.0"
 
 # android
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
@@ -81,6 +86,13 @@ ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+
+#gremlin
+gremlin = { module = "org.apache.tinkerpop:gremlin-driver", version = "3.6.3" }
+arcadedb-engine = { module = "com.arcadedb:arcadedb-engine", version.ref = "arcadedb" }
+arcadedb-network = { module = "com.arcadedb:arcadedb-network", version.ref = "arcadedb" }
+arcadedb-gremlin = { module = "com.arcadedb:arcadedb-gremlin", version.ref = "arcadedb" }
+test-containers = {module = "org.testcontainers:testcontainers", version.ref = "testcontainers"}
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

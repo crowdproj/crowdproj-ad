@@ -10,7 +10,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoAdSearchTest {
     abstract val repo: IAdRepository
 
