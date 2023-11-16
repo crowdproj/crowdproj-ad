@@ -1,4 +1,4 @@
-package com.crowdproj.ad.backend.repository.gremlin
+package com.crowdproj.ad.backend.repo.gremlin
 
 import com.crowdproj.ad.common.repo.IAdRepository
 import com.crowdproj.ad.repo.tests.RepoAdCreateTest

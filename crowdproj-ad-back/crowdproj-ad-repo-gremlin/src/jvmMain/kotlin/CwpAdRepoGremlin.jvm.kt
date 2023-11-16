@@ -1,15 +1,15 @@
-package com.crowdproj.ad.backend.repository.gremlin
+package com.crowdproj.ad.backend.repo.gremlin
 
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_AD_TYPE
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_LOCK
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_OWNER_ID
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TITLE
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TMP_RESULT
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.RESULT_LOCK_FAILURE
-import com.crowdproj.ad.backend.repository.gremlin.mappers.addCwpAd
-import com.crowdproj.ad.backend.repository.gremlin.mappers.label
-import com.crowdproj.ad.backend.repository.gremlin.mappers.listCwpAd
-import com.crowdproj.ad.backend.repository.gremlin.mappers.toCwpAd
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_AD_TYPE
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_LOCK
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_OWNER_ID
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_TITLE
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_TMP_RESULT
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.LABEL_AD
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.RESULT_LOCK_FAILURE
+import com.crowdproj.ad.backend.repo.gremlin.mappers.addCwpAd
+import com.crowdproj.ad.backend.repo.gremlin.mappers.listCwpAd
+import com.crowdproj.ad.backend.repo.gremlin.mappers.toCwpAd
 import com.crowdproj.ad.common.helpers.asCwpAdError
 import com.crowdproj.ad.common.helpers.errorRepoConcurrency
 import com.crowdproj.ad.common.models.*
@@ -44,7 +44,7 @@ actual class CwpAdRepoGremlin actual constructor(private val conf: CwpAdRepoGrem
         initializedObjects = conf.initObjects.map { save(it) }
     }
 
-    actual fun save(ad: CwpAd): CwpAd = g.addV(ad.label())
+    actual fun save(ad: CwpAd): CwpAd = g.addV(LABEL_AD)
         .addCwpAd(ad)
         .listCwpAd()
         .next()
@@ -55,7 +55,7 @@ actual class CwpAdRepoGremlin actual constructor(private val conf: CwpAdRepoGrem
         val key = conf.randomUuid()
         val ad = rq.ad.copy(id = CwpAdId(key), lock = CwpAdLock(conf.randomUuid()))
         val dbRes = try {
-            g.addV(ad.label())
+            g.addV(LABEL_AD)
                 .addCwpAd(ad)
                 .listCwpAd()
                 .toList()

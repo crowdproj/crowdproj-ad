@@ -1,4 +1,4 @@
-package com.crowdproj.ad.backend.repository.gremlin
+package com.crowdproj.ad.backend.repo.gremlin
 
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait

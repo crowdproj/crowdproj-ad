@@ -36,8 +36,8 @@ class CwpAdSearchTest {
                 lock = CwpAdLock("234"),
                 title = "ti",
                 description = "des",
-                ownerId = CwpAdUserId("567"),
-                adType = CwpAdDealSide.DEMAND,
+                owner_id = CwpAdUserId("567"),
+                ad_type = CwpAdDealSide.DEMAND,
                 visibility = CwpAdVisibility.VISIBLE_PUBLIC,
                 productId = CwpAdProductId("789"),
                 permissionsClient = mutableSetOf(
@@ -52,8 +52,8 @@ class CwpAdSearchTest {
                     lock = CwpAdLock("a234"),
                     title = "ati",
                     description = "ades",
-                    ownerId = CwpAdUserId("a567"),
-                    adType = CwpAdDealSide.SUPPLY,
+                    owner_id = CwpAdUserId("a567"),
+                    ad_type = CwpAdDealSide.SUPPLY,
                     visibility = CwpAdVisibility.VISIBLE_TO_OWNER,
                     productId = CwpAdProductId("a789"),
                     permissionsClient = mutableSetOf(
@@ -71,10 +71,10 @@ class CwpAdSearchTest {
         assertNotNull(ad)
         assertEquals("a123", ad.id)
         assertEquals("a234", ad.lock)
-        assertEquals("a567", ad.ownerId)
+        assertEquals("a567", ad.owner_id)
         assertEquals("ati", ad.title)
         assertEquals("ades", ad.description)
-        assertEquals(DealSide.SUPPLY, ad.adType)
+        assertEquals(DealSide.SUPPLY, ad.ad_type)
         assertEquals(AdVisibility.OWNER_ONLY, ad.visibility)
         assertEquals("a789", ad.productId)
         assertContains(ad.permissions ?: emptySet(), AdPermissions.READ)

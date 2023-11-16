@@ -1,9 +1,9 @@
-package com.crowdproj.ad.backend.repository.gremlin
+package com.crowdproj.ad.backend.repo.gremlin
 
+import com.crowdproj.ad.backend.repo.gremlin.exceptions.DbDuplicatedElementsException
 import com.crowdproj.ad.common.helpers.errorAdministration
 import com.crowdproj.ad.common.models.CwpAdError
 import com.crowdproj.ad.common.repo.DbAdResponse
-import exceptions.DbDuplicatedElementsException
 
 open class CwpAdRepoGremlinCompanion {
     val resultErrorEmptyId = DbAdResponse(

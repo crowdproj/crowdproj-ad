@@ -1,12 +1,32 @@
 import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
+import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("backend-convention")
 }
 
 val generatedPath: Provider<Directory> = layout.buildDirectory.dir("generated/main/kotlin")
+
+val rustDir: Directory = project(":crowdproj-ad-rust").layout.projectDirectory
+val rustTargetDir: String by project
+val rustIncludesDir: String by project
+val rustLibDirX64: String by project
+val rustLibDirArm64: String by project
+val rustLibDirX64Debug: String by project
+val rustLibDirArm64Debug: String by project
+
 kotlin {
     jvm { withJava() }
+    linuxArm64 {
+        prepareNative()
+    }
+    linuxX64 {
+        prepareNative()
+    }
+
     sourceSets {
         val commonMain by getting {
             kotlin.srcDirs(generatedPath)
@@ -54,18 +74,31 @@ tasks {
             ensureParentDirsCreated()
             writeText(
                 """
-                    package ${project.group}.backend.repository.gremlin
+                    package ${project.group}.backend.repo.gremlin
 
                     const val ARCADEDB_VERSION = "$arcadeDbVersion"
                 """.trimIndent()
             )
         }
     }
-//    withType(CompileTask::class) {
-
-//    }
-    withType(AbstractNativeCompileTask::class) {
+    withType(KotlinCompile::class.java) {
         dependsOn(gradleConstants)
     }
-//    compileKotlin.get().dependsOn(gradleConstants)
+    withType(CInteropProcess::class) {
+        dependsOn(gradleConstants)
+        dependsOn(project(":crowdproj-ad-rust").getTasksByName("build", false))
+        inputs.file(rustDir.dir(rustIncludesDir).file("cwp-ad-repo-gremlin-rust.h"))
+    }
+    withType(KotlinNativeTest::class) {
+        environment("LD_LIBRARY_PATH", rustDir.dir(rustLibDirX64).toString())
+        environment("RUST_BACKTRACE","full")
+    }
+}
+
+fun KotlinNativeTarget.prepareNative() {
+    compilations.getByName("main") {
+        cinterops {
+            val gremlinRust by creating
+        }
+    }
 }

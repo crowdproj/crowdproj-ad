@@ -1,17 +1,22 @@
-package com.crowdproj.ad.backend.repository.gremlin.mappers
+package com.crowdproj.ad.backend.repo.gremlin.mappers
 
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_AD_TYPE
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_DESCRIPTION
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_ID
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_LOCK
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_OWNER_ID
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_PRODUCT_ID
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TITLE
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_TMP_RESULT
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.FIELD_VISIBILITY
-import com.crowdproj.ad.backend.repository.gremlin.CwpAdGremlinConst.RESULT_SUCCESS
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_AD_TYPE
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_AD_TYPE_DEMAND
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_AD_TYPE_SUPPLY
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_DESCRIPTION
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_ID
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_LOCK
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_OWNER_ID
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_PRODUCT_ID
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_TITLE
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_TMP_RESULT
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_VISIBILITY
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_VISIBILITY_GROUP
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_VISIBILITY_OWNER
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.FIELD_VISIBILITY_PUBLIC
+import com.crowdproj.ad.backend.repo.gremlin.CwpAdGremlinConst.RESULT_SUCCESS
+import com.crowdproj.ad.backend.repo.gremlin.exceptions.WrongEnumException
 import com.crowdproj.ad.common.models.*
-import exceptions.WrongEnumException
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.`__` as gr
 import org.apache.tinkerpop.gremlin.structure.Vertex
@@ -26,19 +31,30 @@ fun GraphTraversal<Vertex, Vertex>.addCwpAd(ad: CwpAd): GraphTraversal<Vertex, V
             VertexProperty.Cardinality.single,
             FIELD_OWNER_ID,
             ad.ownerId.asString().takeIf { it.isNotBlank() }) // здесь можно сделать ссылку на объект владельца
-        .property(VertexProperty.Cardinality.single, FIELD_AD_TYPE, ad.adType.takeIf { it != CwpAdDealSide.NONE }?.name)
-        .property(
-            VertexProperty.Cardinality.single,
-            FIELD_VISIBILITY,
-            ad.visibility.takeIf { it != CwpAdVisibility.NONE }?.name
-        )
+        .property(VertexProperty.Cardinality.single, FIELD_AD_TYPE, ad.adType.toStore())
+        .property(VertexProperty.Cardinality.single, FIELD_VISIBILITY, ad.visibility.toStore())
         .property(
             VertexProperty.Cardinality.single,
             FIELD_PRODUCT_ID,
             ad.productId.takeIf { it != CwpAdProductId.NONE }?.asString()
         )
 
-fun GraphTraversal<Vertex, Vertex>.listCwpAd(result: String = RESULT_SUCCESS): GraphTraversal<Vertex, MutableMap<String, Any>> =
+private fun CwpAdDealSide.toStore(): String? = when (this) {
+    CwpAdDealSide.SUPPLY -> FIELD_AD_TYPE_SUPPLY
+    CwpAdDealSide.DEMAND -> FIELD_AD_TYPE_DEMAND
+    CwpAdDealSide.NONE -> null
+}
+
+private fun CwpAdVisibility.toStore(): String? = when (this) {
+    CwpAdVisibility.VISIBLE_PUBLIC -> FIELD_VISIBILITY_PUBLIC
+    CwpAdVisibility.VISIBLE_TO_GROUP -> FIELD_VISIBILITY_GROUP
+    CwpAdVisibility.VISIBLE_TO_OWNER -> FIELD_VISIBILITY_OWNER
+    CwpAdVisibility.NONE -> null
+}
+
+fun GraphTraversal<Vertex, Vertex>.listCwpAd(
+    result: String = RESULT_SUCCESS
+): GraphTraversal<Vertex, MutableMap<String, Any>> =
     project<Any?>(
         FIELD_ID,
         FIELD_OWNER_ID,
@@ -69,8 +85,8 @@ fun Map<String, Any?>.toCwpAd(): CwpAd = CwpAd(
     title = (this[FIELD_TITLE] as? String) ?: "",
     description = (this[FIELD_DESCRIPTION] as? String) ?: "",
     adType = when (val value = this[FIELD_AD_TYPE] as? String) {
-        CwpAdDealSide.SUPPLY.name -> CwpAdDealSide.SUPPLY
-        CwpAdDealSide.DEMAND.name -> CwpAdDealSide.DEMAND
+        FIELD_AD_TYPE_DEMAND -> CwpAdDealSide.DEMAND
+        FIELD_AD_TYPE_SUPPLY -> CwpAdDealSide.SUPPLY
         null -> CwpAdDealSide.NONE
         else -> throw WrongEnumException(
             "Cannot convert object from DB. " +
@@ -78,9 +94,9 @@ fun Map<String, Any?>.toCwpAd(): CwpAd = CwpAd(
         )
     },
     visibility = when (val value = this[FIELD_VISIBILITY]) {
-        CwpAdVisibility.VISIBLE_PUBLIC.name -> CwpAdVisibility.VISIBLE_PUBLIC
-        CwpAdVisibility.VISIBLE_TO_GROUP.name -> CwpAdVisibility.VISIBLE_TO_GROUP
-        CwpAdVisibility.VISIBLE_TO_OWNER.name -> CwpAdVisibility.VISIBLE_TO_OWNER
+        FIELD_VISIBILITY_PUBLIC -> CwpAdVisibility.VISIBLE_PUBLIC
+        FIELD_VISIBILITY_GROUP -> CwpAdVisibility.VISIBLE_TO_GROUP
+        FIELD_VISIBILITY_OWNER -> CwpAdVisibility.VISIBLE_TO_OWNER
         null -> CwpAdVisibility.NONE
         else -> throw WrongEnumException(
             "Cannot convert object from DB. " +

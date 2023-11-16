@@ -36,8 +36,8 @@ class CwpAdOffersTest {
                 lock = CwpAdLock("234"),
                 title = "ti",
                 description = "des",
-                ownerId = CwpAdUserId("567"),
-                adType = CwpAdDealSide.DEMAND,
+                owner_id = CwpAdUserId("567"),
+                ad_type = CwpAdDealSide.DEMAND,
                 visibility = CwpAdVisibility.VISIBLE_PUBLIC,
                 productId = CwpAdProductId("789"),
                 permissionsClient = mutableSetOf(
@@ -52,8 +52,8 @@ class CwpAdOffersTest {
                     lock = CwpAdLock("a234"),
                     title = "ati",
                     description = "ades",
-                    ownerId = CwpAdUserId("a567"),
-                    adType = CwpAdDealSide.SUPPLY,
+                    owner_id = CwpAdUserId("a567"),
+                    ad_type = CwpAdDealSide.SUPPLY,
                     visibility = CwpAdVisibility.VISIBLE_TO_OWNER,
                     productId = CwpAdProductId("a789"),
                     permissionsClient = mutableSetOf(
@@ -69,10 +69,10 @@ class CwpAdOffersTest {
         assertEquals("111", api.requestId)
         assertEquals("123", api.ad?.id)
         assertEquals("234", api.ad?.lock)
-        assertEquals("567", api.ad?.ownerId)
+        assertEquals("567", api.ad?.owner_id)
         assertEquals("ti", api.ad?.title)
         assertEquals("des", api.ad?.description)
-        assertEquals(DealSide.DEMAND, api.ad?.adType)
+        assertEquals(DealSide.DEMAND, api.ad?.ad_type)
         assertEquals(AdVisibility.PUBLIC, api.ad?.visibility)
         assertEquals("789", api.ad?.productId)
         assertContains(api.ad?.permissions ?: emptySet(), AdPermissions.READ)
@@ -82,10 +82,10 @@ class CwpAdOffersTest {
         assertNotNull(ad)
         assertEquals("a123", ad.id)
         assertEquals("a234", ad.lock)
-        assertEquals("a567", ad.ownerId)
+        assertEquals("a567", ad.owner_id)
         assertEquals("ati", ad.title)
         assertEquals("ades", ad.description)
-        assertEquals(DealSide.SUPPLY, ad.adType)
+        assertEquals(DealSide.SUPPLY, ad.ad_type)
         assertEquals(AdVisibility.OWNER_ONLY, ad.visibility)
         assertEquals("a789", ad.productId)
         assertContains(ad.permissions ?: emptySet(), AdPermissions.READ)

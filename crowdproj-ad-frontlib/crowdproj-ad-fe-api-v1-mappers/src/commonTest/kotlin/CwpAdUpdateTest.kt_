@@ -22,7 +22,7 @@ class CwpAdUpdateTest {
                 lock = "12345",
                 title = "ti",
                 description = "des",
-                adType = DealSide.DEMAND,
+                ad_type = DealSide.DEMAND,
                 visibility = AdVisibility.PUBLIC,
                 productId = "98798",
             ),
@@ -35,7 +35,7 @@ class CwpAdUpdateTest {
         assertEquals("12345", ctx.adRequest.lock.asString())
         assertEquals("ti", ctx.adRequest.title)
         assertEquals("des", ctx.adRequest.description)
-        assertEquals(CwpAdDealSide.DEMAND, ctx.adRequest.adType)
+        assertEquals(CwpAdDealSide.DEMAND, ctx.adRequest.ad_type)
         assertEquals(CwpAdVisibility.VISIBLE_PUBLIC, ctx.adRequest.visibility)
         assertEquals("98798", ctx.adRequest.productId.asString())
         assertEquals(CwpAdCommand.UPDATE, ctx.command)
@@ -50,8 +50,8 @@ class CwpAdUpdateTest {
                 lock = CwpAdLock("234"),
                 title = "ti",
                 description = "des",
-                ownerId = CwpAdUserId("567"),
-                adType = CwpAdDealSide.DEMAND,
+                owner_id = CwpAdUserId("567"),
+                ad_type = CwpAdDealSide.DEMAND,
                 visibility = CwpAdVisibility.VISIBLE_PUBLIC,
                 productId = CwpAdProductId("789"),
                 permissionsClient = mutableSetOf(
@@ -66,10 +66,10 @@ class CwpAdUpdateTest {
         assertEquals("111", api.requestId)
         assertEquals("123", api.ad?.id)
         assertEquals("234", api.ad?.lock)
-        assertEquals("567", api.ad?.ownerId)
+        assertEquals("567", api.ad?.owner_id)
         assertEquals("ti", api.ad?.title)
         assertEquals("des", api.ad?.description)
-        assertEquals(DealSide.DEMAND, api.ad?.adType)
+        assertEquals(DealSide.DEMAND, api.ad?.ad_type)
         assertEquals(AdVisibility.PUBLIC, api.ad?.visibility)
         assertEquals("789", api.ad?.productId)
         assertContains(api.ad?.permissions ?: emptySet(), AdPermissions.READ)
