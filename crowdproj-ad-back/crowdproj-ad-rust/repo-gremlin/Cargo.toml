@@ -1,0 +1,20 @@
+[package]
+name = "cwp_ad_repo_gremlin"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gremlin-client = { version = "0.8.5", features = ["async-std-runtime", "derive"] }
+#gremlin-client = { version = "0.8.5", features = ["tokio-runtime"] }
+futures = "0.3"
+indoc = "2"
+
+[dependencies.openssl-sys]
+version = "0.9"
+features = ["vendored"]
+
+[build-dependencies]
+cbindgen = "0.26.0"
+
+[lib]
+crate_type = ["cdylib"]

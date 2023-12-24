@@ -4,15 +4,14 @@ import com.crowdproj.ad.common.models.CwpAd
 import com.crowdproj.ad.common.models.CwpAdId
 import com.crowdproj.ad.common.repo.DbAdIdRequest
 import com.crowdproj.ad.common.repo.IAdRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoAdReadTest {
     abstract val repo: IAdRepository
     protected open val readSucc = initObjects[0]
+    protected open val notFoundId = CwpAdId("ad-repo-read-notFound")
 
     @Test
     fun readSuccess() = runRepoTest {
@@ -37,8 +36,5 @@ abstract class RepoAdReadTest {
         override val initObjects: List<CwpAd> = listOf(
             createInitTestModel("read")
         )
-
-        val notFoundId = CwpAdId("ad-repo-read-notFound")
-
     }
 }

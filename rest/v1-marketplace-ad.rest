@@ -15,7 +15,7 @@ X-Request-Id: rq-b7936414-ee9f-11ed-a05b-0242ac120003
     "title": "Болт",
     "description": "КРУТЕЙШИЙ",
     "visibility": "public",
-    "adType": "demand"
+    "ad_type": "demand"
   },
   "debug": {
     "mode": "stub",
@@ -67,7 +67,7 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2Vyc
   "requestType": "update",
   "requestId": "666",
   "ad": {
-    "adType": "proposal",
+    "ad_type": "proposal",
     "id": "updated",
     "visibility": "ownerOnly"
   },

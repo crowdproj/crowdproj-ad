@@ -1,6 +1,7 @@
 rootProject.name = "crowdproj-ad"
 
-includeBuild("crowdproj-ad-common")
+includeBuild("crowdproj-ad-docs")
+includeBuild("crowdproj-ad-shared")
 includeBuild("crowdproj-ad-back")
 includeBuild("crowdproj-ad-frontlib")
 

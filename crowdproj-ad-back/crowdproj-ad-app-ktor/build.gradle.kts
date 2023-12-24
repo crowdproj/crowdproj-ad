@@ -106,9 +106,9 @@ kotlin {
         }
 
         val nativeMain by getting {
-            dependencies {
-                dependsOn(commonMain)
-            }
+            dependsOn(commonMain)
+//            dependencies {
+//            }
         }
 
         val linuxX64Main by getting {
@@ -190,7 +190,7 @@ tasks {
     val registryPass: String? = System.getenv("CONTAINER_REGISTRY_PASS")
     val registryHost: String? = System.getenv("CONTAINER_REGISTRY_HOST")
     val registryPref: String? = System.getenv("CONTAINER_REGISTRY_PREF")
-    val imageName = registryPref?.let { "$it/${project.name}" } ?: project.name.toString()
+    val imageName = registryPref?.let { "$it/${project.name}" } ?: project.name
 
     val dockerBuildX64Image by creating(DockerBuildImage::class) {
         group = "docker"

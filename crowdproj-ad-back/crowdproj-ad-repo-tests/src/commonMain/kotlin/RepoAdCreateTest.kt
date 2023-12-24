@@ -3,13 +3,11 @@ package com.crowdproj.ad.repo.tests
 import com.crowdproj.ad.common.models.*
 import com.crowdproj.ad.common.repo.DbAdRequest
 import com.crowdproj.ad.common.repo.IAdRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoAdCreateTest {
     abstract val repo: IAdRepository
 

@@ -50,12 +50,14 @@ fun errorAdministration(
     violationCode: String,
     description: String,
     level: CwpAdError.Level = CwpAdError.Level.ERROR,
+    exception: Throwable? = null,
 ) = CwpAdError(
     field = field,
     code = "administration-$violationCode",
     group = "administration",
     message = "Microservice management error: $description",
     level = level,
+    exception = exception,
 )
 
 fun errorRepoConcurrency(

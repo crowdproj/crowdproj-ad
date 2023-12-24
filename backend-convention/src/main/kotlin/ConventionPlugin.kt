@@ -49,7 +49,7 @@ private fun Project.configureSubproject() {
                 languageSettings.apply {
                     languageVersion = "1.9"
                     progressiveMode = true
-                    enableLanguageFeature("NewInference")
+//                    enableLanguageFeature("NewInference")
                     optIn("kotlin.time.ExperimentalTime")
                 }
             }
