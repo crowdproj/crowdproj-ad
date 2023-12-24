@@ -77,6 +77,9 @@ tasks {
     filter { it.name.startsWith("compile") }.forEach {
         it.dependsOn(openApiGenerate)
     }
+    build {
+        dependsOn("jvmJar")
+    }
 }
 
 crowdprojGenerate {
