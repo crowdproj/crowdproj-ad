@@ -68,7 +68,6 @@ kotlin {
 
                 implementation(project(":crowdproj-ad-common"))
 
-//                implementation(project(":crowdproj-ad-api-v1"))
                 implementation(project(":crowdproj-ad-api-v1-mappers"))
                 implementation(project(":crowdproj-ad-biz"))
                 implementation(project(":crowdproj-ad-repo-inmemory"))

@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.compose)
+    alias(libsfe.plugins.kotlin.multiplatform)
+    alias(libsfe.plugins.compose)
 }
 
 kotlin {
@@ -11,7 +11,6 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 implementation(compose.foundation)
                 implementation(compose.material)
-//                implementation(project(":shared"))
 
                 implementation("com.crowdproj.ad.front:crowdproj-ad-fe-views:${version}")
             }

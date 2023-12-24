@@ -10,7 +10,7 @@ version = rootProject.version
 
 val apiVersion = "v1"
 val apiSpec: Configuration by configurations.creating
-val apiSpecVersion: String by project
+val apiSpecVersion = baselibs.versions.api.spec.base.get()
 dependencies {
     apiSpec(
         group = "com.crowdproj",

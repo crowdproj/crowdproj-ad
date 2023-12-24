@@ -1,7 +1,10 @@
 dependencyResolutionManagement {
     versionCatalogs {
-        create("libs") {
+        create("baselibs") {
             from(files("../gradle/libs.versions.toml"))
+        }
+        create("libs") {
+            from(files("../gradle/libs.fe.versions.toml"))
         }
     }
 }
@@ -14,6 +17,7 @@ pluginManagement {
     }
 }
 
+include(":crowdproj-ad-api-v1")
 include(":crowdproj-ad-fe-api-v1-mappers")
 include(":crowdproj-ad-fe-common")
 include(":crowdproj-ad-fe-views")

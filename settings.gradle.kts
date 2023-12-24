@@ -1,7 +1,17 @@
 rootProject.name = "crowdproj-ad"
 
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libsbe") {
+            from(files("./gradle/libs.be.versions.toml"))
+        }
+        create("libsfe") {
+            from(files("./gradle/libs.fe.versions.toml"))
+        }
+    }
+}
+
 includeBuild("crowdproj-ad-docs")
-includeBuild("crowdproj-ad-shared")
 includeBuild("crowdproj-ad-back")
 includeBuild("crowdproj-ad-frontlib")
 

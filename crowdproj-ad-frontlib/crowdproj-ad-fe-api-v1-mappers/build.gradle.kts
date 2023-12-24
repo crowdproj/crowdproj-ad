@@ -15,7 +15,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-common"))
 
-                api("com.crowdproj.ad:crowdproj-ad-api-v1:${version}")
+                api(project(":crowdproj-ad-api-v1"))
                 implementation(project(":crowdproj-ad-fe-common"))
             }
         }

@@ -1,10 +1,10 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.compose)
+    alias(libsfe.plugins.kotlin.multiplatform)
+    alias(libsfe.plugins.compose)
 }
 
 kotlin {
-    js(IR) {
+    js {
         browser()
         binaries.executable()
     }
