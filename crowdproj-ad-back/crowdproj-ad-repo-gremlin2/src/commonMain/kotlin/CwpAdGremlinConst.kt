@@ -7,7 +7,7 @@ object CwpAdGremlinConst {
     const val RESULT_SUCCESS = "success"
     const val RESULT_LOCK_FAILURE = "lock-failure"
 
-    const val FIELD_ID = "@rid"
+    const val FIELD_ID = "#id"
     const val FIELD_TITLE = "title"
     const val FIELD_DESCRIPTION = "description"
     const val FIELD_AD_TYPE = "adType"

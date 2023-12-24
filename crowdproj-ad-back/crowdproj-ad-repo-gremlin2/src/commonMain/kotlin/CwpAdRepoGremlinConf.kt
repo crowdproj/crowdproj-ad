@@ -6,7 +6,6 @@ import com.crowdproj.ad.common.models.CwpAd
 data class CwpAdRepoGremlinConf(
     val hosts: String,
     val port: Int = 8182,
-    val database: String = "graph",
     val enableSsl: Boolean = false,
     val user: String = "root",
     val pass: String = "",

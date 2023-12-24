@@ -1,27 +1,24 @@
 package com.crowdproj.ad.backend.repo.gremlin
 
 import com.crowdproj.ad.common.models.CwpAd
-import com.crowdproj.ad.repo.tests.RepoAdSearchTest
-import kotlin.random.Random
-import kotlin.random.nextUInt
+import com.crowdproj.ad.common.models.CwpAdId
+import com.crowdproj.ad.repo.tests.RepoAdDeleteTest
 
-class AdRepoGremlinSearchTest : RepoAdSearchTest() {
+class AdRepoGremlinDeleteTest : RepoAdDeleteTest() {
     override val repo: CwpAdRepoGremlin by lazy {
         CwpAdRepoGremlin(
             CwpAdRepoGremlinConf(
                 hosts = ArcadeDbContainer.container.host,
-                port = ArcadeDbContainer.container.getMappedPort(2480),
-                enableSsl = false,
+                port = ArcadeDbContainer.container.getMappedPort(8182),
                 user = ArcadeDbContainer.username,
                 pass = ArcadeDbContainer.password,
-                database = "search_${Random.Default.nextUInt(1_000_000u)}",
+                enableSsl = false,
                 initObjects = initObjects,
                 mustClean = true,
             )
         )
     }
-
-    override val initializedObjects: List<CwpAd> by lazy {
-        repo.initializedObjects
-    }
+    override val deleteSucc: CwpAd by lazy { repo.initializedObjects[0] }
+    override val deleteConc: CwpAd by lazy { repo.initializedObjects[1] }
+    override val notFoundId: CwpAdId = CwpAdId("#3100:0")
 }

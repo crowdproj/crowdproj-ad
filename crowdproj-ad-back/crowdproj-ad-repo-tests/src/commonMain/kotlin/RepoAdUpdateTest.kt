@@ -3,7 +3,6 @@ package com.crowdproj.ad.repo.tests
 import com.crowdproj.ad.common.models.*
 import com.crowdproj.ad.common.repo.DbAdRequest
 import com.crowdproj.ad.common.repo.IAdRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -12,7 +11,7 @@ abstract class RepoAdUpdateTest {
     abstract val repo: IAdRepository
     protected open val updateSucc = initObjects[0]
     protected open val updateConc = initObjects[1]
-    protected val updateIdNotFound = CwpAdId("ad-repo-update-not-found")
+    protected open val updateIdNotFound = CwpAdId("ad-repo-update-not-found")
     protected val lockBad = CwpAdLock("20000000-0000-0000-0000-000000000009")
     protected val lockNew = CwpAdLock("20000000-0000-0000-0000-000000000002")
 
@@ -27,15 +26,17 @@ abstract class RepoAdUpdateTest {
             lock = initObjects.first().lock,
         )
     }
-    private val reqUpdateNotFound = CwpAd(
-        id = updateIdNotFound,
-        title = "update object not found",
-        description = "update object not found description",
-        ownerId = CwpAdUserId("owner-123"),
-        visibility = CwpAdVisibility.VISIBLE_TO_GROUP,
-        adType = CwpAdDealSide.SUPPLY,
-        lock = initObjects.first().lock,
-    )
+    private val reqUpdateNotFound by lazy {
+        CwpAd(
+            id = updateIdNotFound,
+            title = "update object not found",
+            description = "update object not found description",
+            ownerId = CwpAdUserId("owner-123"),
+            visibility = CwpAdVisibility.VISIBLE_TO_GROUP,
+            adType = CwpAdDealSide.SUPPLY,
+            lock = initObjects.first().lock,
+        )
+    }
     private val reqUpdateConc by lazy {
         CwpAd(
             id = updateConc.id,
