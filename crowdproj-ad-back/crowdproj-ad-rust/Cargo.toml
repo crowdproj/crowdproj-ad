@@ -1,6 +1,0 @@
-[workspace]
-members = ["repo-gremlin", "testcontainers"]
-
-[profile.release]
-strip = true  # Automatically strip symbols from the binary.
-panic = "abort"

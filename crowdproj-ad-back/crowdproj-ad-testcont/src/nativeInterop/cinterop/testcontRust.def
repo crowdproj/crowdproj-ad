@@ -1,8 +1,0 @@
-headers = cwp-ad-testcontainers-rust.h
-
-#compilerOpts = -I../crowdproj-ad-rust/target/includes
-compilerOpts.linux_x64 = -I/usr/include -I../crowdproj-ad-rust/target/includes -I/usr/include/x86_64-linux-gnu
-compilerOpts.linux_arm64 = -I/usr/aarch64-linux-gnu/include -I../crowdproj-ad-rust/target/includes
-
-linkerOpts.linux_x64 = -lcwp_ad_testcontainers -L../crowdproj-ad-rust/target/x86_64-unknown-linux-gnu/release
-linkerOpts.linux_arm64 = -lcwp_ad_testcontainers -L../crowdproj-ad-rust/target/aarch64-unknown-linux-gnu/release
