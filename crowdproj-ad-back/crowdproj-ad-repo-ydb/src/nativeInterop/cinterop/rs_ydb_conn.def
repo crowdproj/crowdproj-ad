@@ -1,0 +1,12 @@
+package = com.crowdproj.ads.ydb
+
+headers = rs-ydb-conn-lib.h
+headerFilter = **
+
+compilerOpts = -D_POSIX_SOURCE
+compilerOpts.linux = -pthread -I./rust-ydb/target/includes -I/usr/include -I/usr/include/x86_64-linux-gnu
+#linkerOpts.linux = -I./build/goFiles/linux-amd64/
+libraryPaths.linux_x64 = ./rust-ydb/target/debug
+staticLibraries.linux = librs_ydb_conn.a
+
+#---

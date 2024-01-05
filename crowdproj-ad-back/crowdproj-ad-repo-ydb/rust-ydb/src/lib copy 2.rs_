@@ -1,0 +1,176 @@
+#![feature(noop_waker)]
+
+use std::{
+    ffi::{c_char, CString},
+    future::Future,
+    ptr::null_mut,
+    task::{self, Context, Waker, RawWaker, RawWakerVTable},
+};
+
+use ydb::{Client, ClientBuilder, YdbResult};
+
+// #[no_mangle]
+// pub unsafe extern "C" fn rs_ydb_conn_init_runtime() -> *mut Runtime {
+//     Box::into_raw(Box::new(Runtime::new().unwrap()))
+//     // let rt: Runtime = &(*RUNTIME);
+//     // Box::into_raw(Box::new(rt))
+// }
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct CwpYdbConnection {
+    pub conn: *mut Client,
+    pub error: *const c_char,
+    // _marker: PhantomPinned,
+    pub state: CwpYdbTaskState,
+    pub waker: *mut Waker,
+    pub context: *mut Context<'static>,
+}
+
+#[repr(C)]
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum CwpYdbTaskState {
+    None = 0,
+    Ready = 10,
+    Pending = 20,
+    Error = 30,
+}
+
+impl Default for CwpYdbConnection {
+    fn default() -> Self {
+        CwpYdbConnection {
+            conn: null_mut(),
+            error: null_mut(),
+            state: CwpYdbTaskState::None,
+            waker: null_mut(),
+            context: null_mut(),
+        }
+    }
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn rs_ydb_conn_connect_await(ptr: *mut CwpYdbConnection) {
+    assert!(!ptr.is_null());
+    let conn: &mut CwpYdbConnection = &mut *ptr;
+    assert!(conn.conn.is_null());
+    assert!(conn.error.is_null());
+
+    // if conn.context.is_null() {
+    //     conn.waker = Box::into_raw(Box::new(noop_waker()));
+    // }
+    // let waker = &mut *conn.waker;
+    // if conn.context.is_null() {
+    //     conn.context = Box::into_raw(Box::new(task::Context::from_waker(waker)));
+    // }
+    // let mut cx: &mut Context<'_> = &mut *conn.context;
+    let mut fut = Box::pin(async_connect());
+
+    let rw = RawWaker::new(
+        std::ptr::null_mut(),
+        &RawWakerVTable::new(clone, wake, wake_by_ref, drop),
+    );
+    let w = unsafe { Waker::from_raw(rw) };
+    let mut cx = Context::from_waker(&w);
+
+    println!("pre Poll");
+    let res = fut.as_mut().poll(&mut cx);
+
+    println!("post Poll");
+    match res {
+        task::Poll::Ready(r) => {
+            match r {
+                Ok(client) => {
+                    let con_new = Box::new(client);
+                    conn.conn = Box::into_raw(con_new);
+                    conn.state = CwpYdbTaskState::Ready;
+                }
+                Err(err) => {
+                    let err_new = CString::new(err.to_string()).unwrap().into_raw();
+                    conn.error = err_new;
+                    conn.state = CwpYdbTaskState::Error;
+                }
+            };
+            let _ = Box::from_raw(conn.waker);
+            let _ = Box::from_raw(conn.context);
+        }
+        task::Poll::Pending => {
+            conn.state = CwpYdbTaskState::Pending;
+            // Здесь надо обновить Waker
+        }
+    }
+}
+}
+
+// #[no_mangle]
+// pub unsafe extern "C" fn rs_ydb_conn_connect(rt_ptr: *mut Runtime) -> CwpYdbConnection {
+//     assert!(!rt_ptr.is_null());
+//     let rt: &mut Runtime = &mut *rt_ptr;
+//     // println!("C:Connecting to YDB");
+//     // assert!(!rt_ptr.is_null());
+//     println!("C:Runtime correct");
+//     // let fut = async_connect();
+//     let _fut: Pin<Box<dyn Future<Output = YdbResult<Client>>>> = Box::pin(async_connect());
+//     let client = rt.block_on(async_connect()).unwrap();
+//     println!("C:Client resolved");
+
+//     let con_new = Box::new(client);
+//     return CwpYdbConnection {
+//         conn: Box::into_raw(con_new),
+//         rt_ptr: rt_ptr,
+//         // ..CwpYdbConnection::default()
+//     };
+// }
+
+async fn async_connect() -> YdbResult<Client> {
+    println!("AC:async start");
+    let client = ClientBuilder::new_from_connection_string("grpc://localhost:2136?database=local")?
+        // .with_credentials(StaticToken::from("asd"))
+        .client()?;
+    println!("AC:awaiting for client");
+
+    client.wait().await?;
+    println!("AC:client got");
+    Ok(client)
+}
+
+unsafe fn clone(_ptr: *const ()) -> RawWaker {
+    todo!()
+}
+
+unsafe fn wake(_ptr: *const ()) {
+    todo!()
+}
+
+unsafe fn wake_by_ref(_ptr: *const ()) {
+    todo!()
+}
+
+unsafe fn drop(_ptr: *const ()) {
+    // do nothing
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    //     #[test]
+    //     fn it_works() {
+    //         println!("T:Calling connect");
+    //         let rt = unsafe { rs_ydb_conn_init_runtime() };
+    //         let _conn = unsafe { rs_ydb_conn_connect(rt) };
+    //         println!("T:Connect done");
+    //     }
+
+    #[test]
+    fn it_works() {
+        println!("T:Calling connect");
+        let conn_ptr = Box::into_raw(Box::new(CwpYdbConnection {
+            ..Default::default()
+        }));
+        let conn: CwpYdbConnection = unsafe { *conn_ptr }.clone();
+        unsafe { rs_ydb_conn_connect_await(conn_ptr) };
+        println!("T:Connect done {:?}", conn.state);
+
+        let _ = unsafe { Box::from_raw(conn_ptr) };
+    }
+}
