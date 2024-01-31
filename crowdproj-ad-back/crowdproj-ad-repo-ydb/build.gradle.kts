@@ -8,11 +8,6 @@ kotlin {
         compilations.getByName("main").cinterops {
             create("rs_ydb_conn") {}
         }
-//        val main by compilations.getting {
-//            @Suppress("UNUSED_VARIABLE")
-//            val rs_ydb_conn = cinterops.creating {
-//            }
-//        }
     }
     linuxArm64 {
         compilations.getByName("main").cinterops {

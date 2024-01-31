@@ -6,8 +6,11 @@ version = rootProject.version
 
 kotlin {
     jvm()
-    linuxX64()
-    linuxArm64()
+    js {
+        browser {}
+    }
+//    linuxX64()
+//    linuxArm64()
 
     sourceSets {
         val commonMain by getting {
