@@ -9,21 +9,20 @@ kotlin {
         val logbackVersion: String by project
         val slf4jVersion: String by project
 
-        val commonMain by getting {
-
+        commonMain {
             dependencies {
                 implementation(kotlin("stdlib-common"))
             }
         }
 
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
 
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
                 implementation(libs.logback.classic)
                 implementation(libs.logback.access)
@@ -31,15 +30,12 @@ kotlin {
                 implementation(libs.slf4j)
             }
         }
-        val jvmTest by getting {
+        jvmTest {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
-        val nativeMain by getting {
-            dependencies {
-                dependsOn(commonMain)
-            }
+        nativeMain {
         }
     }
 }

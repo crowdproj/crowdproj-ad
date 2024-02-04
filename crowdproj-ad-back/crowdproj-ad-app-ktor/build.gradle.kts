@@ -51,6 +51,7 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.ktor.serialization)
                 implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.ktor.server.double.receive)
 
                 implementation(libs.ktor.server.content.negotiation)
                 implementation(libs.ktor.server.auto.head.response)
