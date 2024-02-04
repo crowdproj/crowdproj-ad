@@ -1,9 +1,9 @@
 [versions]
 # plugins
 kotlin = "1.9.21"
-dokka = "1.8.20"
+dokka = "1.9.10"
 kotlinx-serialization = "1.6.2"
-muschko = "9.3.3"
+muschko = "9.4.0"
 crowdproj-generator = "0.2.0"
 binaryCompabilityValidator = "0.13.2"
 #toolchainsResolver = "0.5.0"
@@ -13,7 +13,7 @@ mavenPublish = "0.25.3"
 # libs
 coroutines = "1.7.3"
 logback = "1.4.14"
-ktor = "2.3.7"
+ktor = "2.3.8"
 
 # BASE
 jvm-compiler = "11"
@@ -36,19 +36,20 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.23.1" }
-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.1" }
+datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.5.0" }
 cor = { module = "com.crowdproj:kotlin-cor", version = "0.5.7" }
 
 #general
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logback-access = { module = "ch.qos.logback:logback-access", version.ref = "logback" }
 slf4j = "org.slf4j:slf4j-api:2.0.9"
-uuid = "com.benasher44:uuid:0.8.1"
+uuid = "com.benasher44:uuid:0.8.2"
 cache4k = "io.github.reactivecircus.cache4k:cache4k:0.12.0"
 
 #ktor
 ktor-serialization = { module = "io.ktor:ktor-serialization", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-network-tls = { module = "io.ktor:ktor-network-tls", version.ref = "ktor" }
 
 #ktor-server
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
@@ -61,6 +62,7 @@ ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negoti
 ktor-server-call-id = { module = "io.ktor:ktor-server-call-id", version.ref = "ktor" }
 ktor-server-config-yaml = { module = "io.ktor:ktor-server-config-yaml", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
+ktor-server-double-receive = { module = "io.ktor:ktor-server-double-receive", version.ref = "ktor" }
 
 #ktor-client
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }

@@ -3,6 +3,8 @@ package com.crowdproj.ad.common
 import com.crowdproj.ad.common.config.CwpAdCorSettings
 import kotlinx.datetime.Instant
 import com.crowdproj.ad.common.models.*
+import com.crowdproj.ad.common.permissions.CwpAdPrincipalModel
+import com.crowdproj.ad.common.permissions.CwpAdUserPermissions
 import com.crowdproj.ad.common.stubs.CwpAdStubs
 import com.crowdproj.ad.common.repo.IAdRepository
 
@@ -16,6 +18,10 @@ data class CwpAdContext(
     var stubCase: CwpAdStubs = CwpAdStubs.NONE,
     var requestId: CwpAdRequestId = CwpAdRequestId.NONE,
     var adRepo: IAdRepository = IAdRepository.NONE,
+
+    var principal: CwpAdPrincipalModel = CwpAdPrincipalModel.NONE,
+    val permissionsChain: MutableSet<CwpAdUserPermissions> = mutableSetOf(),
+    var permitted: Boolean = false,
 
     var adRequest: CwpAd = CwpAd(),
     var adFilterRequest: CwpAdFilter = CwpAdFilter(),

@@ -1,0 +1,66 @@
+language = "C"
+braces = "SameLine"
+style = "both"
+# style = "tag"
+# style = "type"
+include_guard = "RS_YDB_CONN_LIB_H"
+
+# [export]
+# item_types = [
+#     "globals",
+#     "enums",
+#     "structs",
+#     "unions",
+#     "typedefs",
+#     "opaque",
+#     "functions",
+#     "constants",
+# ]
+
+# [export.rename]
+# "MyType" = "my_cool_type"
+# "my_function" = "BetterFunctionName"
+# "FfiPoll_u32_Tag" = "FfiPoll_u32_TagType"
+# "FfiPoll" = "FfiPollType"
+# "FfiFuture" = "FfiFutureType"
+
+[parse]
+parse_deps = true
+include = [
+    "src/lib.rs", 
+    "async-ffi"
+]
+
+exclude = [
+    "libc",
+    # "src/urlrep.rs",
+    # "src/core.rs",
+    # "src/service.rs",
+    # "src/smartscreen.rs",
+]
+clean = true
+# extra_bindings = ["async-ffi"]
+
+# [parse.expand]
+# crates = ["async-ffi"]
+# all_features = false
+# default_features = true
+# features = []
+
+# [fn]
+# args = "Horizontal"
+
+# [struct]
+# associated_constants_in_body = true
+# derive_eq = true
+# derive_ostream = true
+# rename_fields = "ScreamingSnakeCase"
+
+# [enum]
+# rename_variants = "ScreamingSnakeCase"
+
+# add_sentinel = true
+# derive_helper_methods = true
+# derive_ostream = true
+# [macro_expansion]
+# bitflags = true

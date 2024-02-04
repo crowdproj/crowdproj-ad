@@ -5,3 +5,7 @@
 /kotlin-js-store/
 **/logs/
 !**/src/logs/
+
+**/.vscode/
+
+**/Cargo.lock

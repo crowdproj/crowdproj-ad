@@ -1,9 +1,9 @@
 [versions]
 # plugins
 kotlin = "1.9.21"
-dokka = "1.8.20"
+dokka = "1.9.10"
 kotlinx-serialization = "1.6.2"
-muschko = "9.3.3"
+muschko = "9.4.0"
 crowdproj-generator = "0.2.0"
 binaryCompabilityValidator = "0.13.2"
 #toolchainsResolver = "0.5.0"
@@ -13,14 +13,14 @@ mavenPublish = "0.25.3"
 # libs
 coroutines = "1.7.3"
 logback = "1.4.14"
-ktor = "2.3.7"
+ktor = "2.3.8"
 
 # BASE
 jvm-compiler = "11"
 jvm-language = "17"
 
 #Compose
-android-libs = "8.2.0"
+android-libs = "8.2.2"
 sdk-min = "26"
 sdk-compile = "34"
 androidx-compose-bom = "2023.09.02"
@@ -42,14 +42,14 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.23.1" }
-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.1" }
+datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.5.0" }
 cor = { module = "com.crowdproj:kotlin-cor", version = "0.5.7" }
 
 #general
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logback-access = { module = "ch.qos.logback:logback-access", version.ref = "logback" }
 slf4j = "org.slf4j:slf4j-api:2.0.9"
-uuid = "com.benasher44:uuid:0.8.1"
+uuid = "com.benasher44:uuid:0.8.2"
 
 #compose
 #androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }

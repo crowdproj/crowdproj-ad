@@ -16,14 +16,12 @@ actual fun main(args: Array<String>) {
         config = conf
         println("File read")
 
-        module {
-            module()
-        }
-
         connector {
-            port = conf.port
             host = conf.host
+            port = conf.port
         }
+        module(Application::module)
+
         println("Starting")
     }).apply {
         addShutdownHook {

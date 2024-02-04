@@ -31,11 +31,6 @@ include("crowdproj-ad-biz")
 include("crowdproj-ad-repo-stubs")
 include("crowdproj-ad-repo-tests")
 include("crowdproj-ad-repo-inmemory")
-
-//include("crowdproj-ad-testcont")
-//include("crowdproj-ad-rust")
-
 include("crowdproj-ad-repo-gremlin")
 
 //include("crowdproj-ad-repo-ydb")
-//include("crowdproj-ad-go")
