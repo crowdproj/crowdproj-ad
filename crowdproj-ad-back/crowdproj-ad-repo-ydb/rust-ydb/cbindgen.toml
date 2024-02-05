@@ -1,14 +1,20 @@
 language = "C"
 braces = "SameLine"
-style = "both"
-# style = "tag"
-# style = "type"
+#style = "both"
+style = "tag"
+#style = "type"
 include_guard = "RS_YDB_CONN_LIB_H"
 
-# [export]
+after_includes = "typedef enum FfiPoll {\nReady_u32,\nPending_u32,\nPanicked_u32,\n};"
+
+#[enum]
+#prefix_with_name = false
+
+ [export]
+# prefix = "CAPI_"
 # item_types = [
 #     "globals",
-#     "enums",
+##     "enums",
 #     "structs",
 #     "unions",
 #     "typedefs",
@@ -17,11 +23,11 @@ include_guard = "RS_YDB_CONN_LIB_H"
 #     "constants",
 # ]
 
-# [export.rename]
+[export.rename]
 # "MyType" = "my_cool_type"
 # "my_function" = "BetterFunctionName"
-# "FfiPoll_u32_Tag" = "FfiPoll_u32_TagType"
-# "FfiPoll" = "FfiPollType"
+#"FfiPoll_u32_Tag" = "FfiPoll_u32_TagType"
+#"FfiPoll" = "FfiPollType"
 # "FfiFuture" = "FfiFutureType"
 
 [parse]
@@ -33,13 +39,14 @@ include = [
 
 exclude = [
     "libc",
+#    "FfiPoll",
     # "src/urlrep.rs",
     # "src/core.rs",
     # "src/service.rs",
     # "src/smartscreen.rs",
 ]
 clean = true
-# extra_bindings = ["async-ffi"]
+#extra_bindings = ["async-ffi"]
 
 # [parse.expand]
 # crates = ["async-ffi"]

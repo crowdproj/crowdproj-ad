@@ -5,11 +5,20 @@ use async_ffi::{FfiFuture, FutureExt};
 use tokio::time::sleep;
 
 #[no_mangle]
-pub extern "C" fn work(arg: u32) -> FfiFuture<u32> {
+pub extern "C" fn workInt(arg: u32) -> FfiFuture<u32> {
     async move {
         let ret = do_some_io(arg).await;
         do_some_sleep(42).await;
         ret
+    }
+    .into_ffi()
+}
+
+#[no_mangle]
+pub extern "C" fn workLong(arg: u64) -> FfiFuture<u64> {
+    async move {
+        do_some_sleep(42).await;
+        arg + 7
     }
     .into_ffi()
 }
